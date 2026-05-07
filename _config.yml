@@ -14,3 +14,12 @@ plugins:
 # 내 블로그 주소 (본인 아이디로 꼭 바꾸세요)
 url: "https://omm0716.github.io"
 baseurl: ""
+# _config.yml에 추가 또는 수정
+author:
+  name: "omm0716"
+  location: "South Korea"
+  email: "omm1532@gmail.com"
+
+# SNS 링크 (테마 설정에 따라 다를 수 있음)
+twitter_username: "omm1532"
+github_username:  "omm0716"
