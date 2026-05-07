@@ -1,8 +1,8 @@
 ---
 layout: author
 photo: /assets/img/uploads/profile.png
-name: mranderson
-display_name: Mr. Anderson
+name: omm0716
+display_name: omm0716
 position: The One
 bio: Bulletproof hacker passionate about leather clothes.
 github_username: github_username
