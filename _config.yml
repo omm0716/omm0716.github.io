@@ -15,7 +15,6 @@ plugins:
 logo: "https://cdn-icons-png.flaticon.com/512/6062/6062646.png"
 
 # 작성자 정보
-# Lone Wolf 테마는 'author' 대신 'owner'라는 단어를 사용하기도 합니다.
 owner:
   name: "omm0716"
   location: "South Korea"
