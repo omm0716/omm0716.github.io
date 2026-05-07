@@ -1,3 +1,17 @@
----
----
-@import "jekflix";
+--- --- @import "jekflix";
+
+// 여기에 배경 설정을 추가합니다.
+body {
+    background-image: url("{{ '/assets/images/picture.jpg' | relative_url }}") !important;
+    background-size: cover !important;
+    background-position: center !important;
+    background-repeat: no-repeat !important;
+    background-attachment: fixed !important; // 스크롤해도 배경 고정
+}
+
+// (선택) 글자가 잘 보이도록 본문 영역에 살짝 배경색 넣기
+main.container {
+    background-color: rgba(0, 0, 0, 0.6); // 검은색 배경에 60% 투명도
+    padding: 20px;
+    border-radius: 8px;
+}
