@@ -14,20 +14,18 @@ plugins:
 # 로고 
 logo: "https://cdn-icons-png.flaticon.com/512/6062/6062646.png"
 
-# 작성자 정보 (하단 Owned by 섹션)
-author:
+# 작성자 정보
+# Lone Wolf 테마는 'author' 대신 'owner'라는 단어를 사용하기도 합니다.
+owner:
   name: "omm0716"
   location: "South Korea"
   email: "omm1532@gmail.com"
+  facebook: ""
+  twitter: "omm1532"
+  github: "omm0716"
+  instagram: ""
+  linkedin: ""
 
-# SNS 및 외부 링크 (하단 Social 및 Feed 섹션)
-# Lone Wolf 테마는 보통 아래와 같은 형식을 지원합니다.
+# 만약 위 설정으로도 안 보인다면, 테마의 기본 소셜 설정을 따릅니다.
 twitter_username: "omm1532"
 github_username:  "omm0716"
-
-# 만약 하단 아이콘이 여전히 안 보인다면 아래 줄도 추가해 보세요.
-social:
-  - name: github
-    link: https://github.com/omm0716
-  - name: twitter
-    link: https://twitter.com/omm1532
