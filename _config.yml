@@ -1,1 +1,16 @@
+# 블로그 제목과 설명
+title: "My Tech Blog"
+description: "프로그래밍 및 데이터 분석 기록"
 
+# 테마 불러오기 (가장 중요한 부분!)
+remote_theme: "manid2/lone-wolf-theme"
+
+# 부가 기능(플러그인) 연결
+plugins:
+  - jekyll-remote-theme
+  - jekyll-feed
+  - jekyll-seo-tag
+
+# 내 블로그 주소 (본인 아이디로 꼭 바꾸세요)
+url: "https://omm7161.github.io"
+baseurl: ""
