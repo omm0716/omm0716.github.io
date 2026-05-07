@@ -21,7 +21,7 @@ A *Jekflix* post file looks like:
 ```yaml
 # _posts/2010-01-01-welcome-to-the-desert-of-the-real.md
 ---
-date: 2019-05-16 23:48:05
+date: 2026-05-17 16:55:00
 layout: post
 title: 환영합니다
 subtitle: 이 곳은 omm0716의 블로그입니다.
@@ -88,7 +88,6 @@ Example:
 ---
 ...
 title: 환영합니다.
-subtitle: 이 곳은 omm0716의 블로그입니다.
 ...
 ---
 ```
