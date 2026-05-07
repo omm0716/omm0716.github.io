@@ -10,17 +10,23 @@ plugins:
   - jekyll-remote-theme
   - jekyll-feed
   - jekyll-seo-tag
+  
+# 로고 logo: "https://cdn-icons-png.flaticon.com/512/6062/6062646.png"
 
-# 내 블로그 주소 (본인 아이디로 꼭 바꾸세요)
-url: "https://omm0716.github.io"
-baseurl: ""
-# _config.yml에 추가 또는 수정
+# 작성자 정보 (하단 Owned by 섹션)
 author:
   name: "omm0716"
   location: "South Korea"
   email: "omm1532@gmail.com"
 
-# SNS 링크 (테마 설정에 따라 다를 수 있음)
+# SNS 및 외부 링크 (하단 Social 및 Feed 섹션)
+# Lone Wolf 테마는 보통 아래와 같은 형식을 지원합니다.
 twitter_username: "omm1532"
 github_username:  "omm0716"
-logo: "https://cdn-icons-png.flaticon.com/512/6062/6062646.png"
+
+# 만약 하단 아이콘이 여전히 안 보인다면 아래 줄도 추가해 보세요.
+social:
+  - name: github
+    link: https://github.com/omm0716
+  - name: twitter
+    link: https://twitter.com/omm1532
