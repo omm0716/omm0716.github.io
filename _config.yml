@@ -11,7 +11,8 @@ plugins:
   - jekyll-feed
   - jekyll-seo-tag
   
-# 로고 logo: "https://cdn-icons-png.flaticon.com/512/6062/6062646.png"
+# 로고 
+logo: "https://cdn-icons-png.flaticon.com/512/6062/6062646.png"
 
 # 작성자 정보 (하단 Owned by 섹션)
 author:
