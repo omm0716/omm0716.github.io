@@ -13,16 +13,4 @@ layout: null
   }
   {%- assign first = false -%}
 {%- endfor -%}
-{%- for page in site.html_pages -%}
-  {%- if page.title != nil and page.url != "/assets/data/searchcorpus.json" -%}
-    {%- unless first -%},{%- endunless -%}
-    {
-      "title"    : {{ page.title | strip_html | jsonify }},
-      "category" : {{ page.tags | join: ', ' | jsonify }},
-      "url"      : {{ page.url | absolute_url | jsonify }},
-      "date"     : {{ page.date | date: "%B %e, %Y" | jsonify }}
-    }
-    {%- assign first = false -%}
-  {%- endif -%}
-{%- endfor -%}
 ]
