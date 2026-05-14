@@ -6,10 +6,13 @@ layout: base
 
 <main class="{% if page.full-width %} container-fluid {% else %} container-md {% endif %}">
   <div class="row">
-    <div class="col-lg-3 col-md-4 d-none d-md-block">
+    <!-- Sidebar Column -->
+    <aside class="col-lg-3 col-md-4 mb-4">
       {% include sidebar.html %}
-    </div>
-    <div class="col-lg-9 col-md-8">
+    </aside>
+
+    <!-- Content Column -->
+    <section class="col-lg-9 col-md-8">
       {% if page.before-content %}
         <div class="before-content">
           {% for file in page.before-content %}
@@ -27,6 +30,6 @@ layout: base
           {% endfor %}
         </div>
       {% endif %}
-    </div>
+    </section>
   </div>
 </main>

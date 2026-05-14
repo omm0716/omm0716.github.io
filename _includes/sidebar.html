@@ -1,29 +1,38 @@
-<div class="sidebar-content">
+<div class="sidebar-wrapper">
   <div class="sidebar-section">
-    <h3 class="sidebar-title">Categories</h3>
+    <h4 class="sidebar-heading"><i class="fas fa-folder"></i> Categories</h4>
     <ul class="sidebar-list">
       {% for category in site.categories %}
         {% capture category_name %}{{ category | first }}{% endcapture %}
         <li>
-          <a href="{{ '/' | relative_url }}{{ category_name | downcase }}" class="category-link">
-            {{ category_name }} <span class="badge badge-secondary" style="background-color: #888;">{{ category | last | size }}</span>
+          <a href="{{ '/python/' | relative_url }}" class="sidebar-link">
+            {{ category_name }} <span class="badge badge-pill badge-light">{{ category | last | size }}</span>
           </a>
         </li>
       {% endfor %}
+      {% if site.categories.size == 0 %}
+        <li class="text-muted" style="font-size: 0.85rem;">No categories found</li>
+      {% endif %}
     </ul>
   </div>
 
   <div class="sidebar-section mt-4">
-    <h3 class="sidebar-title">Recent Posts</h3>
+    <h4 class="sidebar-heading"><i class="fas fa-tags"></i> Popular Tags</h4>
+    <div class="tag-cloud">
+      {% for tag in site.tags limit:10 %}
+        <a href="{{ '/tags' | absolute_url }}#{{ tag | first }}" class="tag-item">{{ tag | first }}</a>
+      {% endfor %}
+    </div>
+  </div>
+
+  <div class="sidebar-section mt-4">
+    <h4 class="sidebar-heading"><i class="fas fa-history"></i> Recent Posts</h4>
     <ul class="sidebar-list">
       {% for post in site.posts limit:5 %}
         <li>
-          <a href="{{ post.url | relative_url }}" class="post-link">
-            {{ post.title }}
+          <a href="{{ post.url | relative_url }}" class="sidebar-link post-title-link">
+            {{ post.title | truncate: 20 }}
           </a>
-          <div class="post-date text-muted" style="font-size: 0.8rem;">
-            {{ post.date | date: "%Y-%m-%d" }}
-          </div>
         </li>
       {% endfor %}
     </ul>
@@ -31,22 +40,24 @@
 </div>
 
 <style>
-.sidebar-content {
+.sidebar-wrapper {
+  background: #f8f9fa;
   padding: 1.5rem;
-  background: #fdfdfd;
-  border: 1px solid #eee;
-  border-radius: 8px;
+  border-radius: 12px;
+  border: 1px solid #e9ecef;
   margin-bottom: 2rem;
+  position: sticky;
+  top: 100px;
 }
-.sidebar-title {
-  font-size: 1.1rem;
-  font-weight: 700;
-  color: #333;
+.sidebar-heading {
+  font-size: 0.9rem;
+  font-weight: 800;
+  text-transform: uppercase;
+  color: #495057;
+  margin-bottom: 1rem;
   border-bottom: 2px solid #0085A1;
   padding-bottom: 0.5rem;
-  margin-bottom: 1rem;
-  text-transform: uppercase;
-  letter-spacing: 1px;
+  letter-spacing: 0.5px;
 }
 .sidebar-list {
   list-style: none;
@@ -54,30 +65,44 @@
   margin: 0;
 }
 .sidebar-list li {
-  margin-bottom: 0.7rem;
-  border-bottom: 1px dashed #eee;
-  padding-bottom: 0.5rem;
+  margin-bottom: 0.6rem;
 }
-.sidebar-list li:last-child {
-  border-bottom: none;
-}
-.sidebar-list a {
-  color: #404040;
+.sidebar-link {
+  color: #495057;
   text-decoration: none;
   font-size: 0.95rem;
-  transition: all 0.2s;
-}
-.sidebar-list a:hover {
-  color: #0085A1;
-  padding-left: 5px;
-}
-.category-link {
   display: flex;
   justify-content: space-between;
   align-items: center;
+  transition: all 0.2s;
 }
-.post-link {
+.sidebar-link:hover {
+  color: #0085A1;
+  padding-left: 4px;
+}
+.post-title-link {
   font-weight: 500;
   display: block;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.tag-cloud {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+}
+.tag-item {
+  background: #e9ecef;
+  color: #495057;
+  padding: 0.2rem 0.6rem;
+  border-radius: 20px;
+  font-size: 0.8rem;
+  text-decoration: none;
+  transition: all 0.2s;
+}
+.tag-item:hover {
+  background: #0085A1;
+  color: white;
 }
 </style>
