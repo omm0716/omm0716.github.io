@@ -7,7 +7,7 @@ layout: null
   {%- unless first -%},{%- endunless -%}
   {
     "title"    : {{ post.title | strip_html | jsonify }},
-    "category" : {{ post.tags | join: ', ' | jsonify }},
+    "tags"     : {{ post.tags | join: ', ' | jsonify }},
     "url"      : {{ post.url | absolute_url | jsonify }},
     "date"     : {{ post.date | date: "%B %e, %Y" | jsonify }}
   }
