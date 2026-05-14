@@ -1,0 +1,165 @@
+/* Dark Mode overrides */
+[data-theme="dark"] {
+  background-color: #121212 !important;
+  color: #e0e0e0 !important;
+}
+
+[data-theme="dark"] body {
+  background-color: #121212 !important;
+  color: #e0e0e0 !important;
+}
+
+[data-theme="dark"] .navbar-custom {
+  background-color: #1f1f1f !important;
+  border-bottom: 1px solid #333 !important;
+}
+
+[data-theme="dark"] .navbar-custom .navbar-brand,
+[data-theme="dark"] .navbar-custom .nav-link {
+  color: #e0e0e0 !important;
+}
+
+[data-theme="dark"] footer {
+  background-color: #1f1f1f !important;
+  border-top: 1px solid #333 !important;
+  color: #aaa !important;
+}
+
+[data-theme="dark"] footer a {
+  color: #4da6ff !important;
+}
+
+[data-theme="dark"] .blog-post {
+  color: #e0e0e0 !important;
+}
+
+[data-theme="dark"] .blog-post h1,
+[data-theme="dark"] .blog-post h2,
+[data-theme="dark"] .blog-post h3,
+[data-theme="dark"] .blog-post h4,
+[data-theme="dark"] .blog-post h5,
+[data-theme="dark"] .blog-post h6 {
+  color: #fff !important;
+}
+
+[data-theme="dark"] .page-link {
+  background-color: #1f1f1f !important;
+  border-color: #333 !important;
+  color: #4da6ff !important;
+}
+
+[data-theme="dark"] .page-link:hover {
+  background-color: #333 !important;
+}
+
+[data-theme="dark"] pre.highlight,
+[data-theme="dark"] .highlighter-rouge .highlight {
+  background-color: #1e1e1e !important;
+  color: #d4d4d4 !important;
+}
+
+/* Copy Button Styling */
+.code-header {
+  display: flex;
+  justify-content: flex-end;
+  background-color: #f1f1f1;
+  padding: 4px 10px;
+  border-top-left-radius: 4px;
+  border-top-right-radius: 4px;
+  border-bottom: 1px solid #ddd;
+}
+[data-theme="dark"] .code-header {
+  background-color: #2d2d2d;
+  border-bottom: 1px solid #444;
+}
+
+.copy-btn {
+  background: transparent;
+  border: none;
+  font-size: 14px;
+  color: #666;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+.copy-btn:hover {
+  color: #000;
+}
+[data-theme="dark"] .copy-btn {
+  color: #aaa;
+}
+[data-theme="dark"] .copy-btn:hover {
+  color: #fff;
+}
+
+/* Floating TOC Styling */
+.floating-toc {
+  position: fixed;
+  top: 100px;
+  right: 20px;
+  width: 250px;
+  max-height: calc(100vh - 120px);
+  overflow-y: auto;
+  background-color: #f8f9fa;
+  padding: 15px;
+  border-left: 3px solid #008AFF;
+  border-radius: 5px;
+  font-size: 0.9em;
+  z-index: 1000;
+  box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+}
+[data-theme="dark"] .floating-toc {
+  background-color: #1f1f1f;
+  border-left-color: #4da6ff;
+  color: #bbb;
+  box-shadow: 0 4px 6px rgba(0,0,0,0.5);
+}
+
+.floating-toc .toc-title {
+  font-weight: bold;
+  font-size: 1.1em;
+  margin-bottom: 10px;
+  color: #404040;
+}
+[data-theme="dark"] .floating-toc .toc-title {
+  color: #e0e0e0;
+}
+
+.floating-toc .toc-list {
+  list-style: none;
+  padding-left: 0;
+  margin-bottom: 0;
+}
+
+.floating-toc .toc-item {
+  margin-bottom: 6px;
+}
+.floating-toc .toc-h2 { padding-left: 10px; }
+.floating-toc .toc-h3 { padding-left: 20px; font-size: 0.95em; }
+
+.floating-toc a {
+  text-decoration: none;
+  color: #555;
+  transition: color 0.2s;
+  display: block;
+}
+[data-theme="dark"] .floating-toc a {
+  color: #aaa;
+}
+
+.floating-toc a:hover,
+.floating-toc a.active {
+  color: #008AFF;
+  font-weight: bold;
+}
+[data-theme="dark"] .floating-toc a:hover,
+[data-theme="dark"] .floating-toc a.active {
+  color: #4da6ff;
+}
+
+@media (max-width: 1300px) {
+  .floating-toc {
+    display: none !important;
+  }
+}
