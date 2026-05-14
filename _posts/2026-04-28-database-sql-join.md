@@ -1,68 +1,76 @@
 ---
 layout: post
-title: "SQL 중급: JOIN과 데이터 그룹화"
-subtitle: "여러 테이블을 묶고 데이터를 요약하는 방법"
+title: "SQL 중급: GROUP BY와 HAVING으로 통계 데이터 추출하기"
+subtitle: "장비별 사용 횟수와 오류 발생 빈도 분석"
 categories: [Database]
-tags: [DB, SQL, JOIN]
+tags: [DB, SQL, 통계, GROUP BY]
 author: min oh
 comments: true
 ---
 
-데이터베이스의 진정한 힘은 흩어져 있는 여러 테이블의 데이터를 하나로 묶어 분석하는 데서 나옵니다.
+단순한 개별 데이터 조회에서 나아가, 전체적인 흐름을 파악하기 위해서는 데이터를 그룹화하고 요약하는 기술이 필요합니다. 이번 포스트에서는 **GROUP BY**와 **HAVING**의 핵심 개념을 반도체 장비 관리 시나리오에 적용해 보겠습니다.
 
 ---
 
-## 1. 데이터 그룹화 (GROUP BY)
-특정 컬럼을 기준으로 데이터를 그룹화하여 통계를 낼 수 있습니다.
+## 1. 데이터 그룹화: GROUP BY
+`GROUP BY`는 특정 컬럼의 값이 같은 데이터들을 하나로 묶어줍니다. 이때 보통 집계 함수(`COUNT`, `SUM`, `AVG`, `MAX`, `MIN`)와 함께 사용됩니다.
 
+### 장비별 총 사용 횟수 조회
+어떤 장비가 가장 빈번하게 가동되는지 확인해 봅시다.
 ```sql
--- 전공별 학생 수와 평균 나이 계산
-SELECT major, COUNT(*) AS 학생수, AVG(age) AS 평균나이 
-FROM students 
-GROUP BY major;
-
--- 평균 나이가 22세 이상인 전공만 출력 (HAVING)
-SELECT major, AVG(age) 
-FROM students 
-GROUP BY major 
-HAVING AVG(age) >= 22;
+SELECT equipment_id, COUNT(*) AS 사용횟수 
+FROM UsageLog 
+GROUP BY equipment_id;
 ```
 
----
-
-## 2. 테이블 조인 (JOIN)
-서로 연관된 테이블들을 연결하여 조회하는 기능입니다.
-
-### INNER JOIN
-두 테이블에 모두 데이터가 존재하는 경우만 합칩니다.
+### 사용자별 최근 사용일 확인
+각 담당자가 마지막으로 장비를 다룬 날짜를 파악합니다.
 ```sql
-SELECT s.name, b.title, br.borrow_date
-FROM students AS s
-INNER JOIN borrow AS br ON s.id = br.student_id
-INNER JOIN books AS b ON br.book_id = b.id;
-```
-
-### LEFT JOIN
-왼쪽 테이블의 모든 데이터와 오른쪽 테이블의 매칭되는 데이터를 합칩니다. (매칭되지 않으면 NULL)
-```sql
-SELECT s.name, br.borrow_date
-FROM students AS s
-LEFT JOIN borrow AS br ON s.id = br.student_id;
+SELECT user_id, MAX(use_date) AS 최근사용일 
+FROM UsageLog 
+GROUP BY user_id;
 ```
 
 ---
 
-## 3. 외래키 (Foreign Key)
-테이블 간의 관계를 맺어주는 핵심 장치입니다. `borrow` 테이블의 `student_id`가 `students` 테이블의 `id`를 참조함으로써 데이터의 무결성을 지킵니다.
+## 2. 그룹화 데이터 필터링: HAVING 절
+많은 분이 `WHERE`와 `HAVING`을 헷갈려합니다. 
+- **WHERE**: 그룹화하기 **전**에 개별 데이터를 필터링합니다.
+- **HAVING**: 그룹화가 완료된 **후**의 결과값(집계 결과)을 필터링합니다.
 
+### 사용 횟수가 2회 이상인 '우수 가동' 장비 조회
 ```sql
-CREATE TABLE borrow (
-    id INT AUTO_INCREMENT PRIMARY KEY,
-    student_id INT NOT NULL,
-    book_id INT NOT NULL,
-    FOREIGN KEY(student_id) REFERENCES students(id),
-    FOREIGN KEY(book_id) REFERENCES books(id)
-);
+SELECT equipment_id, COUNT(*) AS 사용횟수 
+FROM UsageLog 
+GROUP BY equipment_id 
+HAVING COUNT(*) >= 2; -- 그룹화된 결과에 대한 조건
 ```
 
-이러한 관계 설정을 통해 데이터가 서로 꼬이지 않도록 안전하게 관리할 수 있습니다.
+### 문제 보고가 1건 이상 발생한 '주의' 장비 조회
+```sql
+SELECT equipment_id, COUNT(issue_report) AS 문제발생건수 
+FROM UsageLog 
+GROUP BY equipment_id 
+HAVING COUNT(issue_report) >= 1;
+```
+
+---
+
+## 3. 복합 쿼리: WHERE + GROUP BY + HAVING
+세 절을 모두 사용하여 정교한 통계를 낼 수 있습니다.
+- **상황**: "2024년 3월 5일 이후의 기록 중, 사용 횟수가 2회 이상인 사용자 목록을 보여주세요."
+
+```sql
+SELECT user_id, COUNT(*) AS 사용횟수 
+FROM UsageLog 
+WHERE use_date >= '2024-03-05' -- 1. 먼저 날짜로 필터링
+GROUP BY user_id                -- 2. 사용자별로 그룹화
+HAVING COUNT(*) >= 2           -- 3. 그룹화된 결과 중 2회 이상인 것만 선택
+ORDER BY 사용횟수 DESC;          -- 4. 보기 좋게 정렬
+```
+
+> [!NOTE]
+> 쿼리 실행 순서: **FROM → WHERE → GROUP BY → HAVING → SELECT → ORDER BY**
+> 이 순서를 이해하면 복잡한 쿼리도 실수 없이 작성할 수 있습니다.
+
+데이터를 묶고 필터링하는 능력을 갖추면 데이터베이스를 단순한 저장소가 아닌 **분석 도구**로 활용할 수 있게 됩니다. 다음 시간에는 흩어진 테이블을 하나로 합치는 **JOIN**의 마법에 대해 알아보겠습니다.

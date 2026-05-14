@@ -1,38 +1,83 @@
 ---
 layout: post
-title: "데이터베이스 기초: DB란 무엇인가?"
-subtitle: "데이터베이스의 개념과 SQL 학습 준비"
+title: "데이터베이스 기초: SemiconDB 설계와 구축"
+subtitle: "반도체 장비 관리 시스템으로 배우는 DB 입문"
 categories: [Database]
-tags: [DB, SQL, 기초]
+tags: [DB, SQL, 반도체, 기초]
 author: min oh
 comments: true
 ---
 
-## 1. 데이터베이스(Database)란?
-데이터베이스는 여러 사람이 공유하여 사용할 목적으로 체계화해 관리하는 **데이터의 집합**입니다. 단순히 데이터를 저장하는 것을 넘어, 효율적으로 검색하고 수정할 수 있는 구조를 갖추고 있습니다.
-
-### DBMS (Database Management System)
-데이터베이스를 직접 관리하는 소프트웨어를 DBMS라고 합니다. 대표적으로 MySQL, Oracle, PostgreSQL 등이 있습니다.
+단순한 데이터 저장을 넘어, 수많은 장비와 공정 데이터를 효율적으로 관리하기 위해서는 체계적인 **데이터베이스 설계**가 필수적입니다. 이번 시리즈에서는 **반도체 장비 관리 시스템(SemiconDB)**을 구축하며 SQL의 기초부터 심화까지 학습해 보겠습니다.
 
 ---
 
-## 2. SQL 실습 환경 만들기
-SQL을 실습하기 위해서는 DBMS가 설치되어 있어야 합니다. 가장 대중적인 **MySQL**과 시각적 도구인 **MySQL Workbench**를 활용하는 것이 일반적입니다.
+## 1. SemiconDB 테이블 구조 (Schema)
+우리가 관리할 데이터는 크게 세 가지 영역으로 나뉩니다.
 
-### 학습용 데이터베이스 생성
+1.  **Equipment (장비)**: 공정에 사용되는 장비들의 모델명, 도입일, 현재 상태를 관리합니다.
+2.  **EquipmentUser (사용자)**: 장비를 조작하는 담당자들의 부서와 연락처 정보를 담습니다.
+3.  **UsageLog (사용 이력)**: 어떤 사용자가 어떤 장비를 언제 사용했는지, 그리고 특이사항(문제 보고)은 없었는지 기록합니다.
+
+### 테이블 간의 관계
+- 한 명의 사용자는 여러 번 장비를 사용할 수 있습니다. (**1:N 관계**)
+- 하나의 장비는 여러 번 사용될 수 있습니다. (**1:N 관계**)
+
+---
+
+## 2. 데이터베이스 및 테이블 구축
+실습을 위해 MySQL을 사용하여 테이블을 생성하고 샘플 데이터를 로드해 보겠습니다.
+
 ```sql
--- sample이라는 이름의 데이터베이스 생성
-CREATE DATABASE IF NOT EXISTS sample;
+-- 1. 데이터베이스 생성 및 선택
+CREATE DATABASE semicon_equipDB;
+USE semicon_equipDB;
 
--- 생성된 데이터베이스 사용 설정
-USE sample;
+-- 2. 장비 테이블 생성
+CREATE TABLE Equipment (
+    equipment_id INT PRIMARY KEY,
+    model_name VARCHAR(50),
+    install_date DATE,
+    status VARCHAR(20) -- active, maintenance, retired 등
+);
+
+-- 3. 장비 사용자 테이블 생성
+CREATE TABLE EquipmentUser (
+    user_id INT PRIMARY KEY,
+    name VARCHAR(20),
+    department VARCHAR(20),
+    contact VARCHAR(50)
+);
+
+-- 4. 장비 사용 기록 테이블 생성 (외래키 설정)
+CREATE TABLE UsageLog (
+    log_id INT PRIMARY KEY,
+    user_id INT,
+    equipment_id INT,
+    use_date DATE,
+    issue_report TEXT,
+    FOREIGN KEY (user_id) REFERENCES EquipmentUser(user_id),
+    FOREIGN KEY (equipment_id) REFERENCES Equipment(equipment_id)
+);
 ```
 
 ---
 
-## 3. 테이블(Table)의 구조
-데이터는 행(Row)과 열(Column)로 구성된 테이블 형태로 저장됩니다.
-- **Column (열)**: 데이터의 속성 (예: 이름, 나이, 전공)
-- **Row (행)**: 실제 데이터 한 건 (예: 김철수, 20세, 컴퓨터공학)
+## 3. 샘플 데이터 로드
+실무적인 쿼리 연습을 위해 아래와 같이 데이터를 삽입합니다.
 
-데이터베이스 학습의 첫걸음은 이러한 구조를 이해하고, 데이터를 담을 '그릇'인 테이블을 만드는 것부터 시작됩니다.
+```sql
+-- 장비 데이터 삽입
+INSERT INTO Equipment VALUES (101, 'ETCH-A100', '2021-05-10', 'active'),
+                             (102, 'CMP-X200', '2023-11-23', 'maintenance');
+
+-- 사용자 데이터 삽입
+INSERT INTO EquipmentUser VALUES (1, '김지훈', '품질팀', '010-1234-5678'),
+                                 (2, '박서윤', '제조팀', '010-2345-6789');
+
+-- 사용 로그 삽입
+INSERT INTO UsageLog VALUES (1, 1, 101, '2024-03-01', '챔버 압력 이상'),
+                            (2, 2, 103, '2024-03-02', NULL);
+```
+
+이제 실습을 위한 모든 준비가 끝났습니다. 다음 포스트에서는 이 데이터를 바탕으로 **원하는 정보만 골라내는 조회 기술**에 대해 알아보겠습니다.
