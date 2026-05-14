@@ -2,7 +2,7 @@
 layout: post
 title: "SQL 기초: 데이터 조작 및 조회 (CRUD)"
 subtitle: "INSERT, SELECT, UPDATE, DELETE 마스터하기"
-categories: [Database]
+category: Database
 tags: [DB, SQL, 기초]
 author: min oh
 comments: true

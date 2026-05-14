@@ -5,7 +5,7 @@ subtitle: 파이썬 관련 모든 포스트를 모아둔 곳입니다.
 permalink: /python/
 ---
 
-{% assign python_posts = site.categories.Python %}
+{% assign python_posts = site.posts | where: "category", "Python" %}
 
 <div class="posts-list">
   {% for post in python_posts %}

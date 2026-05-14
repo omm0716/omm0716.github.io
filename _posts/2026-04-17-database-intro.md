@@ -2,7 +2,7 @@
 layout: post
 title: "데이터베이스 기초: DB란 무엇인가?"
 subtitle: "데이터베이스의 개념과 SQL 학습 준비"
-categories: [Database]
+category: Database
 tags: [DB, SQL, 기초]
 author: min oh
 comments: true
