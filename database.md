@@ -5,9 +5,17 @@ subtitle: 데이터베이스와 SQL 학습 기록입니다.
 permalink: /database/
 ---
 
+{% comment %}
+가장 확실하게 데이터를 가져오기 위해 카테고리 배열과 직접 필터링을 결합합니다.
+{% endcomment %}
 {% assign db_posts = site.categories.Database %}
+{% if db_posts.size == 0 %}
+  {% assign db_posts = site.posts | where: "categories", "Database" %}
+{% endif %}
 
 <div class="posts-list">
+  <h4 class="text-muted mb-4" style="border-left: 5px solid #0085A1; padding-left: 15px;">데이터베이스 학습 목록</h4>
+  
   {% for post in db_posts %}
   <article class="post-preview" style="margin-bottom: 2rem; border-bottom: 1px solid #eee; padding-bottom: 1rem;">
     <a href="{{ post.url | relative_url }}">
@@ -40,4 +48,10 @@ permalink: /database/
     {% endif %}
   </article>
   {% endfor %}
+
+  {% if db_posts.size == 0 %}
+    <div class="alert alert-warning">
+      데이터베이스 카테고리에 등록된 포스트를 찾을 수 없습니다. (현재 등록된 총 글 수: {{ site.posts.size }})
+    </div>
+  {% endif %}
 </div>
