@@ -19,8 +19,9 @@ author: omm0716
 # --- List of links in the navigation bar --- #
 ###############################################
 
-# navbar-links:
-#   About Me: "aboutme"
+navbar-links:
+  About Me: "aboutme"
+  Github: "https://github.com/omm0716"
   # Resources:
   #   - Beautiful Jekyll: "https://beautifuljekyll.com"
   #   - Learn markdown: "https://www.markdowntutorial.com/"
@@ -81,7 +82,7 @@ social-network-links:
 
 # If you want your website to generate an RSS feed, provide a description
 # The URL for the feed will be https://<your_website>/feed.xml
-rss-description: This website is a virtual proof that I'm awesome
+rss-description: 이 곳에서 프로그래밍을 공부 합니다.
 
 ###########################
 # --- General options --- #
@@ -97,7 +98,7 @@ share-links-active:
 
 # How to display the link to your website in the footer
 # Remove this if you don't want a link in the footer
-url-pretty: "MyWebsite.com"
+url-pretty: "ommo.github.io/omm0716/"
 
 # Add the website title to the title of every page
 title-on-all-pages: true
