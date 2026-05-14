@@ -21,7 +21,7 @@ author: omm0716
 
 # navbar-links:
 #   About Me: "aboutme"
-#   Resources:
+  # Resources:
   #   - Beautiful Jekyll: "https://beautifuljekyll.com"
   #   - Learn markdown: "https://www.markdowntutorial.com/"
   # Author's home: "https://deanattali.com"
@@ -52,7 +52,6 @@ round-avatar: true
 social-network-links:
   email: "omm1532@gmail.com"
   rss: true  # remove this line if you don't want to show an RSS link at the bottom
-  facebook: omm1532
   github: omm0716
   youtube: "@omm1532"
 #  medium: yourname
