@@ -5,10 +5,7 @@ subtitle: 데이터베이스와 SQL 학습 기록입니다.
 permalink: /database/
 ---
 
-{% comment %}
-카테고리 데이터를 더 확실하게 가져오기 위해 직접 필터링을 수행합니다.
-{% endcomment %}
-{% assign db_posts = site.posts | where: "category", "Database" %}
+{% assign db_posts = site.categories.Database %}
 
 <div class="posts-list">
   {% for post in db_posts %}
@@ -43,8 +40,4 @@ permalink: /database/
     {% endif %}
   </article>
   {% endfor %}
-
-  {% if db_posts.size == 0 %}
-    <p class="text-center text-muted">등록된 데이터베이스 포스트가 없습니다.</p>
-  {% endif %}
 </div>

@@ -2,7 +2,7 @@
 layout: post
 title: "SQL 심화: 서브쿼리, 뷰, 인덱스"
 subtitle: "복잡한 쿼리와 성능 최적화의 핵심"
-category: Database
+categories: [Database]
 tags: [DB, SQL, 심화]
 author: min oh
 comments: true

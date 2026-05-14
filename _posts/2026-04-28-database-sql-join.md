@@ -2,7 +2,7 @@
 layout: post
 title: "SQL 중급: JOIN과 데이터 그룹화"
 subtitle: "여러 테이블을 묶고 데이터를 요약하는 방법"
-category: Database
+categories: [Database]
 tags: [DB, SQL, JOIN]
 author: min oh
 comments: true
