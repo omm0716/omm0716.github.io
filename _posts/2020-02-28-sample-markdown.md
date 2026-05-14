@@ -4,7 +4,7 @@ title: 마크다운 작성 팁과 가이드
 subtitle: 아름다운 블로그 포스팅을 위한 마크다운 활용법
 gh-repo: daattali/beautiful-jekyll
 gh-badge: [star, fork, follow]
-tags: [markdown, 가이드, 테스트]
+tags: [markdown, 가이드]
 comments: true
 mathjax: true
 author: min oh
