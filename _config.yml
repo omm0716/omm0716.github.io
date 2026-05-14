@@ -168,6 +168,9 @@ site-js:
 # Fill in your Google Analytics tag ID (or "Measurement ID") to track your website usage
 #gtag: "G-XXXXXXXXXX"
 
+# Google Search Console Verification
+#google_site_verification: "your-verification-code-here"
+
 # Fill in your Cloudflare Analytics beacon token to track your website using Cloudflare Analytics
 #cloudflare_analytics: ""
 

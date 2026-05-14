@@ -54,6 +54,10 @@
   <meta name="keywords" content="{{ site.keywords }}">
   {% endif %}
 
+  {% if site.google_site_verification %}
+  <meta name="google-site-verification" content="{{ site.google_site_verification }}" />
+  {% endif %}
+
   {% if site.rss-description %}
   <link rel="alternate" type="application/rss+xml" title="{{ site.title }}" href="{{ '/feed.xml' | absolute_url }}">
   {% endif %}

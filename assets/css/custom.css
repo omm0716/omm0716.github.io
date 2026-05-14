@@ -97,7 +97,7 @@
 .floating-toc {
   position: fixed;
   top: 100px;
-  right: 20px;
+  left: 20px;
   width: 250px;
   max-height: calc(100vh - 120px);
   overflow-y: auto;
@@ -158,8 +158,41 @@
   color: #4da6ff;
 }
 
-@media (max-width: 1300px) {
+@media (max-width: 1400px) {
   .floating-toc {
     display: none !important;
   }
+}
+
+/* Brightness Overlay (for dark mode brightness control) */
+#brightness-overlay {
+  position: fixed;
+  top: 0; left: 0; right: 0; bottom: 0;
+  background-color: rgba(0, 0, 0, 0);
+  pointer-events: none;
+  z-index: 99999;
+  transition: background-color 0.2s;
+}
+
+/* Monokai Code Highlighting (Optimized for Readability) */
+.highlight {
+  background: #272822 !important;
+  color: #f8f8f2 !important;
+}
+.highlight .c, .highlight .cd, .highlight .cm, .highlight .c1, .highlight .cs { color: #75715e !important; font-style: italic; }
+.highlight .err { color: #960050 !important; background-color: #1e0010 !important; }
+.highlight .k, .highlight .kc, .highlight .kd, .highlight .kn, .highlight .kp, .highlight .kr, .highlight .kt, .highlight .kv { color: #66d9ef !important; }
+.highlight .n, .highlight .nc, .highlight .no, .highlight .nd, .highlight .ni, .highlight .ne, .highlight .nf, .highlight .nl, .highlight .nn, .highlight .nx, .highlight .py, .highlight .nv, .highlight .vc, .highlight .vg, .highlight .vi { color: #a6e22e !important; }
+.highlight .o, .highlight .ow { color: #f92672 !important; }
+.highlight .p, .highlight .pi { color: #f8f8f2 !important; }
+.highlight .m, .highlight .mf, .highlight .mh, .highlight .mi, .highlight .mo, .highlight .il { color: #ae81ff !important; }
+.highlight .s, .highlight .sb, .highlight .sc, .highlight .sd, .highlight .s2, .highlight .se, .highlight .sh, .highlight .si, .highlight .sx, .highlight .sr, .highlight .s1, .highlight .ss { color: #e6db74 !important; }
+
+/* Override Dark Mode Pre Backgrounds to use Monokai */
+[data-theme="dark"] pre.highlight,
+[data-theme="dark"] .highlighter-rouge .highlight,
+pre.highlight,
+.highlighter-rouge .highlight {
+  background-color: #272822 !important;
+  color: #f8f8f2 !important;
 }

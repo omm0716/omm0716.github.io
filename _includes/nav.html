@@ -35,6 +35,10 @@
           <i class="fas fa-moon" id="dark-mode-icon"></i>
         </a>
       </li>
+      <li class="nav-item" id="brightness-control-wrapper" style="display: none; align-items: center; margin-left: 10px;">
+        <i class="fas fa-adjust" style="color: #bbb; margin-right: 5px;" title="Brightness"></i>
+        <input type="range" id="brightness-slider" min="0" max="80" value="0" style="width: 80px;" title="Adjust Dark Mode Brightness">
+      </li>
       {% if site.post_search %}
         <li class="nav-item">
           <a class="nav-link" id="nav-search-link" href="#" title="Search">

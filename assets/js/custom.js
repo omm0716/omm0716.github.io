@@ -21,6 +21,16 @@ document.addEventListener("DOMContentLoaded", function() {
           icon.classList.add("fa-moon");
         }
       }
+      
+      const brightnessWrapper = document.getElementById("brightness-control-wrapper");
+      if (brightnessWrapper) {
+        brightnessWrapper.style.display = targetTheme === "dark" ? "flex" : "none";
+      }
+      
+      const overlay = document.getElementById("brightness-overlay");
+      if (overlay) {
+        overlay.style.backgroundColor = targetTheme === "dark" ? `rgba(0, 0, 0, ${document.getElementById("brightness-slider").value / 100})` : "rgba(0, 0, 0, 0)";
+      }
 
       // Update utterances theme if iframe exists
       const iframe = document.querySelector('.utterances-frame');
@@ -31,6 +41,34 @@ document.addEventListener("DOMContentLoaded", function() {
         };
         iframe.contentWindow.postMessage(message, 'https://utteranc.es');
       }
+    });
+  }
+
+  // Create Brightness Overlay
+  let overlay = document.getElementById("brightness-overlay");
+  if (!overlay) {
+    overlay = document.createElement("div");
+    overlay.id = "brightness-overlay";
+    document.body.appendChild(overlay);
+  }
+
+  // --- Brightness Slider Logic ---
+  const brightnessSlider = document.getElementById("brightness-slider");
+  const brightnessWrapper = document.getElementById("brightness-control-wrapper");
+  
+  if (brightnessSlider) {
+    // Initial State Check
+    if (document.documentElement.getAttribute("data-theme") === "dark") {
+      if (brightnessWrapper) brightnessWrapper.style.display = "flex";
+      const savedOpacity = localStorage.getItem("dark-brightness") || "0";
+      brightnessSlider.value = savedOpacity;
+      overlay.style.backgroundColor = `rgba(0, 0, 0, ${savedOpacity / 100})`;
+    }
+    
+    brightnessSlider.addEventListener("input", function(e) {
+      const val = e.target.value;
+      overlay.style.backgroundColor = `rgba(0, 0, 0, ${val / 100})`;
+      localStorage.setItem("dark-brightness", val);
     });
   }
 
