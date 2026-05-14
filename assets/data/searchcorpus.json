@@ -2,25 +2,27 @@
 layout: null
 ---
 [
-  {% for post in site.posts %}
+{%- assign first = true -%}
+{%- for post in site.posts -%}
+  {%- unless first -%},{%- endunless -%}
   {
     "title"    : {{ post.title | strip_html | jsonify }},
-    "desc"     : {{ post.subtitle | default: post.excerpt | strip_html | jsonify }},
     "category" : {{ post.tags | join: ', ' | jsonify }},
-    "url"      : {{ post.url | relative_url | jsonify }},
-    "date"     : {{ post.date | date: "%B %e, %Y" | default: "January 1, 1970" | jsonify }}
-  }{% unless forloop.last %},{% endunless %}{% if site.html_pages.size > 0 %},{% endif %}
-  {% endfor %}
-  {% for page in site.html_pages %}
-  {% if page.title != "{title}" and page.title != "404 - Page not found" and page.title != nil %}
-  {
-    "title"    : {{ page.title | strip_html | jsonify }},
-    "desc"     : {{ page.subtitle | default: page.excerpt | strip_html | jsonify }},
-    "category" : {{ page.tags | join: ', ' | default: "page" | jsonify }},
-    "url"      : {{ page.url | relative_url | jsonify }},
-    "date"     : {{ page.date | date: "%B %e, %Y" | default: "January 1, 1970" | jsonify }}
-  }{% unless forloop.last %},{% endunless %}
-  {% endif %}
-  {% endfor %}
+    "url"      : {{ post.url | absolute_url | jsonify }},
+    "date"     : {{ post.date | date: "%B %e, %Y" | jsonify }}
+  }
+  {%- assign first = false -%}
+{%- endfor -%}
+{%- for page in site.html_pages -%}
+  {%- if page.title != nil and page.url != "/assets/data/searchcorpus.json" -%}
+    {%- unless first -%},{%- endunless -%}
+    {
+      "title"    : {{ page.title | strip_html | jsonify }},
+      "category" : {{ page.tags | join: ', ' | default: "page" | jsonify }},
+      "url"      : {{ page.url | absolute_url | jsonify }},
+      "date"     : {{ page.date | date: "%B %e, %Y" | jsonify }}
+    }
+    {%- assign first = false -%}
+  {%- endif -%}
+{%- endfor -%}
 ]
-

@@ -4,24 +4,21 @@
 
   <div id="search-wrapper">
     <div id="nav-search-exit" title="Exit search">✕</div>
-    <input type="text" id="nav-search-input" placeholder="검색어를 입력하세요 (제목, 태그 등)">
+    <input type="text" id="nav-search-input" placeholder="검색어를 입력하세요">
   </div>
   <ul id="search-results-container"></ul>
-
   
-  <script src="https://unpkg.com/simple-jekyll-search@latest/dest/simple-jekyll-search.min.js"></script>
+  <script src="https://unpkg.com/simple-jekyll-search@1.10.0/dest/simple-jekyll-search.min.js"></script>
   <script>
     SimpleJekyllSearch({
       searchInput: document.getElementById('nav-search-input'),
       resultsContainer: document.getElementById('search-results-container'),
-      json: '{{ site.baseurl }}/assets/data/searchcorpus.json',
+      json: '{{ "/assets/data/searchcorpus.json" | absolute_url }}',
       searchStrategy: 'fuzzy',
-      searchFields: ['title', 'category', 'desc'],
-      noResultsText: '검색 결과가 없습니다.',
-      searchResultTemplate: '<li class="search-result-item"><a href="{url}"><h3>{title}</h3></a><p>{category}</p><span class="date">{date}</span></li>'
+      noResultsText: '<li>검색 결과가 없습니다.</li>',
+      searchResultTemplate: '<li class="search-result-item"><a href="{url}"><h3>{title}</h3></a><p>{category}</p></li>'
     });
   </script>
 </div>
 
 {% endif %}
-
