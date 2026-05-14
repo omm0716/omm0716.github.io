@@ -18,7 +18,7 @@ layout: null
     {%- unless first -%},{%- endunless -%}
     {
       "title"    : {{ page.title | strip_html | jsonify }},
-      "category" : {{ page.tags | join: ', ' | default: "page" | jsonify }},
+      "category" : {{ page.tags | join: ', ' | jsonify }},
       "url"      : {{ page.url | absolute_url | jsonify }},
       "date"     : {{ page.date | date: "%B %e, %Y" | jsonify }}
     }
