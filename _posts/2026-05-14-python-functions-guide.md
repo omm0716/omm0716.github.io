@@ -2,6 +2,7 @@
 layout: post
 title: "파이썬 기초: 함수(Function) 가이드"
 subtitle: "코드의 재사용성을 높이는 함수의 기초와 구조"
+categories: [Python]
 tags: [python, 기초, 가이드]
 author: min oh
 comments: true

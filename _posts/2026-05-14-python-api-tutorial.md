@@ -2,6 +2,7 @@
 layout: post
 title: "파이썬으로 외부 API 활용하기: 나만의 아침 루틴 프로그램 만들기"
 subtitle: "Requests 라이브러리를 이용한 고양이 사진, 날씨, 명언 데이터 가져오기"
+categories: [Python]
 tags: [python, API, 프로젝트]
 author: min oh
 comments: true

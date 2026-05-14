@@ -2,6 +2,7 @@
 layout: post
 title: 파이썬 기초 실습 문제
 subtitle: 실습을 통해 파이썬 기초 문법을 익혀봅시다.
+categories: [Python]
 tags: [python, 연습문제, 실습]
 author: min oh
 ---

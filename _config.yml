@@ -19,6 +19,7 @@ author: omm0716
 ###############################################
 
 navbar-links:
+  Python: "python"
   About Me: "aboutme"
   Github: "https://github.com/omm0716"
   # Resources:

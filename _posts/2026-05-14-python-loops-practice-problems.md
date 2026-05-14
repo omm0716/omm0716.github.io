@@ -2,6 +2,7 @@
 layout: post
 title: "파이썬 실습: 반복문 마스터하기 (while & for)"
 subtitle: "다양한 예제로 익히는 파이썬 반복문 활용법"
+categories: [Python]
 tags: [python, 연습문제, 실습]
 author: min oh
 comments: true

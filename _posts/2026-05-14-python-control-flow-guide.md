@@ -2,6 +2,7 @@
 layout: post
 title: "파이썬 기초: 조건문과 반복문 가이드"
 subtitle: "if문, while문, for문 완벽 정리"
+categories: [Python]
 tags: [python, 기초, 가이드]
 author: min oh
 comments: true

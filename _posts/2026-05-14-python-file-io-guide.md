@@ -2,6 +2,7 @@
 layout: post
 title: "파이썬 기초: 파일 읽고 쓰기 (File I/O) 완벽 가이드"
 subtitle: "파일 생성부터 데이터 읽기, 추가, 그리고 with문 활용까지"
+categories: [Python]
 tags: [python, 기초, 가이드]
 author: min oh
 comments: true
