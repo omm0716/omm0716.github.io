@@ -5,7 +5,7 @@
       {% for category in site.categories %}
         {% capture category_name %}{{ category | first }}{% endcapture %}
         <li>
-          <a href="{{ '/python/' | relative_url }}" class="sidebar-link">
+          <a href="{{ '/' | relative_url }}{{ category_name | slugify }}/" class="sidebar-link">
             {{ category_name }} <span class="badge badge-pill badge-light">{{ category | last | size }}</span>
           </a>
         </li>
