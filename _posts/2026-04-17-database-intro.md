@@ -19,9 +19,33 @@ comments: true
 2.  **EquipmentUser (사용자)**: 장비를 조작하는 담당자들의 부서와 연락처 정보를 담습니다.
 3.  **UsageLog (사용 이력)**: 어떤 사용자가 어떤 장비를 언제 사용했는지, 그리고 특이사항(문제 보고)은 없었는지 기록합니다.
 
-### 테이블 간의 관계
-- 한 명의 사용자는 여러 번 장비를 사용할 수 있습니다. (**1:N 관계**)
-- 하나의 장비는 여러 번 사용될 수 있습니다. (**1:N 관계**)
+### 1.2. 데이터 설계의 지도: ERD (Entity Relationship Diagram)
+설계 단계에서 테이블 간의 관계를 시각화한 것을 **ERD**라고 합니다. SemiconDB의 관계는 다음과 같습니다.
+
+```mermaid
+erDiagram
+    EquipmentUser ||--o{ UsageLog : "uses"
+    Equipment ||--o{ UsageLog : "is used"
+    
+    EquipmentUser {
+        int user_id PK
+        string name
+        string department
+    }
+    Equipment {
+        int equipment_id PK
+        string model_name
+        string status
+    }
+    UsageLog {
+        int log_id PK
+        int user_id FK
+        int equipment_id FK
+        date use_date
+    }
+```
+
+- **1:N 관계**: 한 명의 사용자(1)는 여러 번의 로그(N)를 남길 수 있고, 하나의 장비(1)는 여러 기록(N)에 등장할 수 있습니다.
 
 ---
 
