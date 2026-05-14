@@ -1,0 +1,32 @@
+---
+layout: null
+---
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+  
+  <!-- 포스트 목록 -->
+  {% for post in site.posts %}
+  <url>
+    <loc>{{ site.url | append: site.baseurl | append: post.url }}</loc>
+    {% if post.last_modified_at %}
+    <lastmod>{{ post.last_modified_at | date_to_xmlschema }}</lastmod>
+    {% else %}
+    <lastmod>{{ post.date | date_to_xmlschema }}</lastmod>
+    {% endif %}
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  {% endfor %}
+  
+  <!-- 일반 페이지 목록 -->
+  {% for page in site.pages %}
+    {% if page.layout and page.url != '/sitemap.xml' %}
+  <url>
+    <loc>{{ site.url | append: site.baseurl | append: page.url }}</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.5</priority>
+  </url>
+    {% endif %}
+  {% endfor %}
+  
+</urlset>
