@@ -53,7 +53,6 @@ social-network-links:
   email: "omm1532@gmail.com"
   rss: true  # remove this line if you don't want to show an RSS link at the bottom
   github: omm0716
-  youtube: "@omm1532"
 #  medium: yourname
 #  reddit: yourname or r/yoursubreddit
 #  linkedin: daattali
@@ -256,7 +255,7 @@ date_format: "%B %-d, %Y"
 #################################################################################
 
 # Output options (more information on Jekyll's site)
-timezone: "America/Toronto"
+timezone: "Korea/Gyeonggi"
 markdown: kramdown
 highlighter: rouge
 permalink: /:year-:month-:day-:title/
