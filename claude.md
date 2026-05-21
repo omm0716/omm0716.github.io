@@ -40,7 +40,6 @@
 ## 요약
 
 이 폴더는 "omm0716"님이 Python과 Database에 대한 프로그래밍 지식을 정리하고 공유하기 위해 운영 중인 개인 학습용 Jekyll 블로그 소스 코드입니다. 설정 파일(`_config.yml`)이 잘 구성되어 있으며, 주기적으로 작성된 포스트들이 `_posts` 디렉토리에 마크다운 형식으로 잘 정리되어 있습니다. 추가적인 수정이나 포스팅 작성 시 기존 포스트들의 형식(YAML Front Matter 등)을 참고하여 작성하면 됩니다.
-
 ---
 # Project Overview: omm0716.github.io
 This project is a **Jekyll static blog** hosted on GitHub Pages. It is built using the 'Beautiful Jekyll' theme and is primarily used to document learning contents for programming (Python) and database (SQL).
