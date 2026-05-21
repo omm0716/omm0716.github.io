@@ -1,7 +1,7 @@
 ---
 layout: page
 title: Database
-subtitle: 데이터베이스와 SQL 학습 기록입니다.
+subtitle: 데이터베이스와 SQL 학습 기록입니다. (Database and SQL learning records.)
 permalink: /database/
 ---
 
@@ -14,7 +14,7 @@ permalink: /database/
 {% endif %}
 
 <div class="posts-list">
-  <h4 class="text-muted mb-4" style="border-left: 5px solid #0085A1; padding-left: 15px;">데이터베이스 학습 목록</h4>
+  <h4 class="text-muted mb-4" style="border-left: 5px solid #0085A1; padding-left: 15px;">데이터베이스 학습 목록 <br><small style="font-size: 0.8em;">(Database Learning List)</small></h4>
   
   {% for post in db_posts %}
   <article class="post-preview" style="margin-bottom: 2rem; border-bottom: 1px solid #eee; padding-bottom: 1rem;">
@@ -51,7 +51,8 @@ permalink: /database/
 
   {% if db_posts.size == 0 %}
     <div class="alert alert-warning">
-      데이터베이스 카테고리에 등록된 포스트를 찾을 수 없습니다. (현재 등록된 총 글 수: {{ site.posts.size }})
+      데이터베이스 카테고리에 등록된 포스트를 찾을 수 없습니다. <br>(No posts found in the Database category.)<br>
+      (현재 등록된 총 글 수: {{ site.posts.size }}) <br>(Total posts currently registered: {{ site.posts.size }})
     </div>
   {% endif %}
 </div>

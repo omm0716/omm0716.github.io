@@ -10,7 +10,7 @@
 ############################
 
 # Name of website
-title: omm0716 블로그
+title: omm0716 블로그 (omm0716 Blog)
 
 # Your name to show in the footer
 author: omm0716
@@ -81,7 +81,7 @@ social-network-links:
 
 # If you want your website to generate an RSS feed, provide a description
 # The URL for the feed will be https://<your_website>/feed.xml
-rss-description: 이 곳에서 프로그래밍을 공부 합니다.
+rss-description: 이 곳에서 프로그래밍을 공부 합니다. (I study programming here.)
 
 ###########################
 # --- General options --- #

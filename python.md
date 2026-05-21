@@ -1,7 +1,7 @@
 ---
 layout: page
 title: Python
-subtitle: 파이썬 관련 모든 포스트를 모아둔 곳입니다.
+subtitle: 파이썬 관련 모든 포스트를 모아둔 곳입니다. (This is a collection of all Python-related posts.)
 permalink: /python/
 ---
 
