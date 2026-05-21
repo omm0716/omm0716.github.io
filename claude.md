@@ -40,3 +40,37 @@
 ## 요약
 
 이 폴더는 "omm0716"님이 Python과 Database에 대한 프로그래밍 지식을 정리하고 공유하기 위해 운영 중인 개인 학습용 Jekyll 블로그 소스 코드입니다. 설정 파일(`_config.yml`)이 잘 구성되어 있으며, 주기적으로 작성된 포스트들이 `_posts` 디렉토리에 마크다운 형식으로 잘 정리되어 있습니다. 추가적인 수정이나 포스팅 작성 시 기존 포스트들의 형식(YAML Front Matter 등)을 참고하여 작성하면 됩니다.
+
+---
+# Project Overview: omm0716.github.io
+This project is a **Jekyll static blog** hosted on GitHub Pages. It is built using the 'Beautiful Jekyll' theme and is primarily used to document learning contents for programming (Python) and database (SQL).
+## Main Settings and Structure
+- **Theme**: Beautiful Jekyll
+- **Blog Owner / Author**: omm0716 (GitHub: omm0716, Email: omm1532@gmail.com)
+- **Blog Title**: omm0716 Blog
+- **Blog Description (RSS)**: I study programming here.
+- **Main File and Directory Structure**:
+  - `_config.yml`: The core configuration file containing the overall settings of the blog (title, menu links, author information, integrated services, etc.).
+  - `_posts/`: The directory where blog posts are stored in Markdown (`.md`) format.
+  - `_layouts/`, `_includes/`: HTML/Liquid templates that configure the design and layout of the blog.
+  - `assets/`: Contains static files such as images, CSS, and JavaScript.
+  - `README.md`: Contains the original manual and project guide for the Beautiful Jekyll theme.
+## Blog Post Content Analysis (`_posts` folder)
+The currently written posts are broadly divided into two main topics: **Python** and **Database (SQL)**, and are organized systematically.
+### 1. Python Learning (7 posts total)
+- `2026-03-12-python.md`: Python Basics
+- `2026-03-13-python-practice.md`: Python Practice
+- `2026-04-10-python-control-flow-guide.md`: Control Flow Guide (Conditionals, Loops, etc.)
+- `2026-04-17-python-loops-practice-problems.md`: Loops Practice Problems
+- `2026-04-24-python-functions-guide.md`: Functions Guide
+- `2026-05-07-python-file-io-guide.md`: File I/O Guide
+- `2026-05-14-python-api-tutorial.md`: API Usage Tutorial
+### 2. Database / SQL Learning (4 posts total)
+- `2026-04-17-database-intro.md`: Database Overview
+- `2026-04-21-database-sql-basic.md`: SQL Basics (SELECT, INSERT, etc.)
+- `2026-04-28-database-sql-join.md`: SQL JOIN Concepts and Usage
+- `2026-05-02-database-sql-advanced.md`: Advanced SQL Techniques and Deep Dive
+### 3. Others (1 post)
+- `2026-03-01-sample-markdown.md`: Sample Markdown Document (for Beautiful Jekyll tutorial)
+## Summary
+This folder contains the source code for a personal learning Jekyll blog operated by "omm0716" to organize and share programming knowledge about Python and Database. The configuration file (`_config.yml`) is well-organized, and the periodically written posts are well-structured in Markdown format within the `_posts` directory. When making further modifications or writing new posts, you can refer to the format of existing posts (such as YAML Front Matter).
