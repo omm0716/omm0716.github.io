@@ -206,7 +206,7 @@ for idx, num in enumerate(multiples, 1):
 
 ```python
 # 헤더
-print(f"{'':4}", end='')
+print(" " * 4, end='')
 for i in range(1, 10):
     print(f"{i:5}", end='')
 print()
@@ -251,8 +251,10 @@ students = [
 top    = max(students, key=lambda x: x['score'])
 bottom = min(students, key=lambda x: x['score'])
 
-print(f"1등: {top['name']} ({top['score']}점)")
-print(f"꼴등: {bottom['name']} ({bottom['score']}점)")
+name_top, score_top = top['name'], top['score']
+name_bot, score_bot = bottom['name'], bottom['score']
+print(f"1등: {name_top} ({score_top}점)")
+print(f"꼴등: {name_bot} ({score_bot}점)")
 ```
 
 ---
