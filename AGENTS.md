@@ -17,7 +17,7 @@
 
 ## 블로그 포스트 내용 분석 (`_posts` 폴더)
 
-현재 작성된 포스트들은 크게 **Python**과 **Database(SQL)** 두 가지 주제로 나뉘어 체계적으로 작성되어 있습니다.
+현재 작성된 포스트들은 크게 **Python**, **Database(SQL)**, **Machine Learning** 세 가지 주제로 나뉘어 체계적으로 작성되어 있습니다.
 
 ### 1. Python 학습 (총 7건)
 - `2026-03-12-python.md`: Python 기초
@@ -34,12 +34,18 @@
 - `2026-04-28-database-sql-join.md`: SQL JOIN 개념 및 활용
 - `2026-05-02-database-sql-advanced.md`: SQL 고급 기술 및 심화
 
-### 3. 기타 (1건)
+### 3. Machine Learning 학습 (총 4건)
+- `2026-06-04-machine-learning-linear-regression.md`: 선형 회귀 분석 기초
+- `2026-06-04-machine-learning-multiple-regression.md`: 다중 회귀 분석
+- `2026-06-04-machine-learning-logistic-regression.md`: 로지스틱 회귀 분석
+- `2026-06-04-machine-learning-langchain-tutorial.md`: LangChain 기반 챗봇 실습
+
+### 4. 기타 (1건)
 - `2026-03-01-sample-markdown.md`: 마크다운 샘플 문서 (Beautiful Jekyll 튜토리얼용)
 
 ## 요약
 
-이 폴더는 "omm0716"님이 Python과 Database에 대한 프로그래밍 지식을 정리하고 공유하기 위해 운영 중인 개인 학습용 Jekyll 블로그 소스 코드입니다. 설정 파일(`_config.yml`)이 잘 구성되어 있으며, 주기적으로 작성된 포스트들이 `_posts` 디렉토리에 마크다운 형식으로 잘 정리되어 있습니다. 추가적인 수정이나 포스팅 작성 시 기존 포스트들의 형식(YAML Front Matter 등)을 참고하여 작성하면 됩니다.
+이 폴더는 "omm0716"님이 Python, Database, Machine Learning에 대한 프로그래밍 지식을 정리하고 공유하기 위해 운영 중인 개인 학습용 Jekyll 블로그 소스 코드입니다. 설정 파일(`_config.yml`)이 잘 구성되어 있으며, 주기적으로 작성된 포스트들이 `_posts` 디렉토리에 마크다운 형식으로 잘 정리되어 있습니다. 추가적인 수정이나 포스팅 작성 시 기존 포스트들의 형식(YAML Front Matter 등)을 참고하여 작성하면 됩니다.
 ---
 # Project Overview: omm0716.github.io
 This project is a **Jekyll static blog** hosted on GitHub Pages. It is built using the 'Beautiful Jekyll' theme and is primarily used to document learning contents for programming (Python) and database (SQL).
@@ -55,7 +61,7 @@ This project is a **Jekyll static blog** hosted on GitHub Pages. It is built usi
   - `assets/`: Contains static files such as images, CSS, and JavaScript.
   - `README.md`: Contains the original manual and project guide for the Beautiful Jekyll theme.
 ## Blog Post Content Analysis (`_posts` folder)
-The currently written posts are broadly divided into two main topics: **Python** and **Database (SQL)**, and are organized systematically.
+The currently written posts are broadly divided into three main topics: **Python**, **Database (SQL)**, and **Machine Learning**, and are organized systematically.
 ### 1. Python Learning (7 posts total)
 - `2026-03-12-python.md`: Python Basics
 - `2026-03-13-python-practice.md`: Python Practice
@@ -69,7 +75,13 @@ The currently written posts are broadly divided into two main topics: **Python**
 - `2026-04-21-database-sql-basic.md`: SQL Basics (SELECT, INSERT, etc.)
 - `2026-04-28-database-sql-join.md`: SQL JOIN Concepts and Usage
 - `2026-05-02-database-sql-advanced.md`: Advanced SQL Techniques and Deep Dive
-### 3. Others (1 post)
+### 3. Machine Learning Learning (4 posts total)
+- `2026-06-04-machine-learning-linear-regression.md`: Linear Regression Basics
+- `2026-06-04-machine-learning-multiple-regression.md`: Multiple Regression
+- `2026-06-04-machine-learning-logistic-regression.md`: Logistic Regression
+- `2026-06-04-machine-learning-langchain-tutorial.md`: LangChain Chatbot Tutorial
+
+### 4. Others (1 post)
 - `2026-03-01-sample-markdown.md`: Sample Markdown Document (for Beautiful Jekyll tutorial)
 ## Summary
-This folder contains the source code for a personal learning Jekyll blog operated by "omm0716" to organize and share programming knowledge about Python and Database. The configuration file (`_config.yml`) is well-organized, and the periodically written posts are well-structured in Markdown format within the `_posts` directory. When making further modifications or writing new posts, you can refer to the format of existing posts (such as YAML Front Matter).
+This folder contains the source code for a personal learning Jekyll blog operated by "omm0716" to organize and share programming knowledge about Python, Database, and Machine Learning. The configuration file (`_config.yml`) is well-organized, and the periodically written posts are well-structured in Markdown format within the `_posts` directory. When making further modifications or writing new posts, you can refer to the format of existing posts (such as YAML Front Matter).
