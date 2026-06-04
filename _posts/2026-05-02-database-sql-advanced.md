@@ -1,82 +1,284 @@
 ---
 layout: post
-title: "SQL 고급: JOIN과 서브쿼리로 데이터 재구성하기"
-subtitle: "장비 상태와 사용자 정보를 하나로 묶는 테이블 결합 기술"
+title: "[4강] 테이블 결합의 정석: INNER JOIN vs LEFT JOIN"
+subtitle: "관계형 DB의 핵심, JOIN으로 흩어진 데이터를 하나로!"
 categories: [Database]
-tags: [DB, SQL, JOIN, 서브쿼리]
+tags: [DB, SQL, JOIN, INNER JOIN, LEFT JOIN, NULL, 서브쿼리, SemiconDB]
 author: min oh
 comments: true
 ---
 
-실제 데이터베이스에서 우리가 원하는 정보는 여러 테이블에 흩어져 있는 경우가 많습니다. "어떤 장비가 누구에 의해 사용되었고, 그 장비의 현재 상태는 무엇인가?"와 같은 질문에 답하려면 테이블을 결합하는 **JOIN**과 중첩 쿼리인 **서브쿼리**를 정복해야 합니다.
+실제 데이터베이스에서 우리가 원하는 정보는 여러 테이블에 흩어져 있습니다. **"김지훈이 어떤 장비를 몇 번 사용했나?"** 라는 질문에 답하려면 `EquipmentUser`, `UsageLog`, `Equipment` 세 테이블의 정보를 하나로 합쳐야 합니다. 이것이 **JOIN**입니다.
 
 ---
 
-## 1. 테이블 결합의 핵심: JOIN
-반도체 장비 관리 시스템(SemiconDB)의 세 테이블을 결합하여 의미 있는 정보를 만들어 보겠습니다.
+## 1. JOIN이 필요한 이유
 
-### INNER JOIN (내부 조인)
-두 테이블 모두에 공통된 데이터가 있을 때만 결합합니다. 장비 사용 기록과 해당 장비의 모델명을 함께 보고 싶을 때 사용합니다.
-```sql
-SELECT u.log_id, e.model_name, u.use_date
-FROM UsageLog AS u
-INNER JOIN Equipment AS e ON u.equipment_id = e.equipment_id;
+SemiconDB의 구조를 다시 떠올려 봅시다.
+
+```mermaid
+erDiagram
+    EquipmentUser ||--o{ UsageLog : "user_id"
+    Equipment ||--o{ UsageLog : "equipment_id"
+
+    EquipmentUser {
+        int user_id PK
+        string name
+        string department
+    }
+    Equipment {
+        int equipment_id PK
+        string model_name
+        string status
+    }
+    UsageLog {
+        int log_id PK
+        int user_id FK
+        int equipment_id FK
+        date use_date
+        text issue_report
+    }
 ```
 
-### LEFT JOIN (외부 조인)
-왼쪽 테이블의 모든 데이터를 보존하면서 오른쪽 테이블을 결합합니다. **"한 번도 사용되지 않은 장비를 포함한 모든 장비 리스트"**를 뽑을 때 필수적입니다.
+- `UsageLog`에는 `user_id`(번호)만 있고, **이름(name)은 없습니다.**
+- `UsageLog`에는 `equipment_id`(번호)만 있고, **모델명(model_name)은 없습니다.**
+- 이름과 모델명을 함께 보려면 JOIN이 필수입니다!
+
+---
+
+## 2. INNER JOIN (내부 조인)
+
+**양쪽 테이블 모두에 일치하는 데이터만** 결합합니다.
+
 ```sql
+-- 기본 문법
+SELECT 컬럼 FROM 테이블A
+INNER JOIN 테이블B ON A.공통키 = B.공통키;
+
+-- INNER 생략 가능 (그냥 JOIN이라고 써도 동일)
+SELECT 컬럼 FROM 테이블A
+JOIN 테이블B ON A.공통키 = B.공통키;
+```
+
+### 예제 1: 사용 기록 + 사용자 이름 + 장비 모델명
+
+```sql
+SELECT 
+    u.log_id,
+    eu.name AS 사용자,
+    e.model_name AS 장비명,
+    u.use_date AS 사용일,
+    u.issue_report AS 이슈내용
+FROM UsageLog AS u
+JOIN Equipment    AS e  ON u.equipment_id = e.equipment_id
+JOIN EquipmentUser AS eu ON u.user_id = eu.user_id
+ORDER BY u.use_date;
+```
+
+### 예제 2: 이슈가 보고된 기록만 (JOIN + WHERE)
+
+```sql
+SELECT 
+    eu.name AS 담당자,
+    e.model_name AS 장비,
+    u.use_date,
+    u.issue_report
+FROM UsageLog AS u
+JOIN EquipmentUser AS eu ON u.user_id = eu.user_id
+JOIN Equipment    AS e  ON u.equipment_id = e.equipment_id
+WHERE u.issue_report IS NOT NULL
+ORDER BY u.use_date DESC;
+```
+
+### 예제 3: 품질팀이 사용한 장비 목록
+
+```sql
+SELECT DISTINCT e.model_name, e.status
+FROM UsageLog AS u
+JOIN EquipmentUser AS eu ON u.user_id = eu.user_id
+JOIN Equipment    AS e  ON u.equipment_id = e.equipment_id
+WHERE eu.department = '품질팀';
+```
+
+---
+
+## 3. LEFT JOIN (왼쪽 외부 조인)
+
+**왼쪽 테이블의 모든 데이터를 유지**하고, 오른쪽 테이블에 일치하는 게 없으면 `NULL`로 채웁니다.
+
+```sql
+-- 기본 문법
+SELECT 컬럼 FROM 테이블A (왼쪽, 기준)
+LEFT JOIN 테이블B ON A.공통키 = B.공통키;
+```
+
+### INNER JOIN vs LEFT JOIN 비교
+
+```sql
+-- INNER JOIN: 사용 기록이 있는 장비만 출력
+SELECT e.model_name, u.use_date
+FROM Equipment AS e
+JOIN UsageLog AS u ON e.equipment_id = u.equipment_id;
+
+-- LEFT JOIN: 사용 기록이 없는 장비도 포함 (use_date = NULL로 표시)
 SELECT e.model_name, u.use_date
 FROM Equipment AS e
 LEFT JOIN UsageLog AS u ON e.equipment_id = u.equipment_id;
--- 사용 기록이 없는 장비는 use_date 자리에 NULL이 표시됩니다.
+```
+
+> [!TIP]
+> **"한 번도 사용되지 않은 장비를 찾아라"** 같은 문제는 항상 LEFT JOIN + `WHERE IS NULL` 패턴입니다!
+
+### LEFT JOIN의 결과 이해
+
+| 장비 | 사용일 (INNER JOIN) | 사용일 (LEFT JOIN) |
+|------|--------------------|--------------------|
+| ETCH-A100 | 2024-03-01 등 | 2024-03-01 등 |
+| CMP-X200 | 2024-03-05 등 | 2024-03-05 등 |
+| CVD-B500 | (미사용 → 결과 없음) | **NULL** (포함됨!) |
+
+---
+
+## 4. "존재하지 않는 것" 찾기: LEFT JOIN + IS NULL
+
+LEFT JOIN의 핵심 활용 패턴입니다.
+
+```sql
+-- 한 번도 사용된 적 없는 장비 찾기
+SELECT e.equipment_id, e.model_name, e.status
+FROM Equipment AS e
+LEFT JOIN UsageLog AS u ON e.equipment_id = u.equipment_id
+WHERE u.log_id IS NULL;  -- UsageLog에 매칭이 없는 행
+```
+
+### 응용: 사용 기록이 없는 사용자 찾기
+
+```sql
+-- 한 번도 장비를 사용하지 않은 사용자
+SELECT eu.user_id, eu.name, eu.department
+FROM EquipmentUser AS eu
+LEFT JOIN UsageLog AS u ON eu.user_id = u.user_id
+WHERE u.log_id IS NULL;
 ```
 
 ---
 
-## 2. 쿼리 속의 쿼리: 서브쿼리 (Subquery)
-복잡한 조건을 처리할 때 쿼리문을 중첩해서 사용할 수 있습니다.
+## 5. LEFT JOIN + GROUP BY 조합
 
-### 단일 행 서브쿼리
-"가장 최근에 도입된 장비의 사용 기록만 보고 싶다"면 어떻게 해야 할까요?
+**"모든 장비의 사용 횟수를 조회하되, 사용된 적 없는 장비도 포함"**
+
 ```sql
-SELECT * FROM UsageLog
-WHERE equipment_id = (SELECT equipment_id FROM Equipment ORDER BY install_date DESC LIMIT 1);
+-- 모든 사용자의 사용 횟수 (미사용자도 포함, 횟수 = 0으로 표시)
+SELECT 
+    eu.user_id,
+    eu.name,
+    eu.department,
+    COUNT(u.log_id) AS 사용횟수,
+    COUNT(u.issue_report) AS 이슈보고횟수
+FROM EquipmentUser AS eu
+LEFT JOIN UsageLog AS u ON eu.user_id = u.user_id
+GROUP BY eu.user_id, eu.name, eu.department
+ORDER BY 사용횟수 DESC;
 ```
 
-### IN 연산자와 서브쿼리
-"품질팀 소속 사용자들이 사용한 장비 목록"을 조회합니다.
 ```sql
-SELECT DISTINCT model_name FROM Equipment
+-- 모든 장비의 사용 횟수와 이슈 발생 횟수
+SELECT 
+    e.equipment_id,
+    e.model_name,
+    e.status,
+    COUNT(u.log_id) AS 사용횟수,
+    COUNT(u.issue_report) AS 이슈건수
+FROM Equipment AS e
+LEFT JOIN UsageLog AS u ON e.equipment_id = u.equipment_id
+GROUP BY e.equipment_id, e.model_name, e.status
+ORDER BY 이슈건수 DESC;
+```
+
+> [!IMPORTANT]
+> `COUNT(*)`는 NULL도 포함해서 세지만, `COUNT(컬럼명)`은 NULL을 제외합니다.
+> LEFT JOIN 후 COUNT할 때는 **반드시 오른쪽 테이블의 컬럼을 지정**하세요!
+> `COUNT(u.log_id)` → 사용 기록이 없는 행은 NULL이므로 0으로 집계됩니다.
+
+---
+
+## 6. 3테이블 JOIN 실전
+
+### 예제: 사용자 이름 + 장비 모델명 + 사용 현황 전체 조회
+
+```sql
+-- 모든 사용자 기준으로, 사용한 장비 모델명과 횟수를 조회
+-- (사용 기록 없는 사용자도 포함)
+SELECT 
+    eu.name AS 사용자,
+    eu.department AS 부서,
+    e.model_name AS 장비모델명,
+    COUNT(u.log_id) AS 사용횟수
+FROM EquipmentUser AS eu
+LEFT JOIN UsageLog AS u ON eu.user_id = u.user_id
+LEFT JOIN Equipment AS e ON u.equipment_id = e.equipment_id
+GROUP BY eu.user_id, eu.name, eu.department, e.model_name
+ORDER BY eu.name, 사용횟수 DESC;
+```
+
+### 예제: 이슈가 있는 사용자와 해당 장비를 최신순으로
+
+```sql
+SELECT 
+    eu.name AS 담당자,
+    eu.department AS 부서,
+    e.model_name AS 장비명,
+    u.use_date AS 사용일,
+    u.issue_report AS 이슈내용
+FROM UsageLog AS u
+JOIN EquipmentUser AS eu ON u.user_id = eu.user_id
+JOIN Equipment    AS e  ON u.equipment_id = e.equipment_id
+WHERE u.issue_report IS NOT NULL
+ORDER BY u.use_date DESC;
+```
+
+---
+
+## 7. 서브쿼리: 쿼리 속의 쿼리
+
+서브쿼리는 복잡한 조건을 처리할 때 활용합니다.
+
+```sql
+-- "가장 최근에 설치된 장비의 사용 기록만 조회"
+SELECT * FROM UsageLog
+WHERE equipment_id = (
+    SELECT equipment_id FROM Equipment 
+    ORDER BY install_date DESC 
+    LIMIT 1
+);
+
+-- "이슈가 한 번이라도 있었던 장비의 모델명 조회"
+SELECT model_name FROM Equipment
 WHERE equipment_id IN (
-    SELECT equipment_id FROM UsageLog 
-    WHERE user_id IN (SELECT user_id FROM EquipmentUser WHERE department = '품질팀')
+    SELECT DISTINCT equipment_id FROM UsageLog 
+    WHERE issue_report IS NOT NULL
 );
 ```
 
 ---
 
-## 3. 실무 응용: 가상 테이블 'VIEW'와 성능 최적화 'INDEX'
-복잡한 JOIN 문을 매번 작성하기 번거롭다면 **VIEW**를 만들어 편리하게 관리할 수 있습니다.
+## 8. JOIN 유형 비교 정리
 
-### 편리한 조회를 위한 VIEW 생성
-```sql
-CREATE VIEW EquipmentSummary AS
-SELECT u.log_id, e.model_name, usr.name AS operator_name, u.use_date, u.issue_report
-FROM UsageLog u
-JOIN Equipment e ON u.equipment_id = e.equipment_id
-JOIN EquipmentUser usr ON u.user_id = usr.user_id;
-
--- 이후에는 아주 간단하게 조회 가능
-SELECT * FROM EquipmentSummary WHERE issue_report IS NOT NULL;
+```mermaid
+graph LR
+    A["INNER JOIN<br>공통 데이터만"] 
+    B["LEFT JOIN<br>왼쪽 기준, 없으면 NULL"]
+    C["LEFT JOIN + IS NULL<br>왼쪽에만 있는 것"]
+    
+    A --> |"사용 기록 있는 장비만"| A
+    B --> |"미사용 장비도 포함"| B
+    C --> |"한 번도 안 쓴 장비만"| C
 ```
 
-### 대용량 데이터 검색을 위한 INDEX
-수백만 건의 로그 데이터가 쌓였다면, `use_date` 컬럼에 인덱스를 걸어 조회 속도를 획기적으로 높일 수 있습니다.
-```sql
-CREATE INDEX idx_use_date ON UsageLog(use_date);
-```
+| JOIN 종류 | 결과 | 활용 상황 |
+|-----------|------|-----------|
+| `INNER JOIN` | 양쪽 모두 있는 데이터 | 실제 사용된 기록 조회 |
+| `LEFT JOIN` | 왼쪽 전체 + 오른쪽 NULL | 미사용 포함 전체 현황 |
+| `LEFT JOIN + IS NULL` | 왼쪽에만 있는 것 | 한 번도 사용 안 된 장비 |
 
----
-
-데이터베이스는 단순히 정보를 저장하는 금고가 아니라, 적절한 질문(Query)을 던져 가치 있는 인사이트를 뽑아내는 **지식의 창고**입니다. 반도체 장비 데이터를 활용한 이번 실습이 여러분의 SQL 실력 향상에 큰 도움이 되었기를 바랍니다!
+다음 강에서는 데이터를 **직접 추가(INSERT), 수정(UPDATE), 삭제(DELETE)**하는 DML과 테이블 구조를 변경하는 **DDL**의 모든 것을 다뤄보겠습니다.
