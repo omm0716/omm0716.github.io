@@ -6,6 +6,7 @@ categories: [Python]
 tags: [python, 기초, 제어문, if, for, while]
 author: min oh
 comments: true
+date: 2026-04-10 09:00:00 +0900
 ---
 
 프로그램은 항상 위에서 아래로만 실행되지 않습니다. **조건에 따라 다른 동작을 하고**, **같은 동작을 여러 번 반복**하도록 제어할 수 있어야 합니다. 이것이 프로그래밍의 핵심 흐름 제어입니다.

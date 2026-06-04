@@ -6,6 +6,7 @@ categories: [Python]
 tags: [python, 반복문, 실습, 연습문제, while, for]
 author: min oh
 comments: true
+date: 2026-04-17 09:00:00 +0900
 ---
 
 3강에서 배운 반복문의 기초를 바탕으로, 실무와 알고리즘 문제에서 자주 쓰이는 **심화 패턴**들을 집중적으로 연습합니다. 각 문제를 먼저 스스로 풀어보세요!

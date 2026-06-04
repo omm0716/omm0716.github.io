@@ -6,6 +6,7 @@ categories: [Python]
 tags: [python, 파일입출력, FileIO, CSV, JSON, with문, 가이드]
 author: min oh
 comments: true
+date: 2026-05-07 09:00:00 +0900
 ---
 
 프로그램이 종료되면 메모리의 데이터는 사라집니다. **파일 입출력(File I/O)**을 사용하면 데이터를 디스크에 영구적으로 저장하거나 불러올 수 있습니다. 데이터 분석, 로그 기록, 설정 파일 관리 등 거의 모든 분야에서 필수적으로 사용합니다.

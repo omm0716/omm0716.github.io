@@ -6,6 +6,7 @@ categories: [Python]
 tags: [python, API, requests, JSON, 프로젝트, 클래스]
 author: min oh
 comments: true
+date: 2026-05-14 09:00:00 +0900
 ---
 
 지금까지 파이썬의 핵심 문법을 배웠습니다. 이제 **외부 API(Application Programming Interface)**를 활용하여 인터넷에서 실시간 데이터를 가져오는 실전 프로젝트를 만들어봅니다. API는 현대 프로그래밍의 필수 개념입니다!
