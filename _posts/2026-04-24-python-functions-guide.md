@@ -1,115 +1,285 @@
 ---
 layout: post
-title: "파이썬 기초: 함수(Function) 가이드"
-subtitle: "코드의 재사용성을 높이는 함수의 기초와 구조"
+title: "[5강] 파이썬 함수(Function) 완전 가이드"
+subtitle: "def, 매개변수, 반환값, 람다, 데코레이터까지 함수의 모든 것"
 categories: [Python]
-tags: [python, 기초, 가이드]
+tags: [python, 기초, 함수, def, lambda, 가이드]
 author: min oh
 comments: true
 ---
 
+프로그래밍을 하다 보면 같은 로직을 여러 번 반복해야 하는 상황이 생깁니다. **함수(Function)**는 이런 코드를 하나로 묶어 이름을 붙이고 필요할 때마다 재호출할 수 있게 합니다. 함수를 잘 사용하면 코드가 짧아지고, 읽기 쉬워지고, 유지보수가 쉬워집니다.
+
+---
+
 ## 1. 함수란 무엇인가?
 
-함수를 설명할 때 가장 흔히 드는 비유는 **믹서기**입니다. 우리는 믹서기에 과일을 넣고(입력), 믹서를 돌려 과일 주스(출력)를 만들어 냅니다.
-
-프로그래밍에서의 함수도 이와 비슷합니다. **입력값(Input)**을 가지고 어떤 일을 수행한 후 그 **결과물(Output)**을 내어놓는 것이 바로 함수가 하는 일입니다. 예를 들어 수학의 $y = 2x + 2$도 $x$라는 입력에 따라 $y$라는 결과가 나오는 함수입니다.
-
----
-
-## 2. 함수를 사용하는 이유
-
-프로그래밍을 하다 보면 똑같은 내용을 반복해서 작성해야 할 때가 있습니다. 이때 **'반복적으로 사용되는 가치 있는 부분'**을 한 뭉치로 묶어 함수로 만들면 다음과 같은 장점이 있습니다.
-
-1.  **재사용성**: 한 번 만들어 두면 필요할 때마다 호출해서 쓸 수 있습니다.
-2.  **가독성**: 프로그램의 전체적인 흐름을 파악하기 쉬워집니다.
-3.  **유지보수**: 코드를 수정해야 할 때 함수 내부만 고치면 되므로 관리가 편합니다.
-
----
-
-## 3. 파이썬 함수의 구조
-
-파이썬에서 함수는 `def` 예약어를 사용하여 정의합니다.
-
-```python
-def 함수_이름(매개변수):
-    수행할_문장1
-    수행할_문장2
-    ...
-    return 결과값
+```
+                ┌─────────────┐
+  입력값(인수) → │    함수     │ → 결과값(반환값)
+                └─────────────┘
 ```
 
-### 매개변수(Parameter)와 인수(Argument)
-이 두 용어는 자주 혼용되므로 차이를 알아두면 좋습니다.
-- **매개변수**: 함수에 입력으로 전달된 값을 받는 **변수**
-- **인수**: 함수를 호출할 때 전달하는 **실제 값**
-
-```python
-def add(a, b):  # a, b는 매개변수
-    return a + b
-
-print(add(3, 4))  # 3, 4는 인수
-```
+수학의 함수 `f(x) = 2x + 1`처럼, 프로그래밍의 함수도 **입력 → 처리 → 출력**의 구조입니다.
 
 ---
 
-## 4. 함수의 형태 3가지
+## 2. 함수 정의와 호출
 
-### (1) 일반적인 함수
-입력값과 반환값(return)이 모두 있는 가장 흔한 형태입니다.
 ```python
+# def 함수이름(매개변수):
+#     실행할 코드
+#     return 결과값
+
 def add(a, b):
-    return a + b
+    result = a + b
+    return result
+
+# 호출
+print(add(3, 4))   # 7
+x = add(10, 20)    # x = 30
 ```
 
-### (2) 입력값이 없는 함수
-매개변수 부분이 비어 있는 함수입니다.
-```python
-def say_hi():
-    return 'Hi'
-
-result = say_hi() # 'Hi'가 반환됨
-```
-
-### (3) 반환값이 없는 함수
-`return`문이 없고 수행 결과만 보여주는 함수입니다.
-```python
-def print_hi():
-    print('Hi')
-
-print_hi() # 화면에 'Hi'를 출력하지만 반환값은 없음
-```
-
----
-
-## 5. 매개변수 지정하여 호출하기
-
-함수를 호출할 때 순서와 상관없이 매개변수 이름을 지정해서 값을 전달할 수 있습니다.
+### 함수의 4가지 형태
 
 ```python
-def sub(a, b):
-    return a - b
+# ① 입력 O, 출력 O (가장 일반적)
+def multiply(a, b):
+    return a * b
 
-result = sub(a=7, b=3) # 7 - 3 = 4
-result = sub(b=5, a=3) # 3 - 5 = -2 (순서가 바뀌어도 안전함)
+# ② 입력 O, 출력 X
+def greet(name):
+    print(f"안녕하세요, {name}님!")
+
+# ③ 입력 X, 출력 O
+def get_pi():
+    return 3.14159
+
+# ④ 입력 X, 출력 X
+def say_hello():
+    print("Hello!")
 ```
 
 ---
 
-## 6. 함수의 반환값은 언제나 하나!
+## 3. 매개변수 심화
 
-파이썬 함수에서 여러 개의 값을 반환하고 싶을 때가 있습니다. 하지만 엄밀히 말하면 함수의 반환값은 언제나 **하나**입니다.
+### 3.1 기본값(Default) 매개변수
 
 ```python
-def add_and_mul(a, b):
-    return a + b, a * b
+def greet(name, message="안녕하세요"):
+    print(f"{message}, {name}님!")
 
-result = add_and_mul(3, 4)
-# 결과는 (7, 12)라는 하나의 '튜플' 값으로 반환됩니다.
+greet("김민준")              # "안녕하세요, 김민준님!"
+greet("이서연", "반갑습니다") # "반갑습니다, 이서연님!"
+```
+
+### 3.2 키워드 인수 (순서 무관)
+
+```python
+def introduce(name, age, job):
+    print(f"이름: {name}, 나이: {age}, 직업: {job}")
+
+# 순서를 지켜 호출
+introduce("김민준", 25, "엔지니어")
+
+# 키워드를 명시하면 순서 무관
+introduce(age=25, job="엔지니어", name="김민준")
+```
+
+### 3.3 가변 인수 (*args)
+
+```python
+# *args: 임의 개수의 인수를 튜플로 받음
+def total(*args):
+    return sum(args)
+
+print(total(1, 2, 3))         # 6
+print(total(10, 20, 30, 40))  # 100
+
+# **kwargs: 키워드 인수를 딕셔너리로 받음
+def print_info(**kwargs):
+    for key, value in kwargs.items():
+        print(f"  {key}: {value}")
+
+print_info(name="김민준", age=25, dept="데이터팀")
+```
+
+---
+
+## 4. 반환값 (return)
+
+```python
+# 여러 값 반환 (실제로는 튜플 하나 반환)
+def stats(data):
+    return min(data), max(data), sum(data) / len(data)
+
+lo, hi, avg = stats([3, 1, 4, 1, 5, 9, 2, 6])
+print(f"최솟값: {lo}, 최댓값: {hi}, 평균: {avg:.2f}")
 ```
 
 > [!WARNING]
-> 함수는 `return` 문을 만나는 순간 결과값을 돌려준 뒤 즉시 **함수를 빠져나갑니다.** 따라서 하나의 함수 안에 여러 개의 `return`을 나열해도 첫 번째 `return`만 실행됩니다.
+> `return` 문을 만나는 순간 함수가 즉시 종료됩니다. 이후 코드는 실행되지 않습니다!
+> ```python
+> def test():
+>     return 1  # 여기서 종료
+>     return 2  # 절대 실행 안 됨
+> ```
 
 ---
 
-함수는 복잡한 프로그램을 만드는 가장 기본이 되는 단위입니다. 이 가이드가 파이썬 함수의 핵심을 이해하는 데 도움이 되길 바랍니다!
+## 5. 스코프 (변수 범위)
+
+```python
+# 전역 변수와 지역 변수
+count = 0  # 전역 변수
+
+def increment():
+    global count  # 전역 변수 수정하려면 global 선언
+    count += 1
+
+increment()
+increment()
+print(count)  # 2
+```
+
+```python
+# 지역 변수는 함수 밖에서 접근 불가
+def make_secret():
+    secret = "비밀번호123"  # 지역 변수
+    return secret
+
+# print(secret)  # ❌ NameError!
+print(make_secret())  # ✅ 반환값으로만 접근
+```
+
+---
+
+## 6. 람다 함수 (Lambda)
+
+간단한 함수를 한 줄로 표현합니다.
+
+```python
+# 일반 함수
+def square(x):
+    return x ** 2
+
+# 람다 함수 (동일한 기능)
+square = lambda x: x ** 2
+
+print(square(5))  # 25
+
+# 주요 활용: 정렬 키 지정
+students = [
+    {'name': '박지호', 'score': 78},
+    {'name': '김민준', 'score': 90},
+    {'name': '이서연', 'score': 85},
+]
+
+# 점수 기준 정렬
+sorted_by_score = sorted(students, key=lambda s: s['score'], reverse=True)
+for s in sorted_by_score:
+    print(f"{s['name']}: {s['score']}점")
+```
+
+---
+
+## 7. 고차 함수 (map, filter, reduce)
+
+```python
+numbers = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
+
+# map(): 각 요소에 함수 적용
+squared = list(map(lambda x: x**2, numbers))
+print(squared)  # [1, 4, 9, 16, 25, 36, 49, 64, 81, 100]
+
+# filter(): 조건에 맞는 요소만 추출
+evens = list(filter(lambda x: x % 2 == 0, numbers))
+print(evens)    # [2, 4, 6, 8, 10]
+
+# reduce(): 누적 계산
+from functools import reduce
+total = reduce(lambda acc, x: acc + x, numbers)
+print(total)    # 55 (1+2+...+10)
+```
+
+---
+
+## 8. 재귀 함수 (Recursion)
+
+함수 안에서 자기 자신을 호출하는 함수입니다.
+
+```python
+# 팩토리얼: n! = n × (n-1)!
+def factorial(n):
+    if n == 1:  # 기저 조건 (Base Case) - 반드시 필요!
+        return 1
+    return n * factorial(n - 1)
+
+print(factorial(5))  # 120 (5×4×3×2×1)
+
+# 피보나치 수열
+def fibonacci(n):
+    if n <= 1:
+        return n
+    return fibonacci(n-1) + fibonacci(n-2)
+
+for i in range(10):
+    print(fibonacci(i), end=' ')  # 0 1 1 2 3 5 8 13 21 34
+```
+
+> [!CAUTION]
+> 재귀 함수는 **기저 조건(종료 조건)**이 없으면 무한 재귀로 `RecursionError`가 발생합니다!
+
+---
+
+## 9. 실전: 유용한 함수 모음
+
+```python
+# 성적 처리 함수 모음
+def calculate_grade(score):
+    """점수를 받아 학점을 반환합니다."""
+    grades = {90: 'A', 80: 'B', 70: 'C', 60: 'D'}
+    for threshold, grade in grades.items():
+        if score >= threshold:
+            return grade
+    return 'F'
+
+def analyze_scores(score_list):
+    """점수 리스트를 분석하여 통계를 반환합니다."""
+    return {
+        'count': len(score_list),
+        'average': sum(score_list) / len(score_list),
+        'max': max(score_list),
+        'min': min(score_list),
+        'pass_rate': sum(1 for s in score_list if s >= 60) / len(score_list) * 100
+    }
+
+# 사용
+scores = [90, 75, 88, 52, 64, 95, 40, 73]
+stats = analyze_scores(scores)
+
+print(f"수강생 수: {stats['count']}명")
+print(f"평균: {stats['average']:.1f}점")
+print(f"최고: {stats['max']}점, 최저: {stats['min']}점")
+print(f"합격률: {stats['pass_rate']:.1f}%")
+
+for score in scores:
+    print(f"  {score}점 → {calculate_grade(score)}")
+```
+
+---
+
+## 핵심 정리
+
+| 개념 | 키워드 | 역할 |
+|------|--------|------|
+| 함수 정의 | `def` | 함수 블록 시작 |
+| 반환값 | `return` | 결과값 반환 + 함수 종료 |
+| 기본값 인수 | `def f(x=10)` | 생략 가능한 매개변수 |
+| 가변 인수 | `*args`, `**kwargs` | 임의 개수의 인수 |
+| 람다 | `lambda x: x*2` | 한 줄 익명 함수 |
+| 전역 변수 | `global` | 함수 내에서 전역 변수 수정 |
+| 재귀 | 자기 자신 호출 | 반복 구조의 수학적 표현 |
+
+다음 강에서는 **파일 읽고 쓰기(File I/O)**로 데이터를 영구 저장하는 방법을 배웁니다.

@@ -5,7 +5,11 @@ subtitle: 파이썬 관련 모든 포스트를 모아둔 곳입니다. (This is 
 permalink: /python/
 ---
 
+{% comment %}
+강좌 순서대로 표시하기 위해 날짜 오름차순으로 정렬합니다. (1강 → 7강)
+{% endcomment %}
 {% assign python_posts = site.categories.Python %}
+{% assign python_posts = python_posts | sort: 'date' %}
 
 <div class="posts-list">
   {% for post in python_posts %}

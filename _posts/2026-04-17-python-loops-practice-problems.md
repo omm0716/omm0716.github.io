@@ -1,124 +1,270 @@
 ---
 layout: post
-title: "파이썬 실습: 반복문 마스터하기 (while & for)"
-subtitle: "다양한 예제로 익히는 파이썬 반복문 활용법"
+title: "[4강] 파이썬 반복문 실전 마스터"
+subtitle: "while·for 심화 응용 + 중첩 루프 + 실전 알고리즘 패턴"
 categories: [Python]
-tags: [python, 연습문제, 실습]
+tags: [python, 반복문, 실습, 연습문제, while, for]
 author: min oh
 comments: true
 ---
 
-지난 포스트에서 배운 파이썬 반복문 기초를 바탕으로, 실무와 알고리즘 문제 풀이에서 자주 쓰이는 패턴들을 연습해 보겠습니다. 각 문제의 요구 사항을 먼저 읽고 직접 코드를 작성해 본 뒤 모범 답안을 확인해 보세요.
+3강에서 배운 반복문의 기초를 바탕으로, 실무와 알고리즘 문제에서 자주 쓰이는 **심화 패턴**들을 집중적으로 연습합니다. 각 문제를 먼저 스스로 풀어보세요!
 
 ---
 
-## 🟢 WHILE 반복문 연습
+## 🟢 while 반복문 심화
 
-### 1. 제곱수 출력하기
-사용자로부터 정수 `num`을 입력받아, 1부터 `num`까지 각 숫자의 제곱을 출력합니다.
+### 패턴 1: 누산기 패턴 (Accumulator)
+
+```python
+# 1부터 N까지 합계
+n = int(input("N을 입력하세요: "))
+total = 0
+i = 1
+while i <= n:
+    total += i
+    i += 1
+print(f"1~{n} 합계: {total}")
+
+# for로 더 간결하게
+total = sum(range(1, n + 1))
+print(f"1~{n} 합계: {total}")
+```
+
+---
+
+### 패턴 2: 플래그 패턴 (Flag)
+
+```python
+# 소수(Prime) 판별
+num = int(input("정수를 입력하세요: "))
+is_prime = True
+
+if num < 2:
+    is_prime = False
+else:
+    i = 2
+    while i * i <= num:  # 제곱근까지만 확인 (효율적)
+        if num % i == 0:
+            is_prime = False
+            break
+        i += 1
+
+result = "소수입니다" if is_prime else "소수가 아닙니다"
+print(f"{num}: {result}")
+```
+
+---
+
+### 패턴 3: 반복 입력 패턴
+
+```python
+# 사용자가 'q'를 입력할 때까지 숫자를 받아 합산
+total = 0
+count = 0
+
+while True:
+    user_input = input("숫자를 입력하세요 (종료: q): ")
+    if user_input.lower() == 'q':
+        break
+    try:
+        num = float(user_input)
+        total += num
+        count += 1
+    except ValueError:
+        print("잘못된 입력입니다. 다시 입력해주세요.")
+
+if count > 0:
+    print(f"합계: {total}, 평균: {total/count:.2f}")
+```
+
+---
+
+## 🔵 for 반복문 심화
+
+### 패턴 4: zip() - 두 리스트를 동시에
+
+```python
+# zip()으로 두 리스트를 병렬 처리
+names  = ['김민준', '이서연', '박지호']
+scores = [90, 85, 78]
+
+for name, score in zip(names, scores):
+    grade = 'A' if score >= 90 else 'B' if score >= 80 else 'C'
+    print(f"{name}: {score}점 → {grade}")
+```
+
+---
+
+### 패턴 5: 중첩 for문 (별 찍기)
+
+```python
+# 오른쪽 삼각형
+n = 5
+for i in range(1, n + 1):
+    print('*' * i)
+
+# 피라미드
+for i in range(1, n + 1):
+    spaces = ' ' * (n - i)
+    stars  = '*' * (2 * i - 1)
+    print(spaces + stars)
+```
+
+---
+
+### 패턴 6: 리스트 컴프리헨션 + 중첩
+
+```python
+# 1~9까지 숫자의 제곱, 짝수만
+even_sq = [x**2 for x in range(1, 10) if x % 2 == 0]
+print(even_sq)  # [4, 16, 36, 64]
+
+# 2차원 행렬 만들기
+matrix = [[i * j for j in range(1, 4)] for i in range(1, 4)]
+for row in matrix:
+    print(row)
+# [1, 2, 3]
+# [2, 4, 6]
+# [3, 6, 9]
+```
+
+---
+
+## 🟣 실전 문제 풀기
+
+### 문제 1: 제곱수 출력하기
 
 ```python
 num = int(input('정수를 입력해주세요: '))
-n = 1
-while n <= num:
-    print(n**2)
-    n += 1
-```
-- **포인트**: `n`의 값을 매 반복마다 증가시켜 무한 루프에 빠지지 않도록 주의합니다.
-
-### 2. 공 튀기기 시뮬레이션
-100cm 높이에서 떨어진 공이 튈 때마다 이전 높이의 60%(3/5)만큼 다시 올라온다고 가정합니다. 입력받은 횟수만큼 튄 후의 최종 높이를 계산합니다.
-
-```python
-num = int(input('공이 튀는 횟수를 입력하세요: '))
-n = 1
-h = 100 # 초기 높이
-while n <= num:
-    h = h * 0.6
-    n += 1
-print("최종 높이:", h)
-```
-
-### 3. 커피 자판기 프로그램
-남은 커피 수량을 관리하고, 입력된 금액에 따라 거스름돈을 주거나 판매를 중지하는 시뮬레이션입니다.
-
-```python
-coffee = int(input("초기 커피 개수를 입력하세요: "))
-while True:
-    money = int(input("돈을 넣어 주세요 (커피 1잔 300원): "))
-    if money == 300:
-        print("커피를 줍니다.")
-        coffee -= 1
-    elif money > 300:
-        print(f"거스름돈 {money - 300}원을 주고 커피를 줍니다.")
-        coffee -= 1
-    else:
-        print("돈이 부족합니다. 다시 돌려주고 커피를 주지 않습니다.")
-        print(f"남은 커피의 양은 {coffee}개입니다.")
-    
-    if coffee == 0:
-        print("커피가 다 떨어졌습니다. 판매를 중지합니다.")
-        break
+for n in range(1, num + 1):
+    print(f"{n}² = {n**2}")
 ```
 
 ---
 
-## 🔵 FOR 반복문 연습
+### 문제 2: 공 튀기기 (while 응용)
 
-### 1. 알파벳 빈도수 세기
-입력받은 문자열 내에서 알파벳(a~z)이 각각 몇 번 등장하는지 오름차순으로 출력합니다. (대소문자 구분 없음)
+```python
+# 100cm에서 공이 60%씩 반발
+n = int(input('공이 튀는 횟수: '))
+h = 100.0
+for i in range(n):
+    h *= 0.6
+    print(f"{i+1}번째: {h:.2f}cm")
+print(f"\n{n}번 후 최종 높이: {h:.4f}cm")
+```
+
+---
+
+### 문제 3: 알파벳 빈도수 세기
 
 ```python
 word = input("문자열을 입력하세요: ").lower()
-alphabet = "abcdefghijklmnopqrstuvwxyz"
 
-for char in alphabet:
-    count = 0
-    for s in word:
-        if s == char:
-            count += 1
-    if count > 0:
-        print(f"- {char}: {count}")
-```
-
-### 2. 계단식 숫자 출력
-중첩 `for`문을 사용하여 1부터 입력받은 `n`까지 계단 형태로 숫자를 출력합니다.
-
-```python
-n = int(input("정수 n을 입력하세요: "))
-
-for i in range(1, n + 1):
-    for j in range(1, i + 1):
-        if j == i:
-            print(j) # 줄바꿈
-        else:
-            print(j, end=' ') # 공백 추가 후 옆으로 출력
-```
-
-### 3. 공배수 출력 및 줄바꿈 관리
-1부터 500까지의 숫자 중 3과 5의 공배수(15의 배수)를 찾아 한 줄에 5개씩 출력합니다.
-
-```python
-count = 0
-for i in range(1, 501):
-    if i % 3 == 0 and i % 5 == 0:
-        print(i, end='\t') # 탭 간격으로 출력
-        count += 1
-        if count % 5 == 0:
-            print() # 5개마다 줄바꿈
-```
-
-### 4. 중첩 루프: 구구단 출력
-2단부터 9단까지의 구구단을 포맷 문자열(f-string)을 사용하여 깔끔하게 출력합니다.
-
-```python
-for m in range(2, 10):
-    print(f"--- {m}단 ---")
-    for i in range(1, 10):
-        print(f"{m} x {i} = {m * i}")
-    print() # 단 사이 공백
+for char in sorted(set(word)):
+    if char.isalpha():
+        count = word.count(char)
+        bar = '■' * count  # 시각화
+        print(f"  {char}: {bar} ({count})")
 ```
 
 ---
 
-반복문은 조건문과 함께 프로그래밍의 논리를 구성하는 가장 핵심적인 도구입니다. 위의 문제들이 익숙해질 때까지 반복해서 연습해 보세요!
+### 문제 4: 계단식 숫자 출력 (중첩 for)
+
+```python
+n = int(input("정수 n을 입력하세요: "))
+for i in range(1, n + 1):
+    row = ' '.join(str(j) for j in range(1, i + 1))
+    print(row)
+```
+```
+1
+1 2
+1 2 3
+1 2 3 4
+```
+
+---
+
+### 문제 5: 공배수 출력 (1~500, 15의 배수)
+
+```python
+multiples = [i for i in range(1, 501) if i % 15 == 0]
+
+for idx, num in enumerate(multiples, 1):
+    print(f"{num:4}", end='')
+    if idx % 5 == 0:  # 5개마다 줄바꿈
+        print()
+```
+
+---
+
+### 문제 6: 구구단 테이블 (중첩 for)
+
+```python
+# 헤더
+print(f"{'':4}", end='')
+for i in range(1, 10):
+    print(f"{i:5}", end='')
+print()
+print('-' * 50)
+
+# 구구단 테이블
+for m in range(2, 10):
+    print(f"{m}단:", end='')
+    for i in range(1, 10):
+        print(f"{m*i:5}", end='')
+    print()
+```
+
+---
+
+## 🔴 고급: 반복문 최적화 패턴
+
+### any()와 all()
+
+```python
+scores = [85, 92, 78, 60, 95]
+
+# any(): 하나라도 조건 만족하면 True
+has_perfect = any(s == 100 for s in scores)
+print(f"만점 있음: {has_perfect}")  # False
+
+# all(): 모두 조건 만족해야 True
+all_pass = all(s >= 60 for s in scores)
+print(f"전원 합격: {all_pass}")  # True
+```
+
+### max()와 min() 응용
+
+```python
+students = [
+    {'name': '김민준', 'score': 85},
+    {'name': '이서연', 'score': 92},
+    {'name': '박지호', 'score': 78},
+]
+
+# 최고·최저 점수 학생 찾기
+top    = max(students, key=lambda x: x['score'])
+bottom = min(students, key=lambda x: x['score'])
+
+print(f"1등: {top['name']} ({top['score']}점)")
+print(f"꼴등: {bottom['name']} ({bottom['score']}점)")
+```
+
+---
+
+## 패턴 정리
+
+| 패턴 | 코드 | 용도 |
+|------|------|------|
+| 누산기 | `total += value` | 합계/곱 계산 |
+| 플래그 | `found = False; break` | 탐색/조건 판별 |
+| 무한루프 | `while True: ... break` | 반복 입력 |
+| zip | `for a, b in zip(list1, list2)` | 병렬 처리 |
+| enumerate | `for i, v in enumerate(lst)` | 인덱스+값 |
+| 컴프리헨션 | `[x for x in lst if 조건]` | 필터+변환 |
+
+다음 강에서는 반복되는 코드를 **함수(Function)**로 묶어 재사용하는 방법을 배웁니다.
