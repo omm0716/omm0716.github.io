@@ -8,12 +8,13 @@ permalink: /machine-learning/
 {% comment %}
 강좌 순서대로 표시하기 위해 날짜 오름차순으로 정렬합니다.
 {% endcomment %}
-{% assign ml_posts = site.categories['Machine Learning'] %}
-{% if ml_posts %}
-  {% assign ml_posts = ml_posts | sort: 'date' %}
-{% else %}
-  {% assign ml_posts = site.posts | where: "categories", "Machine Learning" | sort: 'date' %}
+{% assign ml_posts = "" | split: "" %}
+{% if site.categories['Machine Learning'] %}
+  {% assign ml_posts = site.categories['Machine Learning'] %}
+{% elsif site.categories['machine learning'] %}
+  {% assign ml_posts = site.categories['machine learning'] %}
 {% endif %}
+{% assign ml_posts = ml_posts | sort: 'date' %}
 
 <div class="posts-list">
   {% for post in ml_posts %}

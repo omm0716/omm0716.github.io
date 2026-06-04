@@ -8,12 +8,13 @@ permalink: /database/
 {% comment %}
 강좌 순서대로 표시하기 위해 날짜 오름차순으로 정렬합니다. (1강 → 7강)
 {% endcomment %}
-{% assign db_posts = site.categories.Database %}
-{% if db_posts %}
-  {% assign db_posts = db_posts | sort: 'date' %}
-{% else %}
-  {% assign db_posts = site.posts | where: "categories", "Database" | sort: 'date' %}
+{% assign db_posts = "" | split: "" %}
+{% if site.categories.Database %}
+  {% assign db_posts = site.categories.Database %}
+{% elsif site.categories.database %}
+  {% assign db_posts = site.categories.database %}
 {% endif %}
+{% assign db_posts = db_posts | sort: 'date' %}
 
 <div class="posts-list">
   <h4 class="text-muted mb-4" style="border-left: 5px solid #0085A1; padding-left: 15px;">데이터베이스 학습 목록 <br><small style="font-size: 0.8em;">(Database Learning List)</small></h4>
