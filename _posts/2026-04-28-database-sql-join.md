@@ -6,6 +6,7 @@ categories: [Database]
 tags: [DB, SQL, GROUP BY, HAVING, 집계함수, COUNT, SUM, AVG, SemiconDB]
 author: min oh
 comments: true
+date: 2026-04-28 09:00:00 +0900
 ---
 
 단순히 행을 골라내는 것을 넘어, **"장비별로 몇 번 사용됐나?", "부서별 이슈 발생 건수는?"** 같은 통계 질문에 답하려면 데이터를 **그룹화**해야 합니다. `GROUP BY`와 집계 함수는 SQL의 분석 능력을 한 차원 끌어올리는 핵심 도구입니다.

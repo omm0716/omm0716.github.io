@@ -6,6 +6,7 @@ categories: [Database]
 tags: [DB, SQL, 반도체, 기초, ERD, MySQL, SemiconDB]
 author: min oh
 comments: true
+date: 2026-04-17 09:00:00 +0900
 ---
 
 반도체 공장에는 수십 대의 장비가 있고, 하루에도 수백 건의 사용 기록이 쌓입니다. 이 데이터를 엑셀 파일로 관리하면 어떻게 될까요? 파일은 점점 무거워지고, 동시에 여러 사람이 편집하다 보면 데이터가 엉망이 됩니다. **데이터베이스(Database)**는 이 문제를 해결하기 위해 존재합니다.

@@ -6,6 +6,7 @@ categories: [Database]
 tags: [DB, SQL, JOIN, INNER JOIN, LEFT JOIN, NULL, 서브쿼리, SemiconDB]
 author: min oh
 comments: true
+date: 2026-05-02 09:00:00 +0900
 ---
 
 실제 데이터베이스에서 우리가 원하는 정보는 여러 테이블에 흩어져 있습니다. **"김지훈이 어떤 장비를 몇 번 사용했나?"** 라는 질문에 답하려면 `EquipmentUser`, `UsageLog`, `Equipment` 세 테이블의 정보를 하나로 합쳐야 합니다. 이것이 **JOIN**입니다.

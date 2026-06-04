@@ -6,6 +6,7 @@ categories: [Database]
 tags: [DB, SQL, SELECT, WHERE, ORDER BY, LIKE, NULL, SemiconDB]
 author: min oh
 comments: true
+date: 2026-04-21 09:00:00 +0900
 ---
 
 데이터베이스에는 수만 건의 데이터가 쌓입니다. 그 중에서 **지금 당장 필요한 데이터만 정확하게 골라내는 것**이 SQL의 첫 번째 능력입니다. 이번 강에서는 SemiconDB를 활용하여 `WHERE`, `ORDER BY`, `LIKE`, `NULL` 처리, `LIMIT`까지 SELECT의 핵심 기능을 완전히 정복해 보겠습니다.
