@@ -6,6 +6,7 @@ categories: [Database]
 tags: [DB, SQL, DML, DDL, INSERT, UPDATE, DELETE, CREATE, ALTER, 제약조건, SemiconDB]
 author: min oh
 comments: true
+date: 2026-06-04 09:00:00 +0900
 ---
 
 지금까지는 데이터를 **읽는(SELECT)** 방법을 배웠습니다. 이제 데이터를 **쓰고, 고치고, 지우는** DML(Data Manipulation Language)과 테이블 구조 자체를 **설계하고 변경하는** DDL(Data Definition Language)을 배워보겠습니다. 반도체 장비 데이터를 직접 조작하며 익혀봅시다.

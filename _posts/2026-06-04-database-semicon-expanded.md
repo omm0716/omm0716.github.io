@@ -6,6 +6,7 @@ categories: [Database]
 tags: [DB, SQL, SemiconDB, 리팩토링, MaintenanceLog, Department, 데이터분석, JOIN]
 author: min oh
 comments: true
+date: 2026-06-04 10:00:00 +0900
 ---
 
 지금까지 우리는 `Equipment`, `EquipmentUser`, `UsageLog` 3개 테이블로 SemiconDB를 운영했습니다. 이번에는 **실제 현업처럼** 구조를 확장해 보겠습니다. 부서 정보를 별도 테이블로 분리하고(`Department`), 유지보수 이력을 관리하는 `MaintenanceLog`를 추가합니다.

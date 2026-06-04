@@ -5,6 +5,7 @@ subtitle: LangChain을 활용하여 문서를 기반으로 답변하는 챗봇(R
 categories: [Machine Learning]
 tags: [머신러닝, LangChain, LLM, RAG]
 author: min oh
+date: 2026-06-04 12:00:00 +0900
 ---
 
 이번 포스트에서는 LangChain을 활용하여 제공된 문서를 바탕으로 질문에 답변하는 RAG(Retrieval-Augmented Generation) 챗봇을 구현하는 예제를 소개합니다. PDF, 텍스트(TXT), 워드 문서(DOCX) 등 다양한 파일에서 정보를 로드하고 FAISS 벡터 스토어를 사용하여 의미 검색을 수행합니다.

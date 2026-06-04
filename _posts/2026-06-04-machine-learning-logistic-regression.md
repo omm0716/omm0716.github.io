@@ -5,6 +5,7 @@ subtitle: 로지스틱 회귀 분석을 이용한 분류 문제 해결 방법을
 categories: [Machine Learning]
 tags: [머신러닝, 분류, 로지스틱회귀]
 author: min oh
+date: 2026-06-04 11:00:00 +0900
 ---
 
 # Google Colab 데이터 로드

@@ -5,6 +5,7 @@ subtitle: 선형 회귀 분석에 대한 기초 내용을 정리합니다.
 categories: [Machine Learning]
 tags: [머신러닝, 회귀분석, 선형회귀]
 author: min oh
+date: 2026-06-04 09:00:00 +0900
 ---
 
 # Google Colab 데이터 로드

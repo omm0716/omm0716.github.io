@@ -5,7 +5,11 @@ subtitle: 머신러닝 관련 포스트를 모아둔 곳입니다. (This is a co
 permalink: /machine-learning/
 ---
 
+{% comment %}
+강좌 순서대로 표시하기 위해 날짜 오름차순으로 정렬합니다.
+{% endcomment %}
 {% assign ml_posts = site.categories['Machine Learning'] %}
+{% assign ml_posts = ml_posts | sort: 'date' %}
 
 <div class="posts-list">
   {% for post in ml_posts %}

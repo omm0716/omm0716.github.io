@@ -5,6 +5,7 @@ subtitle: 다중 회귀 분석을 통해 여러 변수의 영향을 알아봅니
 categories: [Machine Learning]
 tags: [머신러닝, 회귀분석, 다중회귀]
 author: min oh
+date: 2026-06-04 10:00:00 +0900
 ---
 
 # Google Colab 데이터 로드

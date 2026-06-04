@@ -6,6 +6,7 @@ categories: [Database]
 tags: [DB, SQL, ProcessSensorDB, 센서, 이상값탐지, 반도체공정, JOIN, 데이터분석]
 author: min oh
 comments: true
+date: 2026-06-04 11:00:00 +0900
 ---
 
 SemiconDB가 **"누가 어떤 장비를 사용했나?"** 를 관리했다면, **ProcessSensorDB**는 한 단계 더 나아가 **"공정 중에 어떤 값이 측정됐나?"** 를 관리합니다. 실제 반도체 공장에서는 장비의 온도, 압력, 가스 유량 등을 수천 개의 센서로 실시간 모니터링합니다. 이번 강에서는 6개 테이블로 구성된 복잡한 DB를 설계하고, SQL로 이상값을 탐지해 보겠습니다.
