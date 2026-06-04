@@ -9,7 +9,11 @@ permalink: /machine-learning/
 강좌 순서대로 표시하기 위해 날짜 오름차순으로 정렬합니다.
 {% endcomment %}
 {% assign ml_posts = site.categories['Machine Learning'] %}
-{% assign ml_posts = ml_posts | sort: 'date' %}
+{% if ml_posts %}
+  {% assign ml_posts = ml_posts | sort: 'date' %}
+{% else %}
+  {% assign ml_posts = site.posts | where: "categories", "Machine Learning" | sort: 'date' %}
+{% endif %}
 
 <div class="posts-list">
   {% for post in ml_posts %}

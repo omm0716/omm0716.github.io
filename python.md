@@ -9,10 +9,11 @@ permalink: /python/
 강좌 순서대로 표시하기 위해 날짜 오름차순으로 정렬합니다. (1강 → 7강)
 {% endcomment %}
 {% assign python_posts = site.categories.Python %}
-{% if python_posts.size == 0 %}
-  {% assign python_posts = site.posts | where: "categories", "Python" %}
+{% if python_posts %}
+  {% assign python_posts = python_posts | sort: 'date' %}
+{% else %}
+  {% assign python_posts = site.posts | where: "categories", "Python" | sort: 'date' %}
 {% endif %}
-{% assign python_posts = python_posts | sort: 'date' %}
 
 <div class="posts-list">
   {% for post in python_posts %}
