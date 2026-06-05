@@ -31,7 +31,9 @@ navbar-links:
   About Me: "aboutme"
   Github: "https://github.com/omm0716"
   Tools: "tools"
-  🍉 게임: "watermelon-game"
+  🎮 게임:
+    - 🍉 수박 게임: "watermelon-game"
+    - 🍎 사과 게임: "fruit-box-game"
 ```
 
 ## 블로그 아바타 설정 (`_config.yml`)
@@ -122,7 +124,9 @@ date: 2026-06-04 09:00:00 +0900  # 시간으로 순서 구분
 | 2026-06-05 | **Tools 첫 번째 포스트 추가** ([1강] Git & GitHub 기초) |
 | 2026-06-05 | **블로그 아바타 이미지 변경** (`avatar-icon.png` → `logo.jpg`) |
 | 2026-06-05 | **포스트 내 이전/다음 포스트 네비게이션 추가** (같은 카테고리 기준, 카드 UI) |
-| 2026-06-05 | **🍉 사과 합치기 게임 추가** (`watermelon-game.md`, 네비게이션 메뉴 등록, Canvas 물리 엔진 기반) |
+| 2026-06-05 | **🍉 수박 합치기 게임 추가** (`watermelon-game.md`, Canvas 물리 엔진 기반) |
+| 2026-06-05 | **🍎 사과 게임 추가** (`fruit-box-game.md`, フルーツボックス 원작 스타일, 드래그 선택) |
+| 2026-06-05 | **🎮 게임 드롭다운 메뉴 통합** (수박 게임 + 사과 게임을 하나의 서브메뉴로 묶음) |
 
 ## 요약
 
@@ -130,7 +134,7 @@ date: 2026-06-04 09:00:00 +0900  # 시간으로 순서 구분
 
 **2026-06-04 대규모 업데이트**: Python 7강 + Database 7강 시리즈 리뉴얼 완료. 모든 카테고리 페이지에 오름차순 정렬 적용. 반도체 장비 DB(SemiconDB)와 공정 센서 DB(ProcessSensorDB)를 핵심 예제로 활용.
 
-**2026-06-05 업데이트**: Tools 카테고리 신규 추가 및 첫 포스트(Git & GitHub 기초) 작성. 블로그 아바타 이미지를 `logo.jpg`로 변경. 모든 포스트에 같은 카테고리 기준 이전/다음 포스트 카드 네비게이션 적용.
+**2026-06-05 업데이트**: Tools 카테고리 신규 추가 및 첫 포스트(Git & GitHub 기초) 작성. 블로그 아바타 이미지를 `logo.jpg`로 변경. 모든 포스트에 같은 카테고리 기준 이전/다음 포스트 카드 네비게이션 적용. 🍉 수박 게임 + 🍎 사과 게임 추가 후 `🎮 게임` 드롭다운으로 통합.
 
 ---
 # Project Overview: omm0716.github.io
@@ -155,7 +159,9 @@ navbar-links:
   About Me: "aboutme"
   Github: "https://github.com/omm0716"
   Tools: "tools"
-  🍉 게임: "watermelon-game"
+  🎮 게임:
+    - 🍉 수박 게임: "watermelon-game"
+    - 🍎 사과 게임: "fruit-box-game"
 ```
 
 ## Avatar (`_config.yml`)
@@ -223,4 +229,6 @@ This folder contains the source code for a personal learning Jekyll blog operate
 - Added first Tools post: [Lesson 1] Git & GitHub Basics (`2026-06-05-tools-test.md`)
 - Changed blog avatar image from `avatar-icon.png` to `logo.jpg` (copied to `assets/img/logo.jpg`)
 - Added **same-category prev/next post navigation** to all posts via `_layouts/post.html` and `assets/css/custom.css`
-- Added **🍉 Apple Merge Game** (`apple-game.md`, Canvas physics engine, Suika-game style, navbar linked)
+- Added **🍉 Watermelon Merge Game** (`watermelon-game.md`, Canvas physics engine, Suika-game style)
+- Added **🍎 Apple Box Game** (`fruit-box-game.md`, Canvas drag-select, フルーツボックス style)
+- **Grouped both games** under a single **🎮 게임 dropdown** in navbar (`_config.yml` sub-menu)

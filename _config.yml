@@ -22,8 +22,9 @@ navbar-links:
   About Me: "aboutme"
   Github: "https://github.com/omm0716"
   Tools: "tools"
-  🍉 게임: "watermelon-game"
-  🍎 사과: "fruit-box-game"
+  🎮 게임:
+    - 🍉 수박 게임: "watermelon-game"
+    - 🍎 사과 게임: "fruit-box-game"
   # Resources:
   #   - Beautiful Jekyll: "https://beautifuljekyll.com"
   #   - Learn markdown: "https://www.markdowntutorial.com/"
