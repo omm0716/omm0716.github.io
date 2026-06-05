@@ -15,14 +15,14 @@ date: 2026-06-04 12:00:00 +0900
 
 ```python
 #!/usr/bin/env python3
-\"\"\"LangChain 문서 기반 챗봇 예제 스크립트
+"""LangChain 문서 기반 챗봇 예제 스크립트
 
 설치:
     pip install -r requirements.txt
 
 사용 방법:
     python langchain.py
-\"\"\"
+"""
 
 import os
 from pathlib import Path
@@ -159,7 +159,7 @@ def build_faiss_index(documents: List[Document]) -> FAISS:
 
 def build_rag_chain(retriever, model_name: str = "text-bison-001", temperature: float = 0.0):
     prompt = PromptTemplate.from_template(
-        \"\"\"당신은 질문-답변(Question-Answering)을 수행하는 친절한 AI 어시스턴트입니다.
+        """당신은 질문-답변(Question-Answering)을 수행하는 친절한 AI 어시스턴트입니다.
 검색된 다음 문맥(context)을 사용하여 질문(question)에 답하세요.
 만약, 주어진 문맥(context)에서 답을 찾을 수 없다면, `주어진 정보에서 질문에 대한 정보를 찾을 수 없습니다`라고 답하세요.
 한글로 답변해 주세요. 단, 기술적인 용어나 이름은 번역하지 않고 그대로 사용해 주세요.
@@ -170,7 +170,7 @@ def build_rag_chain(retriever, model_name: str = "text-bison-001", temperature: 
 #Context:
 {context}
 
-#Answer:\"\"\"
+#Answer:"""
     )
 
     llm = GoogleTextGenerator(api_key=GOOGLE_API_KEY, model_name=model_name, temperature=temperature)
