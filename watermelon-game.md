@@ -1,8 +1,8 @@
 ---
 layout: page
-title: 🍎 사과 합치기 게임
-subtitle: 같은 과일을 합쳐 더 큰 과일로! 수박을 만들어 보세요!
-permalink: /apple-game/
+title: 🍉 수박 게임 (과일 합치기)
+subtitle: 같은 과일을 합쳐 더 큰 과일로! 최종 목표는 수박을 만드세요!
+permalink: /watermelon-game/
 ---
 
 <style>
