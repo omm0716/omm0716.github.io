@@ -22,6 +22,7 @@
   - `machine-learning.md`: Machine Learning 카테고리 페이지 (날짜 오름차순 정렬 적용)
   - `tools.md`: Tools 카테고리 페이지 (날짜 오름차순 정렬 적용) — 2026-06-05 신규 추가
   - `watermelon-game.md`: 🍉 사과 합치기 게임 페이지 (Canvas 기반, 수박게임 스타일) — 2026-06-05 신규 추가
+  - `fruit-box-game.md`: 🍎 사과 게임 페이지 (Canvas 기반, フルーツボックス 원작 스타일) — 2026-06-05 신규 추가
 
 ## 네비게이션 메뉴 구성 (`_config.yml`)
 
