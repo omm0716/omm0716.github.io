@@ -21,6 +21,7 @@
   - `database.md`: Database 카테고리 페이지 (날짜 오름차순 정렬 적용)
   - `machine-learning.md`: Machine Learning 카테고리 페이지 (날짜 오름차순 정렬 적용)
   - `tools.md`: Tools 카테고리 페이지 (날짜 오름차순 정렬 적용) — 2026-06-05 신규 추가
+  - `apple-game.md`: 🍎 사과 합치기 게임 페이지 (Canvas 기반, 수박게임 스타일) — 2026-06-05 신규 추가
 
 ## 네비게이션 메뉴 구성 (`_config.yml`)
 
@@ -29,6 +30,7 @@ navbar-links:
   About Me: "aboutme"
   Github: "https://github.com/omm0716"
   Tools: "tools"
+  🍎 게임: "apple-game"
 ```
 
 ## 블로그 아바타 설정 (`_config.yml`)
@@ -119,6 +121,7 @@ date: 2026-06-04 09:00:00 +0900  # 시간으로 순서 구분
 | 2026-06-05 | **Tools 첫 번째 포스트 추가** ([1강] Git & GitHub 기초) |
 | 2026-06-05 | **블로그 아바타 이미지 변경** (`avatar-icon.png` → `logo.jpg`) |
 | 2026-06-05 | **포스트 내 이전/다음 포스트 네비게이션 추가** (같은 카테고리 기준, 카드 UI) |
+| 2026-06-05 | **🍎 사과 합치기 게임 추가** (`apple-game.md`, 네비게이션 메뉴 등록, Canvas 물리 엔진 기반) |
 
 ## 요약
 
@@ -151,6 +154,7 @@ navbar-links:
   About Me: "aboutme"
   Github: "https://github.com/omm0716"
   Tools: "tools"
+  🍎 게임: "apple-game"
 ```
 
 ## Avatar (`_config.yml`)
@@ -218,3 +222,4 @@ This folder contains the source code for a personal learning Jekyll blog operate
 - Added first Tools post: [Lesson 1] Git & GitHub Basics (`2026-06-05-tools-test.md`)
 - Changed blog avatar image from `avatar-icon.png` to `logo.jpg` (copied to `assets/img/logo.jpg`)
 - Added **same-category prev/next post navigation** to all posts via `_layouts/post.html` and `assets/css/custom.css`
+- Added **🍎 Apple Merge Game** (`apple-game.md`, Canvas physics engine, Suika-game style, navbar linked)
