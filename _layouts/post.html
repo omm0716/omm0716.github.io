@@ -70,24 +70,70 @@ layout: base
         {% include social-share.html %}
       {% endif %}
 
-      <ul class="pagination blog-pager">
-        {% if page.previous.url %}
-        <li class="page-item previous">
-          <a class="page-link" href="{{ page.previous.url | relative_url }}" data-toggle="tooltip" data-placement="top" title="{{page.previous.title | strip_html | xml_escape}}">
-            <i class="fas fa-arrow-left" alt="Previous Post"></i>
-            <span class="d-none d-sm-inline-block">Previous Post</span>
-          </a>
-        </li>
+      {% comment %}같은 카테고리 내 이전/다음 포스트 네비게이션{% endcomment %}
+      {% if page.categories.size > 0 %}
+        {% assign current_category = page.categories[0] %}
+        {% assign cat_posts = site.categories[current_category] | sort: 'date' %}
+        {% assign post_count = cat_posts | size %}
+        {% assign prev_post = nil %}
+        {% assign next_post = nil %}
+        {% for p in cat_posts %}
+          {% if p.url == page.url %}
+            {% assign current_index = forloop.index0 %}
+          {% endif %}
+        {% endfor %}
+        {% if current_index > 0 %}
+          {% assign prev_post = cat_posts[current_index | minus: 1] %}
         {% endif %}
-        {% if page.next.url %}
-        <li class="page-item next">
-          <a class="page-link" href="{{ page.next.url | relative_url }}" data-toggle="tooltip" data-placement="top" title="{{page.next.title | strip_html | xml_escape}}">
-            <span class="d-none d-sm-inline-block">Next Post</span>
-            <i class="fas fa-arrow-right" alt="Next Post"></i>
-          </a>
-        </li>
+        {% assign next_index = current_index | plus: 1 %}
+        {% if next_index < post_count %}
+          {% assign next_post = cat_posts[next_index] %}
         {% endif %}
-      </ul>
+      {% else %}
+        {% assign prev_post = page.previous %}
+        {% assign next_post = page.next %}
+      {% endif %}
+
+      {% if prev_post or next_post %}
+      <nav class="post-nav-container" aria-label="포스트 네비게이션">
+        <div class="post-nav-grid">
+          <div class="post-nav-item post-nav-prev">
+            {% if prev_post %}
+            <a href="{{ prev_post.url | relative_url }}" class="post-nav-link">
+              <span class="post-nav-direction">
+                <i class="fas fa-chevron-left"></i> 이전 포스트
+              </span>
+              <span class="post-nav-title">{{ prev_post.title | strip_html | truncate: 50 }}</span>
+              {% if prev_post.subtitle %}
+                <span class="post-nav-subtitle">{{ prev_post.subtitle | strip_html | truncate: 60 }}</span>
+              {% endif %}
+            </a>
+            {% else %}
+            <span class="post-nav-empty">첫 번째 포스트입니다</span>
+            {% endif %}
+          </div>
+
+          <div class="post-nav-divider"></div>
+
+          <div class="post-nav-item post-nav-next">
+            {% if next_post %}
+            <a href="{{ next_post.url | relative_url }}" class="post-nav-link post-nav-link-right">
+              <span class="post-nav-direction">
+                다음 포스트 <i class="fas fa-chevron-right"></i>
+              </span>
+              <span class="post-nav-title">{{ next_post.title | strip_html | truncate: 50 }}</span>
+              {% if next_post.subtitle %}
+                <span class="post-nav-subtitle">{{ next_post.subtitle | strip_html | truncate: 60 }}</span>
+              {% endif %}
+            </a>
+            {% else %}
+            <span class="post-nav-empty">마지막 포스트입니다</span>
+            {% endif %}
+          </div>
+        </div>
+      </nav>
+      {% endif %}
+
       {% include comments.html %}
     </div>
   </div>
