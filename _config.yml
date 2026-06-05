@@ -21,6 +21,7 @@ author: omm0716
 navbar-links:
   About Me: "aboutme"
   Github: "https://github.com/omm0716"
+  Tools: "tools"
   # Resources:
   #   - Beautiful Jekyll: "https://beautifuljekyll.com"
   #   - Learn markdown: "https://www.markdowntutorial.com/"
