@@ -287,12 +287,15 @@ const WALL_Y = 550;
 const DANGER_Y = 80; // 이 이상 올라가면 게임오버
 
 // ==================== 물리 상수 ====================
-const GRAVITY     = 0.4;
-const DAMPING     = 0.55;
-const FRICTION    = 0.85;
-const OVERLAP_RESOLVE = 0.45;
-const MAX_SPEED   = 18;
-const SUBSTEPS    = 4;
+const GRAVITY         = 0.35;   // 중력 (살짝 줄여 부드럽게)
+const DAMPING         = 0.38;   // 벽·바닥 반발 (낮출수록 탱탱함↓)
+const FRICTION        = 0.78;   // 수평 마찰 (낮을수록 빨리 멈춤)
+const FLOOR_FRICTION  = 0.65;   // 바닥 닿을 때 추가 마찰
+const OVERLAP_RESOLVE = 0.30;   // 겹침 해결 강도 (낮을수록 부드럽게 밀어냄)
+const RESTITUTION     = 0.25;   // 과일끼리 충돌 반발 (낮을수록 푹신)
+const MAX_SPEED       = 14;     // 최대 속도 제한
+const SUBSTEPS        = 6;      // 서브스텝↑ → 정확도↑, 떨림↓
+const SLEEP_SPEED     = 0.08;   // 이 속도 이하면 '슬립' (안착 판정)
 
 // ==================== 상태 ====================
 let fruits = [];
@@ -376,29 +379,51 @@ class Fruit {
   update() {
     // 스폰 애니메이션
     if (this.scale < 1) {
-      this.scale = Math.min(1, this.scale + 0.12);
-      this.opacity = Math.min(1, this.opacity + 0.15);
+      this.scale = Math.min(1, this.scale + 0.10);
+      this.opacity = Math.min(1, this.opacity + 0.12);
     }
     if (this.dropTimer > 0) {
       this.dropTimer--;
       if (this.dropTimer <= 0) this.justDropped = false;
     }
 
+    // 속도 제한 및 중력
     this.vy += GRAVITY;
-    if (this.vy > MAX_SPEED) this.vy = MAX_SPEED;
-    this.x += this.vx;
-    this.y += this.vy;
-    this.vx *= FRICTION;
-    this.spinAngle += this.spinSpeed;
-    if (this.glowAlpha > 0) this.glowAlpha -= 0.04;
+    if (this.vy > MAX_SPEED)  this.vy = MAX_SPEED;
+    if (this.vy < -MAX_SPEED) this.vy = -MAX_SPEED;
+    if (Math.abs(this.vx) > MAX_SPEED) this.vx = Math.sign(this.vx) * MAX_SPEED;
 
-    // 벽 충돌
-    if (this.x - this.r < 0) { this.x = this.r; this.vx = Math.abs(this.vx) * DAMPING; }
-    if (this.x + this.r > WALL_X) { this.x = WALL_X - this.r; this.vx = -Math.abs(this.vx) * DAMPING; }
+    this.x += this.vx / SUBSTEPS;
+    this.y += this.vy / SUBSTEPS;
+    this.vx *= FRICTION;
+
+    // 슬립(안착) 상태에서 스핀 서서히 감소
+    const spd = Math.abs(this.vx) + Math.abs(this.vy);
+    if (spd < SLEEP_SPEED) {
+      this.spinSpeed *= 0.85;
+      if (Math.abs(this.spinSpeed) < 0.001) this.spinSpeed = 0;
+    }
+    this.spinAngle += this.spinSpeed;
+    if (this.glowAlpha > 0) this.glowAlpha -= 0.035;
+
+    // 좌우 벽 충돌 — 안으로 깊이 들어왔을수록 더 세게 밀어냄
+    if (this.x - this.r < 0) {
+      this.x = this.r;
+      this.vx = Math.abs(this.vx) * DAMPING;
+    }
+    if (this.x + this.r > WALL_X) {
+      this.x = WALL_X - this.r;
+      this.vx = -Math.abs(this.vx) * DAMPING;
+    }
+    // 바닥 충돌 — 바닥 마찰로 빠르게 안착
     if (this.y + this.r > WALL_Y) {
       this.y = WALL_Y - this.r;
-      this.vy = -Math.abs(this.vy) * DAMPING;
-      this.vx *= FRICTION;
+      if (Math.abs(this.vy) < 0.5) {
+        this.vy = 0; // 아주 작은 반발은 그냥 멈춤
+      } else {
+        this.vy = -Math.abs(this.vy) * DAMPING;
+      }
+      this.vx *= FLOOR_FRICTION;
     }
   }
 
@@ -590,25 +615,37 @@ function checkCollisions() {
             toMerge.push([a, b]);
           }
         } else {
-          // 물리 충돌 해결
-          if (dist < 0.01) continue;
+          // 물리 충돌 해결 — 부드러운 위치 보정 + 반발 임펄스
+          if (dist < 0.001) {
+            // 완전 겹침 방지: 랜덤 방향으로 살짝 분리
+            const ang = Math.random() * Math.PI * 2;
+            a.x += Math.cos(ang) * 0.5;
+            a.y += Math.sin(ang) * 0.5;
+            continue;
+          }
           const nx = dx / dist;
           const ny = dy / dist;
+          // 위치 보정 — OVERLAP_RESOLVE 만큼 나눠서 밀어냄
           const overlap = (minDist - dist) * OVERLAP_RESOLVE;
-          a.x -= nx * overlap;
-          a.y -= ny * overlap;
-          b.x += nx * overlap;
-          b.y += ny * overlap;
+          a.x -= nx * overlap * 0.5;
+          a.y -= ny * overlap * 0.5;
+          b.x += nx * overlap * 0.5;
+          b.y += ny * overlap * 0.5;
 
+          // 속도 반발 — 상대 속도의 법선 성분만 처리
           const relVx = b.vx - a.vx;
           const relVy = b.vy - a.vy;
           const dot = relVx * nx + relVy * ny;
           if (dot < 0) {
-            const impulse = dot * DAMPING;
-            a.vx += nx * impulse;
-            a.vy += ny * impulse;
-            b.vx -= nx * impulse;
-            b.vy -= ny * impulse;
+            // 두 과일의 질량을 반지름²에 비례하는 것으로 근사
+            const mA = a.r * a.r;
+            const mB = b.r * b.r;
+            const totalM = mA + mB;
+            const impulse = (-(1 + RESTITUTION) * dot) / totalM;
+            a.vx -= (impulse * mB) * nx;
+            a.vy -= (impulse * mB) * ny;
+            b.vx += (impulse * mA) * nx;
+            b.vy += (impulse * mA) * ny;
           }
         }
       }
@@ -765,7 +802,7 @@ function gameLoop() {
   ctx.restore();
 
   if (!gameOver) {
-    // 물리 업데이트 (서브스텝)
+    // 물리 업데이트 (서브스텝) — update()에서 이미 /SUBSTEPS 나눠 이동
     for (let s = 0; s < SUBSTEPS; s++) {
       for (const f of fruits) f.update();
       checkCollisions();
