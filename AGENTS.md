@@ -1,6 +1,6 @@
 # 프로젝트 개요: omm0716.github.io
 
-이 프로젝트는 GitHub Pages를 기반으로 호스팅되는 **Jekyll 정적 블로그**입니다. 'Beautiful Jekyll' 테마를 사용하여 구축되었으며, 주로 프로그래밍(Python, C언어)과 데이터베이스(SQL), 머신러닝(Machine Learning) 학습 내용을 기록하는 용도로 사용되고 있습니다.
+이 프로젝트는 GitHub Pages를 기반으로 호스팅되는 **Jekyll 정적 블로그**입니다. 'Beautiful Jekyll' 테마를 사용하여 구축되었으며, 주로 프로그래밍(Python, C언어, **C#**)과 데이터베이스(SQL), 머신러닝(Machine Learning) 학습 내용을 기록하는 용도로 사용되고 있습니다.
 
 ## 주요 설정 및 구조
 
@@ -22,6 +22,7 @@
   - `machine-learning.md`: Machine Learning 카테고리 페이지 (날짜 오름차순 정렬 적용)
   - `tools.md`: Tools 카테고리 페이지 (날짜 오름차순 정렬 적용) — 2026-06-05 신규 추가
   - `c-language.md`: C Language 카테고리 페이지 (날짜 오름차순 정렬 적용) — 2026-06-09 신규 추가
+  - `csharp.md`: C# 카테고리 페이지 (날짜 오름차순 정렬 적용) — 2026-06-10 신규 추가
   - `watermelon-game.md`: 🍉 사과 합치기 게임 페이지 (Canvas 기반, 수박게임 스타일) — 2026-06-05 신규 추가
   - `fruit-box-game.md`: 🍎 사과 게임 페이지 (Canvas 기반, フルーツボックス 원작 스타일) — 2026-06-05 신규 추가
 
@@ -31,6 +32,7 @@
 navbar-links:
   About Me: "aboutme"
   Github: "https://github.com/omm0716"
+  C#: "csharp"
   C Language: "c-language"
   Tools: "tools"
   🎮 게임:
@@ -50,7 +52,7 @@ round-avatar: true
 
 ## 포스트 정렬 규칙 (중요!)
 
-카테고리 페이지(`python.md`, `database.md`, `machine-learning.md`, `tools.md`, `c-language.md`)는 모두 `sort: 'date'`를 사용하여 **날짜 오름차순(강좌 순서대로)** 표시합니다.
+카테고리 페이지(`python.md`, `database.md`, `machine-learning.md`, `tools.md`, `c-language.md`, `csharp.md`)는 모두 `sort: 'date'`를 사용하여 **날짜 오름차순(강좌 순서대로)** 표시합니다.
 
 **같은 날짜의 포스트는 반드시 YAML front matter에 `date: YYYY-MM-DD HH:MM:SS +0900` 형태로 시간을 명시**해야 올바른 순서가 보장됩니다.
 
@@ -70,7 +72,7 @@ date: 2026-06-04 09:00:00 +0900  # 시간으로 순서 구분
 
 ## 블로그 포스트 내용 분석 (`_posts` 폴더)
 
-현재 작성된 포스트들은 크게 **Python**, **Database(SQL)**, **Machine Learning**, **Tools**, **C언어** 다섯 가지 주제로 나뉘어 체계적으로 작성되어 있습니다.
+현재 작성된 포스트들은 크게 **Python**, **Database(SQL)**, **Machine Learning**, **Tools**, **C언어**, **C#** 여섯 가지 주제로 나뉘어 체계적으로 작성되어 있습니다.
 
 ### 1. Python 학습 (총 7건) — 2026-06-04 대규모 리뉴얼
 
@@ -125,7 +127,30 @@ date: 2026-06-04 09:00:00 +0900  # 시간으로 순서 구분
 **같은 날짜(2026-06-09) 포스트 시간 배분:**
 - 1강: `09:00:00`, 2강: `10:00:00`, 3강: `11:00:00`, 4강: `12:00:00`, 5강: `13:00:00`, 6강: `14:00:00`, 7강: `15:00:00`
 
-### 6. 기타 (1건)
+### 6. C# 학습 (총 7건) — 2026-06-10 신규 추가
+
+**소스 출처:** `D:\2604340032 오민` (Visual Studio 프로젝트 파일들)
+
+- `2026-06-10-csharp-basics.md`: [1강] C# 기초: 변수, 자료형, 형변환 (int/long/string, Parse, 오버플로우) (`09:00:00`)
+- `2026-06-10-csharp-conditionals.md`: [2강] 조건문: if-else, else if 체인, switch, ConsoleKeyInfo, 학점 분류기 (`10:00:00`)
+- `2026-06-10-csharp-loops.md`: [3강] 반복문: for, while, do-while, foreach, 문자열 메서드, 콘솔 애니메이션 (`11:00:00`)
+- `2026-06-10-csharp-while-advanced.md`: [4강] while 심화: 누산기 패턴, 카페 주문+할인 계산기, 영수증 출력, 결제 루프 (`12:00:00`)
+- `2026-06-10-csharp-list-random.md`: [5강] List<T>와 Random: 동적 컬렉션 Add/Remove/Clear, List<Student>, 판다 쇼핑 리스트 (`13:00:00`)
+- `2026-06-10-csharp-class-method.md`: [6강] 클래스·메서드·static: 인스턴스, 접근 제한자, static 메서드, 오버로딩 (`14:00:00`)
+- `2026-06-10-csharp-class-design-winforms.md`: [7강] 클래스 설계 실전: LM 재고 관리 시스템(Customer/Employee/Goods/Partnercompany), Windows Forms 입문 (`15:00:00`)
+
+**C# 시리즈 프로젝트 출처:**
+- ConsoleApp1~9: 기초 반복문·조건문·자료형·문자열·List
+- ConsoleApp0527: 클래스 메서드·오버로딩
+- ConsoleApp0610: 빈 스캐폴드
+- Static, instance: static 메서드 / List<T> 심화
+- LMstockManagementSystm: 다중 클래스 재고 관리 시스템
+- WindowsFormsApp1: Windows Forms 입문
+
+**같은 날짜(2026-06-10) 포스트 시간 배분:**
+- 1강: `09:00:00`, 2강: `10:00:00`, 3강: `11:00:00`, 4강: `12:00:00`, 5강: `13:00:00`, 6강: `14:00:00`, 7강: `15:00:00`
+
+### 7. 기타 (1건)
 
 - `2026-03-01-sample-markdown.md`: 마크다운 샘플 문서 (Beautiful Jekyll 튜토리얼용)
 
@@ -146,16 +171,20 @@ date: 2026-06-04 09:00:00 +0900  # 시간으로 순서 구분
 | 2026-06-05 | **🎮 게임 드롭다운 메뉴 통합** (수박 게임 + 사과 게임을 하나의 서브메뉴로 묶음) |
 | 2026-06-09 | **C Language 카테고리 신규 추가** (`c-language.md`, 네비게이션 메뉴 등록) |
 | 2026-06-09 | **C언어 1강~7강 포스트 추가** (기초 → 구조체, 출처: `2026하이테크` Visual Studio 프로젝트) |
+| 2026-06-10 | **C# 카테고리 신규 추가** (`csharp.md`, 네비게이션 메뉴 등록) |
+| 2026-06-10 | **C# 1강~7강 포스트 추가** (기초 → WinForms, 출처: `2604340032 오민` Visual Studio 프로젝트) |
 
 ## 요약
 
-이 폴더는 "omm0716"님이 Python, Database, Machine Learning, Tools, **C언어**에 대한 프로그래밍 지식을 정리하고 공유하기 위해 운영 중인 개인 학습용 Jekyll 블로그 소스 코드입니다.
+이 폴더는 "omm0716"님이 Python, Database, Machine Learning, Tools, **C언어**, **C#**에 대한 프로그래밍 지식을 정리하고 공유하기 위해 운영 중인 개인 학습용 Jekyll 블로그 소스 코드입니다.
 
 **2026-06-04 대규모 업데이트**: Python 7강 + Database 7강 시리즈 리뉴얼 완료. 모든 카테고리 페이지에 오름차순 정렬 적용. 반도체 장비 DB(SemiconDB)와 공정 센서 DB(ProcessSensorDB)를 핵심 예제로 활용.
 
 **2026-06-05 업데이트**: Tools 카테고리 신규 추가 및 첫 포스트(Git & GitHub 기초) 작성. 블로그 아바타 이미지를 `logo.jpg`로 변경. 모든 포스트에 같은 카테고리 기준 이전/다음 포스트 카드 네비게이션 적용. 🍉 수박 게임 + 🍎 사과 게임 추가 후 `🎮 게임` 드롭다운으로 통합.
 
 **2026-06-09 업데이트**: **C Language 카테고리 신규 추가** (`c-language.md`). Visual Studio 프로젝트 파일(`2026하이테크`)을 분석하여 C언어 1강~7강 포스트 작성 완료. 네비게이션 메뉴에 `C Language` 링크 등록.
+
+**2026-06-10 업데이트**: **C# 카테고리 신규 추가** (`csharp.md`). Visual Studio 프로젝트 파일(`2604340032 오민`)을 분석하여 C# 1강~7강 포스트 작성 완료. 네비게이션 메뉴에 `C#` 링크 등록. 7강 시리즈: 변수·자료형 → 조건문 → 반복문 → while심화(카페 주문) → List<T>·Random → 클래스·메서드·static → 다중 클래스 설계(LM재고관리) + Windows Forms 입문.
 
 ---
 # Project Overview: omm0716.github.io
@@ -172,13 +201,14 @@ This project is a **Jekyll static blog** hosted on GitHub Pages. It is built usi
   - `_layouts/post.html`: Post layout with same-category prev/next navigation (added 2026-06-05)
   - `assets/img/logo.jpg`: Current navbar avatar image (changed 2026-06-05)
   - `assets/css/custom.css`: Custom styles (dark mode, code highlighting, TOC, post navigation)
-  - `python.md`, `database.md`, `machine-learning.md`, `tools.md`, `c-language.md`: Category pages with ascending `sort: 'date'`
+  - `python.md`, `database.md`, `machine-learning.md`, `tools.md`, `c-language.md`, `csharp.md`: Category pages with ascending `sort: 'date'`
 
 ## Navbar Links (`_config.yml`)
 ```yaml
 navbar-links:
   About Me: "aboutme"
   Github: "https://github.com/omm0716"
+  C#: "csharp"
   C Language: "c-language"
   Tools: "tools"
   🎮 게임:
@@ -245,7 +275,18 @@ Implemented in `_layouts/post.html` (2026-06-05). Navigates within the **same ca
 - `2026-06-09-c-language-functions.md`: [Lesson 6] Functions & Sorting: Selection Sort, 2D Array, Global/Local (`14:00`)
 - `2026-06-09-c-language-structs.md`: [Lesson 7] Structs: struct, strcpy, Bubble Sort, Complex Data (`15:00`)
 
-### 6. Others (1 post)
+### 6. C# Learning (7 posts total) — Added 2026-06-10
+**Source:** `D:\2604340032 오민` (Visual Studio project files)
+
+- `2026-06-10-csharp-basics.md`: [Lesson 1] C# Basics: Variables, Data Types, Type Casting (int/long/string, Parse, Overflow) (`09:00`)
+- `2026-06-10-csharp-conditionals.md`: [Lesson 2] Conditionals: if-else, else if chain, switch, ConsoleKeyInfo, GPA Classifier (`10:00`)
+- `2026-06-10-csharp-loops.md`: [Lesson 3] Loops: for, while, do-while, foreach, String Methods, Console Animation (`11:00`)
+- `2026-06-10-csharp-while-advanced.md`: [Lesson 4] while Advanced: Accumulator, Café Order+Discount, Receipt, Payment Loop (`12:00`)
+- `2026-06-10-csharp-list-random.md`: [Lesson 5] List<T> & Random: Add/Remove/Clear, List<Student>, Panda Shopping List (`13:00`)
+- `2026-06-10-csharp-class-method.md`: [Lesson 6] Classes & Methods: Instance, Access Modifiers, static, Overloading (`14:00`)
+- `2026-06-10-csharp-class-design-winforms.md`: [Lesson 7] Class Design: LM Stock Management System (Customer/Employee/Goods/Partnercompany) + Windows Forms Intro (`15:00`)
+
+### 7. Others (1 post)
 - `2026-03-01-sample-markdown.md`: Sample Markdown Document (for Beautiful Jekyll tutorial)
 
 ## Summary
@@ -271,3 +312,9 @@ This folder contains the source code for a personal learning Jekyll blog operate
 - Added C Language Lessons 1–7 based on Visual Studio projects in `C:\Users\user\Desktop\2026하이테크`
   - Lessons cover: Basics → Conditionals → Loops → while Advanced → Arrays/Strings → Functions/Sort → Structs
 - All 7 posts dated 2026-06-09 with times from 09:00 to 15:00 (+0900) for correct ordering
+
+**2026-06-10 Update**:
+- Added new **C#** category (`csharp.md`, navbar link `C#` added to `_config.yml`)
+- Added C# Lessons 1–7 based on Visual Studio projects in `D:\2604340032 오민`
+  - Lessons cover: Basics → Conditionals → Loops → while Advanced (Café System) → List<T>/Random → Class/Method/static/Overloading → Multi-Class Design (LM Stock Mgmt) + Windows Forms
+- All 7 posts dated 2026-06-10 with times from 09:00 to 15:00 (+0900) for correct ordering
