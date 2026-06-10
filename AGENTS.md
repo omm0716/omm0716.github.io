@@ -32,7 +32,7 @@
 navbar-links:
   About Me: "aboutme"
   Github: "https://github.com/omm0716"
-  C#: "csharp"
+  C#: "c-sharp"
   C Language: "c-language"
   Tools: "tools"
   🎮 게임:

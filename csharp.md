@@ -2,7 +2,7 @@
 layout: page
 title: C#
 subtitle: C# 관련 모든 포스트를 모아둔 곳입니다. (This is a collection of all C#-related posts.)
-permalink: /csharp/
+permalink: /c-sharp/
 ---
 
 {% comment %}
