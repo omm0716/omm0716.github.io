@@ -840,4 +840,55 @@ document.addEventListener("DOMContentLoaded", function() {
 
   // 동적 컴포넌트(퀴즈, 추천 위젯) 언어 이벤트 브로드캐스트
   window.dispatchEvent(new CustomEvent('blogLanguageChanged', { detail: { language: initialPreferredLang } }));
+
+  // ==========================================================================
+  // Google Translate Banner & Layout Shift Prevention (MutationObserver + Loop)
+  // ==========================================================================
+  const preventGoogleTranslateShift = () => {
+    // 1. html과 body의 top 스타일 강제 리셋 (원하지 않는 margin/top 이동 방지)
+    if (document.documentElement.style.top && document.documentElement.style.top !== '0px') {
+      document.documentElement.style.top = '0px';
+    }
+    if (document.body.style.top && document.body.style.top !== '0px') {
+      document.body.style.top = '0px';
+    }
+    
+    // 2. skiptranslate 클래스를 가진 상단 배너 요소 탐색 및 숨김/제거
+    const skiptranslateElements = document.querySelectorAll('.skiptranslate');
+    skiptranslateElements.forEach(el => {
+      // 본문 텍스트 내 번역 예외 처리를 위한 폰트 태그 등은 제외하고, 상단 바/툴팁 성격의 컨테이너만 숨김
+      if (el.tagName === 'DIV' || el.tagName === 'IFRAME') {
+        el.style.display = 'none';
+        el.style.visibility = 'hidden';
+        el.style.height = '0';
+        el.style.width = '0';
+      }
+    });
+
+    const googleIframe = document.querySelector('iframe.goog-te-banner-frame');
+    if (googleIframe) {
+      googleIframe.style.display = 'none';
+      googleIframe.style.visibility = 'hidden';
+      googleIframe.style.height = '0';
+      googleIframe.style.width = '0';
+    }
+  };
+
+  // MutationObserver 설정: body 및 html의 style 변화와 자식 노드 추가 감지
+  const translateObserver = new MutationObserver(() => {
+    preventGoogleTranslateShift();
+  });
+
+  translateObserver.observe(document.documentElement, {
+    attributes: true,
+    childList: true,
+    subtree: true,
+    attributeFilter: ['style', 'class']
+  });
+
+  // 초기 실행 및 로드 완료 후 실행
+  preventGoogleTranslateShift();
+  window.addEventListener('load', preventGoogleTranslateShift);
+  // setInterval fallback으로 혹시 모를 타이밍 문제 대응
+  setInterval(preventGoogleTranslateShift, 100);
 });

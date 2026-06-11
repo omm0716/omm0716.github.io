@@ -1341,16 +1341,36 @@ pre.highlight,
 /* ========================================
    구글 번역기(Google Translate) 배너 및 UI 커스텀
    ======================================== */
-/* 상단 번역 프레임 숨김 */
-iframe.goog-te-banner-frame {
+/* 상단 번역 프레임 및 모든 구글 번역 UI 관련 툴바/레이어 숨김 */
+.skiptranslate,
+.goog-te-banner-frame,
+.goog-te-banner,
+.goog-te-banner-frame.skiptranslate,
+iframe.goog-te-banner-frame,
+iframe[class*="goog"],
+iframe[id*="goog"] {
   display: none !important;
   visibility: hidden !important;
+  height: 0 !important;
+  width: 0 !important;
+  opacity: 0 !important;
 }
 
-/* 상단 여백 복원 */
+/* 상단 여백 강제 복원 (구글 번역이 html/body에 추가하는 top offset 무력화) */
+html {
+  top: 0 !important;
+}
 body {
   top: 0 !important;
   position: static !important;
+}
+
+/* 번역 완료 후 html/body 추가 스타일 리셋 */
+.translated-ltr, .translated-rtl {
+  top: 0 !important;
+}
+.translated-ltr body, .translated-rtl body {
+  top: 0 !important;
 }
 
 /* 구글 번역 요소 숨김 */
@@ -1375,7 +1395,7 @@ body {
   display: none !important;
 }
 
-#goog-gt-tt {
+#goog-gt-tt, #goog-gt-tt.skiptranslate {
   display: none !important;
   visibility: hidden !important;
 }
