@@ -1,63 +1,24 @@
 /* =========================================================
    Fixed Navbar Overlap Fix
-   - scroll-padding-top: 앵커 링크 클릭 시 헤딩이 네비게이션 바에
-     가리지 않도록 스크롤 여백을 확보합니다.
-   - 모바일(~1199px): 네비게이션 바 약 56px → 여유분 포함 80px
-   - 데스크탑(1200px+): 네비게이션 바 약 76px → 여유분 포함 110px
+   JS anchor interceptor (custom.js)가 주된 역할을 하며,
+   CSS는 브라우저 기본 앵커 스크롤에 대한 fallback 제공.
    ========================================================= */
 html {
   scroll-padding-top: 80px;
 }
-
 @media (min-width: 1200px) {
   html {
     scroll-padding-top: 110px;
   }
 }
 
-/* Google Translate 툴바가 활성화되면 추가 오프셋 적용 */
-html.goog-translated-content,
-body.goog-te-banner-frame-visible {
-  scroll-padding-top: 120px;
-}
-
-@media (min-width: 1200px) {
-  html.goog-translated-content,
-  body.goog-te-banner-frame-visible {
-    scroll-padding-top: 150px;
-  }
-}
-
-/* 포스트 본문 헤딩에 직접 scroll-margin-top 적용 (TOC 앵커 클릭 시 가림 방지) */
-.blog-post h1,
-.blog-post h2,
-.blog-post h3,
-.blog-post h4,
-.blog-post h5,
-.blog-post h6 {
-  scroll-margin-top: 80px;
-}
-
-@media (min-width: 1200px) {
-  .blog-post h1,
-  .blog-post h2,
-  .blog-post h3,
-  .blog-post h4,
-  .blog-post h5,
-  .blog-post h6 {
-    scroll-margin-top: 110px;
-  }
-}
-
-/* beautifuljekyll 기본 :target:before 핵을 무력화 (scroll-margin-top이 대체) */
+/* beautifuljekyll :target:before 핵 완전 무력화
+   (JS 인터셉터가 대체하므로 이 pseudo-element 불필요) */
 :target:before {
+  content: none !important;
+  display: none !important;
   height: 0 !important;
   margin: 0 !important;
-}
-
-/* Google Translate 상단 배너 바 스타일 정리 */
-.goog-te-banner-frame {
-  top: 0 !important;
 }
 
 

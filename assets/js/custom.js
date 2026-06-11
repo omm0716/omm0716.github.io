@@ -1,60 +1,67 @@
 document.addEventListener("DOMContentLoaded", function() {
 
   // =========================================================
-  // Fixed Navbar Overlap Fix
-  // 네비게이션 바 + Google Translate 바 높이를 감지해
-  // scroll-padding-top 및 헤딩의 scroll-margin-top을 동적으로 맞춰
-  // TOC 앵커 클릭 시 가림 현상을 완전히 방지합니다.
+  // Fixed Navbar Overlap Fix — JavaScript Anchor Interceptor
+  // CSS 방식(scroll-padding-top 등)의 한계를 완전히 우회합니다.
+  // 앵커 링크 클릭을 JS가 가로채서 네비게이션 바 높이를 뺀
+  // 정확한 위치로 직접 스크롤합니다.
   // =========================================================
-  function adjustScrollPadding() {
+
+  // 현재 네비게이션 바 + Google Translate 바 총 높이를 반환
+  function getNavOffset() {
     const navbar = document.querySelector('.navbar-custom');
-    if (!navbar) return;
+    const navHeight = navbar ? Math.ceil(navbar.getBoundingClientRect().height) : 70;
 
-    // 네비게이션 바 실제 높이 측정
-    const navHeight = navbar.getBoundingClientRect().height;
-
-    // Google Translate 배너 바 높이 측정 (없으면 0)
     let gtHeight = 0;
     const gtBanner = document.querySelector('.goog-te-banner-frame');
     if (gtBanner) {
-      const bannerHeight = gtBanner.getBoundingClientRect().height;
-      if (bannerHeight > 0) gtHeight = bannerHeight;
+      const bh = gtBanner.getBoundingClientRect().height;
+      if (bh > 0) gtHeight = bh;
     }
-
-    // body의 실제 상단 위치 확인 (구글 번역이 body를 밀어내는 경우)
     const bodyTop = parseInt(document.body.style.top || '0', 10);
-    if (bodyTop < 0) {
-      gtHeight = Math.max(gtHeight, Math.abs(bodyTop));
-    }
+    if (bodyTop < 0) gtHeight = Math.max(gtHeight, Math.abs(bodyTop));
 
-    const totalOffset = Math.ceil(navHeight + gtHeight + 16); // 16px 여유
-
-    // html scroll-padding-top 설정
-    document.documentElement.style.scrollPaddingTop = totalOffset + 'px';
-
-    // 모든 헤딩에 scroll-margin-top 직접 설정 (CSS보다 우선 적용)
-    document.querySelectorAll('h1, h2, h3, h4, h5, h6').forEach(function(el) {
-      el.style.scrollMarginTop = totalOffset + 'px';
-    });
+    return navHeight + gtHeight + 20; // 20px 추가 여유
   }
 
-  // 초기 실행
-  adjustScrollPadding();
-
-  // 네비게이션 바 크기 변화 감지 (모바일 ↔ 데스크탑 전환 등)
-  const navbarEl = document.querySelector('.navbar-custom');
-  if (navbarEl && typeof ResizeObserver !== 'undefined') {
-    const navObserver = new ResizeObserver(adjustScrollPadding);
-    navObserver.observe(navbarEl);
+  // 특정 요소로 네비게이션 바를 피해 스크롤
+  function scrollToTarget(target) {
+    if (!target) return;
+    const offset = getNavOffset();
+    const top = target.getBoundingClientRect().top + window.pageYOffset - offset;
+    window.scrollTo({ top: Math.max(0, top), behavior: 'smooth' });
   }
 
-  // 리사이즈 시에도 재적용
-  window.addEventListener('resize', adjustScrollPadding);
+  // ① 앵커 링크 클릭 인터셉터
+  document.addEventListener('click', function(e) {
+    const link = e.target.closest('a[href^="#"]');
+    if (!link) return;
 
-  // Google Translate 로드 후 배너 감지를 위해 약간 지연 후 재실행
-  setTimeout(adjustScrollPadding, 500);
-  setTimeout(adjustScrollPadding, 1500);
-  setTimeout(adjustScrollPadding, 3000);
+    const href = link.getAttribute('href');
+    // 빈 해시(#) 또는 Bootstrap 드롭다운 토글은 무시
+    if (!href || href === '#' || link.hasAttribute('data-toggle') || link.hasAttribute('data-bs-toggle')) return;
+
+    const targetId = href.slice(1);
+    const target = document.getElementById(targetId);
+    if (!target) return;
+
+    e.preventDefault();
+    scrollToTarget(target);
+    // 브라우저 URL 해시 업데이트 (스크롤 없이)
+    history.pushState(null, null, href);
+  }, true); // capture phase로 다른 핸들러보다 먼저 실행
+
+  // ② 페이지 로드 시 URL에 해시가 있으면 올바른 위치로 스크롤
+  if (window.location.hash) {
+    const initialHash = window.location.hash.slice(1);
+    // 렌더링 완료 후 스크롤
+    setTimeout(function() {
+      const target = document.getElementById(initialHash);
+      if (target) scrollToTarget(target);
+    }, 400);
+  }
+
+
 
 
 
