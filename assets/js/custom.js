@@ -422,6 +422,179 @@ document.addEventListener("DOMContentLoaded", function() {
       "en": "30-day consecutive correct (Gold Medal)",
       "ja": "30日連続正解 (金メダル)",
       "zh-CN": "连续 30 天答对 (金牌)"
+    },
+    "by_author": {
+      "ko": "작성자:",
+      "en": "By",
+      "ja": "著者:",
+      "zh-CN": "作者:"
+    },
+    "last_updated": {
+      "ko": "최근 업데이트:",
+      "en": "Last updated",
+      "ja": "最終更新日:",
+      "zh-CN": "最近更新于"
+    },
+    // Recommender Widget - Intro
+    "rec_title": {
+      "ko": "나에게 딱 맞는 개발 로드맵 찾기 🎯",
+      "en": "Find Your Perfect Development Roadmap 🎯",
+      "ja": "自分にぴったりの開発ロードマップを見つける 🎯",
+      "zh-CN": "寻找最适合您的开发路线图 🎯"
+    },
+    "rec_subtitle": {
+      "ko": "어떤 언어부터 시작해야 할지 고민이신가요?<br>3개의 짧은 질문에 답하시면 omm0716 블로그의 포스트 중 지금 읽기 가장 좋은 최적의 가이드를 추천해 드립니다!",
+      "en": "Wondering which language to start with?<br>Answer 3 short questions to find the best customized guide posts on omm0716 Blog!",
+      "ja": "どの言語から始めればよいか迷っていませんか？<br>3つの簡単な質問に答えるだけで、omm0716ブログの投稿から今読むべき最適なガイドをおすすめします！",
+      "zh-CN": "纠结于从哪门语言开始学习吗？<br>回答3个简短的问题，我们将在 omm0716 博客的文章中为您推荐当前最适合的阅读指南！"
+    },
+    "rec_start": {
+      "ko": "진단 시작하기",
+      "en": "Start Assessment",
+      "ja": "診断を開始する",
+      "zh-CN": "开始测试"
+    },
+    // Question 1
+    "rec_q1_badge": {
+      "ko": "질문 1 / 3",
+      "en": "Question 1 / 3",
+      "ja": "質問 1 / 3",
+      "zh-CN": "问题 1 / 3"
+    },
+    "rec_q1_title": {
+      "ko": "지금 가장 공부하고 싶거나 달성하고자 하는 목표는 무엇인가요?",
+      "en": "What is your primary goal or area you want to study right now?",
+      "ja": "今最も勉強したいことや、達成したい目標は何ですか？",
+      "zh-CN": "您目前最想学习或最想达成的目标是什么？"
+    },
+    "rec_q1_a": {
+      "ko": "컴퓨터 작동 방식과 프로그래밍의 깊은 기초 원리를 이해하고 싶습니다.",
+      "en": "I want to understand how computers work and deep foundational programming principles.",
+      "ja": "コンピュータの仕組みやプログラミングの深い基礎原理を理解したいです。",
+      "zh-CN": "我想理解计算机运行机制以及底层的编程基础原理。"
+    },
+    "rec_q1_b": {
+      "ko": "웹 데이터 자동 수집(크롤링), 간단한 API 활용 등 실용적인 기능을 구현해 보고 싶습니다.",
+      "en": "I want to build practical functions like web crawling (scraping) and simple API integration.",
+      "ja": "ウェブデータの自動収集（クローリング）や、簡単なAPI連携などの実用的な機能を実装してみたいです。",
+      "zh-CN": "我想实现网页数据自动采集（爬虫）、简单 API 对接等实用功能。"
+    },
+    "rec_q1_c": {
+      "ko": "데이터베이스 설계와 SQL 조리를 자유자재로 다루며 데이터를 다루는 법을 마스터하고 싶습니다.",
+      "en": "I want to master database design, SQL querying, and data manipulation.",
+      "ja": "データベース設計やSQLクエリを自在に操り、データ処理をマスターしたいです。",
+      "zh-CN": "我想自由掌握数据库设计与 SQL 查询，彻底精通数据处理。"
+    },
+    "rec_q1_d": {
+      "ko": "인공지능(AI)과 머신러닝의 알고리즘을 분석하고, PDF 문서 기반 RAG 챗봇을 만들어 보고 싶습니다.",
+      "en": "I want to analyze AI/ML algorithms and build PDF-based RAG chatbots.",
+      "ja": "人工知能（AI）や機械学習のアルゴリズムを分析し、PDF文書ベースの RAGチャットボットを作ってみたいです。",
+      "zh-CN": "我想分析人工智能（AI）和机器学习算法，并构建基于 PDF 文档的 RAG 聊天机器人。"
+    },
+    "rec_q1_e": {
+      "ko": "Windows용 데스크톱 프로그램(GUI) 개발과 견고한 객체 지향 프로그래밍 설계를 배우고 싶습니다.",
+      "en": "I want to learn object-oriented design and Windows desktop GUI application development.",
+      "ja": "Windows用のデスクトップアプリ（GUI）開発や、堅牢なオブジェクト指向プログラミング設計を学びたいです。",
+      "zh-CN": "我想学习 Windows 桌面程序（GUI）开发以及严谨的面向对象程序设计。"
+    },
+    // Question 2
+    "rec_q2_badge": {
+      "ko": "질문 2 / 3",
+      "en": "Question 2 / 3",
+      "ja": "質問 2 / 3",
+      "zh-CN": "问题 2 / 3"
+    },
+    "rec_q2_title": {
+      "ko": "자신의 현재 코딩 숙련도 및 원하시는 강좌 스타일은 어떤가요?",
+      "en": "What is your current coding proficiency and preferred tutorial style?",
+      "ja": "ご自身の現在のコーディング習熟度や、希望する講座のスタイルはどうですか？",
+      "zh-CN": "您目前的编程水平以及期望的学习风格是什么？"
+    },
+    "rec_q2_a": {
+      "ko": "<strong>완전 기초부터 차근차근:</strong> 변수, 제어문 등 아주 기본적인 문법 개념부터 차근차근 다지는 입문 코스가 필요합니다.",
+      "en": "<strong>Beginner Step-by-step:</strong> I need an introductory course focusing on basic syntax like variables and control flows.",
+      "ja": "<strong>基礎から一歩ずつ：</strong> 変数や制御文など、ごく基本的な文法概念からしっかりと固める入門コースが必要です。",
+      "zh-CN": "<strong>从零开始循序渐进：</strong> 我需要从变量、控制语句等最基础的语法概念开始打牢基础的入门课程。"
+    },
+    "rec_q2_b": {
+      "ko": "<strong>실전 활용 및 심화:</strong> 기본 문법보다는 데이터 분석, 알고리즘 구현, 클래스 설계 등 동작하는 프로젝트 실습 중심이 좋습니다.",
+      "en": "<strong>Practical & Advanced:</strong> I prefer project-based practice such as data analysis, algorithms, and class design rather than basic syntax.",
+      "ja": "<strong>実践活用と深掘り：</strong> 基本文法よりも、データ分析やアルゴリズム実装、クラス設計など、実際に動くプロジェクトの実習中心が良いです。",
+      "zh-CN": "<strong>实战应用与进阶：</strong> 相比基础语法，我更喜欢数据分析、算法实现、类设计等实际项目演练课程。"
+    },
+    "rec_q2_c": {
+      "ko": "<strong>핵심 도구 활용:</strong> 깃(Git)과 깃허브(GitHub) 버전 관리처럼 개발자 협업의 핵심 필수 도구를 빠르게 익히고 싶습니다.",
+      "en": "<strong>Essential Tools:</strong> I want to quickly learn developer collaboration tools like Git and GitHub version control.",
+      "ja": "<strong>必須ツールの活用：</strong> GitやGitHubのバージョン管理など、開発者の共同作業に欠かせない必須ツールを素早く身につけたいです。",
+      "zh-CN": "<strong>核心工具应用：</strong> 我想快速掌握 Git 和 GitHub 版本控制等程序员协同开发的核心必备工具。"
+    },
+    // Question 3
+    "rec_q3_badge": {
+      "ko": "질문 3 / 3",
+      "en": "Question 3 / 3",
+      "ja": "質問 3 / 3",
+      "zh-CN": "问题 3 / 3"
+    },
+    "rec_q3_title": {
+      "ko": "아래 나열된 실습 프로젝트 중 가장 직접 만들어 보고 싶은 것은 무엇인가요?",
+      "en": "Which of the following hands-on projects do you want to build the most?",
+      "ja": "以下に挙げる実習プロジェクトの中で、最も直接作ってみたいものはどれですか？",
+      "zh-CN": "在下方列出的实战项目中，您最想亲自动手实现的是哪一个？"
+    },
+    "rec_q3_a": {
+      "ko": "금액권별 지폐 계산기 및 선택/버블 정렬 등의 정렬 알고리즘 실습",
+      "en": "Currency bill calculator and sorting algorithms like Selection/Bubble sort",
+      "ja": "金種別のお札計算機や選択ソート・バブルソートなどのソートアルゴリズムの実習",
+      "zh-CN": "按面额计算纸币数量 the 计算器，以及选择排序、冒泡排序等排序算法演练"
+    },
+    "rec_q3_b": {
+      "ko": "반도체 장비 DB 설계, 4테이블 결합, 공정 센서 측정 데이터 이상값 분석",
+      "en": "Semiconductor equipment DB design, 4-table join, and process sensor anomaly detection",
+      "ja": "半導体装置DB設計、4テーブル結合、工程センサー測定データの異常値分析",
+      "zh-CN": "半导体设备数据库设计、4表关联查询、以及工艺传感器测量数据异常值分析"
+    },
+    "rec_q3_c": {
+      "ko": "K-Means/DBSCAN 군집 분석 및 LangChain 기반 PDF 문서 연동 AI 챗봇",
+      "en": "K-Means/DBSCAN clustering and LangChain-based PDF-linked AI chatbot",
+      "ja": "K-Means / DBSCANクラスター分析やLangChainベースのPDF文書連携AIチャットボット",
+      "zh-CN": "K-Means/DBSCAN 聚类分析，以及基于 LangChain 的 PDF 文档联动 AI 聊天机器人"
+    },
+    "rec_q3_d": {
+      "ko": "카페 무인 주문 영수증 출력 루프 및 다중 클래스 기반 재고 관리 WinForms 프로그램",
+      "en": "Kiosk receipt printing loop and multi-class inventory management WinForms app",
+      "ja": "カフェ無人注文レシート出力ループや複数クラスベースの在庫管理WinFormsアプリ",
+      "zh-CN": "咖啡馆自助点单小票打印循环，以及基于多类的库存管理 WinForms 应用程序"
+    },
+    "rec_q3_e": {
+      "ko": "실시간 날씨 공공 API 호출 데이터 파싱 및 파일(CSV, JSON) 저장 프로그램",
+      "en": "Real-time public weather API call data parser and CSV/JSON file writer",
+      "ja": "リアルタイム気象公共API呼び出しデータの解析とファイル（CSV、JSON）保存プログラム",
+      "zh-CN": "实时天气公共 API 调用数据解析及文件（CSV、JSON）保存程序"
+    },
+    "rec_q3_f": {
+      "ko": "내 컴퓨터의 코드를 로컬 저장소에 커밋하고 GitHub 클라우드 저장소와 연동하기",
+      "en": "Commit local code to a repository and link with GitHub cloud repository",
+      "ja": "自分のパソコンのコードをローカルリポジトリにコミットし、GitHubクラウドリポジトリと連携する",
+      "zh-CN": "将本地电脑上的代码提交至本地仓库，并与 GitHub 云端仓库进行联动"
+    },
+    // Result
+    "rec_result_badge": {
+      "ko": "✨ 맞춤 추천 결과",
+      "en": "✨ Custom Recommendations",
+      "ja": "✨ おすすめ診断結果",
+      "zh-CN": "✨ 个性化推荐结果"
+    },
+    "rec_restart": {
+      "ko": "테스트 다시 하기",
+      "en": "Retake Test",
+      "ja": "テストをやり直す",
+      "zh-CN": "重新测试"
+    },
+    "rec_explore": {
+      "ko": "카테고리 전체보기",
+      "en": "View Full Category",
+      "ja": "カテゴリー全体を見る",
+      "zh-CN": "查看全部分类"
     }
   };
 
@@ -541,6 +714,23 @@ document.addEventListener("DOMContentLoaded", function() {
         el.setAttribute('placeholder', dict[key][lang]);
       }
     });
+
+    // 4. 읽기 시간(Read Time) 처리
+    const readTimeValEl = document.getElementById('post-read-time-value');
+    const readTimeDispEl = document.getElementById('post-read-time-display');
+    if (readTimeValEl && readTimeDispEl) {
+      const mins = parseInt(readTimeValEl.textContent.trim(), 10) || 0;
+      if (lang === 'ko') {
+        readTimeDispEl.textContent = mins >= 1 ? `${mins}분 분량` : `1분 미만 분량`;
+      } else if (lang === 'ja') {
+        readTimeDispEl.textContent = mins >= 1 ? `${mins}分で読めます` : `1分未満で読めます`;
+      } else if (lang === 'zh-CN') {
+        readTimeDispEl.textContent = mins >= 1 ? `预计阅读时间 ${mins} 分钟` : `预计阅读时间少于 1 分钟`;
+      } else {
+        // English
+        readTimeDispEl.textContent = mins >= 1 ? `${mins} minute read` : `< 1 minute read`;
+      }
+    }
   }
 
   // 6. DOM 로드 직후 로컬 번역 즉시 적용 (레이아웃 깜빡임 및 지연 방지)

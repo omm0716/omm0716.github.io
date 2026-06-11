@@ -35,13 +35,13 @@
           
           {% if include.type == "post" %} 
             {% if page.author %}
-              By <strong>{{ page.author | strip_html }}</strong><br>
+              <span data-i18n="by_author">By</span> <strong>{{ page.author | strip_html }}</strong><br>
             {% endif%}
-            <span class="post-meta">Posted on {{ page.date | date: date_format }}</span>
+            <span class="post-meta"><span data-i18n="posted_on">Posted on</span> {{ page.date | date: date_format }}</span>
             {% if page.last-updated %}
               <span class="post-meta">
                 <span class="d-none d-md-inline middot">&middot;</span>
-                Last updated {{ page.last-updated | date: date_format }}
+                <span data-i18n="last_updated">Last updated</span> {{ page.last-updated | date: date_format }}
               </span>
             {% endif %}
             {% if page.readtime %}
