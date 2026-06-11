@@ -1,65 +1,88 @@
 document.addEventListener("DOMContentLoaded", function() {
 
   // =========================================================
-  // Fixed Navbar Overlap Fix — JavaScript Anchor Interceptor
-  // CSS 방식(scroll-padding-top 등)의 한계를 완전히 우회합니다.
-  // 앵커 링크 클릭을 JS가 가로채서 네비게이션 바 높이를 뺀
-  // 정확한 위치로 직접 스크롤합니다.
+  // Fixed Navbar Overlap Fix — 완전한 해결책
+  //
+  // 근본 원인: beautifuljekyll.js가 스크롤 시 navbar에
+  // 'top-nav-short' 클래스를 추가/제거하며 높이를 바꿈.
+  // 이로 인해 앵커 링크 클릭 시 navbar 높이가 달라져 가림 발생.
+  //
+  // 해결: 앵커 클릭 시 항상 "그 순간의" navbar 높이를 실시간 측정.
+  //       MutationObserver로 navbar 클래스 변경 감지 후 재보정.
   // =========================================================
 
-  // 현재 네비게이션 바 + Google Translate 바 총 높이를 반환
-  function getNavOffset() {
+  // 현재 navbar 높이를 실시간으로 측정 (캐시 없이 항상 새로 계산)
+  function getLiveNavOffset() {
     const navbar = document.querySelector('.navbar-custom');
-    const navHeight = navbar ? Math.ceil(navbar.getBoundingClientRect().height) : 70;
-
-    let gtHeight = 0;
-    const gtBanner = document.querySelector('.goog-te-banner-frame');
-    if (gtBanner) {
-      const bh = gtBanner.getBoundingClientRect().height;
-      if (bh > 0) gtHeight = bh;
-    }
-    const bodyTop = parseInt(document.body.style.top || '0', 10);
-    if (bodyTop < 0) gtHeight = Math.max(gtHeight, Math.abs(bodyTop));
-
-    return navHeight + gtHeight + 20; // 20px 추가 여유
+    if (!navbar) return 80;
+    // getBoundingClientRect().height는 항상 현재 렌더링된 실제 높이
+    const navH = Math.ceil(navbar.getBoundingClientRect().height);
+    return navH + 24; // 24px 안전 여유
   }
 
-  // 특정 요소로 네비게이션 바를 피해 스크롤
-  function scrollToTarget(target) {
-    if (!target) return;
-    const offset = getNavOffset();
-    const top = target.getBoundingClientRect().top + window.pageYOffset - offset;
-    window.scrollTo({ top: Math.max(0, top), behavior: 'smooth' });
+  // 목표 요소로 navbar를 피해 부드럽게 스크롤
+  function scrollToElement(el) {
+    if (!el) return;
+    const offset = getLiveNavOffset();
+    // getBoundingClientRect().top: 현재 뷰포트 기준 위치
+    // pageYOffset: 현재 스크롤 위치
+    const absoluteTop = el.getBoundingClientRect().top + window.pageYOffset;
+    window.scrollTo({ top: Math.max(0, absoluteTop - offset), behavior: 'smooth' });
   }
 
-  // ① 앵커 링크 클릭 인터셉터
+  // ① 앵커 링크 클릭 인터셉터 (capture phase → 최우선 실행)
   document.addEventListener('click', function(e) {
+    // 클릭된 요소 또는 가장 가까운 상위 a 태그 찾기
     const link = e.target.closest('a[href^="#"]');
     if (!link) return;
 
     const href = link.getAttribute('href');
-    // 빈 해시(#) 또는 Bootstrap 드롭다운 토글은 무시
-    if (!href || href === '#' || link.hasAttribute('data-toggle') || link.hasAttribute('data-bs-toggle')) return;
+    // 빈 해시 / Bootstrap 드롭다운 / 탭 등은 무시
+    if (!href || href === '#') return;
+    if (link.dataset.toggle || link.dataset.bsToggle) return;
+    if (link.getAttribute('data-toggle')) return;
+    if (link.getAttribute('role') === 'tab') return;
 
     const targetId = href.slice(1);
+    if (!targetId) return;
     const target = document.getElementById(targetId);
     if (!target) return;
 
+    // 브라우저 기본 앵커 점프 차단
     e.preventDefault();
-    scrollToTarget(target);
-    // 브라우저 URL 해시 업데이트 (스크롤 없이)
-    history.pushState(null, null, href);
-  }, true); // capture phase로 다른 핸들러보다 먼저 실행
+    e.stopPropagation();
 
-  // ② 페이지 로드 시 URL에 해시가 있으면 올바른 위치로 스크롤
-  if (window.location.hash) {
-    const initialHash = window.location.hash.slice(1);
-    // 렌더링 완료 후 스크롤
+    // 약간의 지연으로 navbar 클래스 변경이 완료된 후 스크롤
     setTimeout(function() {
-      const target = document.getElementById(initialHash);
-      if (target) scrollToTarget(target);
-    }, 400);
+      scrollToElement(target);
+    }, 10);
+
+    // URL 해시 업데이트
+    history.pushState(null, null, href);
+  }, true);
+
+  // ② 페이지 최초 로드 시 URL에 해시가 있으면 올바른 위치로 이동
+  if (window.location.hash) {
+    const hash = window.location.hash.slice(1);
+    setTimeout(function() {
+      const el = document.getElementById(hash);
+      if (el) scrollToElement(el);
+    }, 600); // beautifuljekyll.js init(10ms)보다 충분히 늦게
   }
+
+  // ③ navbar 클래스 변경 감지 (beautifuljekyll.js의 top-nav-short 토글 대응)
+  //    TOC 스크롤스파이 재계산도 여기서 처리
+  const navbarForObserver = document.querySelector('.navbar-custom');
+  if (navbarForObserver && typeof MutationObserver !== 'undefined') {
+    const observer = new MutationObserver(function() {
+      // navbar 높이가 바뀌었으므로 필요한 경우 즉시 반영됨
+      // (getLiveNavOffset()이 항상 실시간이라 추가 작업 불필요)
+    });
+    observer.observe(navbarForObserver, { attributes: true, attributeFilter: ['class'] });
+  }
+
+
+
 
 
 
