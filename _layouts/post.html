@@ -51,7 +51,7 @@ layout: base
 
       {% if page.tags.size > 0 %}
         <div class="blog-tags">
-          <span>Tags:</span>
+          <span data-i18n="tags">Tags:</span>
           {% for tag in page.tags %}
             <a href="{{ '/tags' | relative_url }}#{{- tag -}}">{{- tag -}}</a>
           {% endfor %}
@@ -101,7 +101,7 @@ layout: base
             {% if prev_post %}
             <a href="{{ prev_post.url | relative_url }}" class="post-nav-link">
               <span class="post-nav-direction">
-                <i class="fas fa-chevron-left"></i> 이전 포스트
+                <i class="fas fa-chevron-left"></i> <span data-i18n="prev_post_label">이전 포스트</span>
               </span>
               <span class="post-nav-title">{{ prev_post.title | strip_html | truncate: 50 }}</span>
               {% if prev_post.subtitle %}
@@ -109,7 +109,7 @@ layout: base
               {% endif %}
             </a>
             {% else %}
-            <span class="post-nav-empty">첫 번째 포스트입니다</span>
+            <span class="post-nav-empty" data-i18n="first_post_label">첫 번째 포스트입니다</span>
             {% endif %}
           </div>
 
@@ -119,7 +119,7 @@ layout: base
             {% if next_post %}
             <a href="{{ next_post.url | relative_url }}" class="post-nav-link post-nav-link-right">
               <span class="post-nav-direction">
-                다음 포스트 <i class="fas fa-chevron-right"></i>
+                <span data-i18n="next_post_label">다음 포스트</span> <i class="fas fa-chevron-right"></i>
               </span>
               <span class="post-nav-title">{{ next_post.title | strip_html | truncate: 50 }}</span>
               {% if next_post.subtitle %}
@@ -127,7 +127,7 @@ layout: base
               {% endif %}
             </a>
             {% else %}
-            <span class="post-nav-empty">마지막 포스트입니다</span>
+            <span class="post-nav-empty" data-i18n="last_post_label">마지막 포스트입니다</span>
             {% endif %}
           </div>
         </div>

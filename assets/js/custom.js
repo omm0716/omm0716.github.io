@@ -158,8 +158,272 @@ document.addEventListener("DOMContentLoaded", function() {
   }
 
   // =========================================================================
-  // Google Translate 다국어 번역 시스템 (KO, EN, JA, ZH)
+  // Google Translate 다국어 번역 시스템 (KO, EN, JA, ZH) 및 로컬 사전
   // =========================================================================
+
+  window.UI_TRANSLATIONS = {
+    // Brand & Header
+    "brand_title": {
+      "ko": "omm0716 블로그",
+      "en": "omm0716 Blog",
+      "ja": "omm0716ブログ",
+      "zh-CN": "omm0716博客"
+    },
+    "title_omm0716의 블로그": {
+      "ko": "omm0716의 블로그",
+      "en": "omm0716's Blog",
+      "ja": "omm0716のブログ",
+      "zh-CN": "omm0716的博客"
+    },
+    "subtitle_이 곳에서 프로그래밍을 공부 하고 기록 합니다. (I study and log programming here.)": {
+      "ko": "이 곳에서 프로그래밍을 공부 하고 기록 합니다.",
+      "en": "I study and record programming here.",
+      "ja": "ここでプログラミングを学び、記録しています。",
+      "zh-CN": "在这里学习并记录编程。"
+    },
+    "title_Python": {
+      "ko": "Python",
+      "en": "Python",
+      "ja": "Python",
+      "zh-CN": "Python"
+    },
+    "subtitle_파이썬 관련 모든 포스트를 모아둔 곳입니다. (This is a collection of all Python-related posts.)": {
+      "ko": "파이썬 관련 모든 포스트를 모아둔 곳입니다.",
+      "en": "This is a collection of all Python-related posts.",
+      "ja": "Pythonに関連するすべての投稿의 컬렉션입니다.",
+      "zh-CN": "这里收集了所有与 Python 相关的文章。"
+    },
+    "title_Database": {
+      "ko": "Database",
+      "en": "Database",
+      "ja": "データベース",
+      "zh-CN": "数据库"
+    },
+    "subtitle_데이터베이스 관련 모든 포스트를 모아둔 곳입니다. (This is a collection of all Database-related posts.)": {
+      "ko": "데이터베이스 관련 모든 포스트를 모아둔 곳입니다.",
+      "en": "This is a collection of all Database-related posts.",
+      "ja": "データベースに関連するすべての投稿의 컬렉션입니다.",
+      "zh-CN": "这里收集了所有与数据库相关的文章。"
+    },
+    "title_Machine Learning": {
+      "ko": "Machine Learning",
+      "en": "Machine Learning",
+      "ja": "機械学習",
+      "zh-CN": "机器学习"
+    },
+    "subtitle_머신러닝 관련 모든 포스트를 모아둔 곳입니다. (This is a collection of all Machine Learning-related posts.)": {
+      "ko": "머신러닝 관련 모든 포스트를 모아둔 곳입니다.",
+      "en": "This is a collection of all Machine Learning-related posts.",
+      "ja": "機械学習に関連するすべての投稿의 컬렉션입니다.",
+      "zh-CN": "这里收集了所有与机器学习相关的文章。"
+    },
+    "title_Tools": {
+      "ko": "Tools",
+      "en": "Tools",
+      "ja": "ツール",
+      "zh-CN": "工具"
+    },
+    "subtitle_개발 도구 관련 모든 포스트를 모아둔 곳입니다. (This is a collection of all Tools-related posts.)": {
+      "ko": "개발 도구 관련 모든 포스트를 모아둔 곳입니다.",
+      "en": "This is a collection of all Tools-related posts.",
+      "ja": "開発ツールに関連するすべての投稿의 컬렉션입니다.",
+      "zh-CN": "这里收集了所有与开发工具相关的文章。"
+    },
+    "title_C Language": {
+      "ko": "C Language",
+      "en": "C Language",
+      "ja": "C言語",
+      "zh-CN": "C 语言"
+    },
+    "subtitle_C언어 관련 모든 포스트를 모아둔 곳입니다. (This is a collection of all C Language-related posts.)": {
+      "ko": "C언어 관련 모든 포스트를 모아둔 곳입니다.",
+      "en": "This is a collection of all C Language-related posts.",
+      "ja": "C言語に関連하는 모든 投稿의 컬렉션입니다.",
+      "zh-CN": "这里收集了所有与 C 语言相关的文章。"
+    },
+    "title_C#": {
+      "ko": "C#",
+      "en": "C#",
+      "ja": "C#",
+      "zh-CN": "C#"
+    },
+    "subtitle_C# 관련 모든 포스트를 모아둔 곳입니다. (This is a collection of all C# related posts.)": {
+      "ko": "C# 관련 모든 포스트를 모아둔 곳입니다.",
+      "en": "This is a collection of all C# related posts.",
+      "ja": "C#に関連하는 모든 投稿의 컬렉션입니다.",
+      "zh-CN": "这里收集了所有与 C# 相关的文章。"
+    },
+
+    // Navbar items
+    "nav_About Me": {
+      "ko": "About Me",
+      "en": "About Me",
+      "ja": "プロフィール",
+      "zh-CN": "关于我"
+    },
+    "nav_Github": {
+      "ko": "Github",
+      "en": "Github",
+      "ja": "Github",
+      "zh-CN": "Github"
+    },
+    "nav_🎮 게임": {
+      "ko": "🎮 게임",
+      "en": "🎮 Games",
+      "ja": "🎮 ゲーム",
+      "zh-CN": "🎮 游戏"
+    },
+    "nav_🍉 수박 게임": {
+      "ko": "🍉 수박 게임",
+      "en": "🍉 Watermelon",
+      "ja": "🍉 スイカゲーム",
+      "zh-CN": "🍉 合成大西瓜"
+    },
+    "nav_🍎 사과 게임": {
+      "ko": "🍎 사과 게임",
+      "en": "🍎 Apple Game",
+      "ja": "🍎 アップルゲーム",
+      "zh-CN": "🍎 苹果游戏"
+    },
+
+    // Sidebar
+    "sidebar_categories": {
+      "ko": "카테고리",
+      "en": "Categories",
+      "ja": "カテゴリ",
+      "zh-CN": "文章分类"
+    },
+    "sidebar_popular_tags": {
+      "ko": "인기 태그",
+      "en": "Popular Tags",
+      "ja": "人気タグ",
+      "zh-CN": "热门标签"
+    },
+    "sidebar_recent_posts": {
+      "ko": "최근 포스트",
+      "en": "Recent Posts",
+      "ja": "最近の投稿",
+      "zh-CN": "最新文章"
+    },
+    "sidebar_no_categories": {
+      "ko": "카테고리가 없습니다",
+      "en": "No categories found",
+      "ja": "カテゴリが見つかりません",
+      "zh-CN": "未找到分类"
+    },
+    "category_Python": {
+      "ko": "Python (파이썬)",
+      "en": "Python",
+      "ja": "Python (パイソン)",
+      "zh-CN": "Python (派森)"
+    },
+    "category_Database": {
+      "ko": "Database (데이터베이스)",
+      "en": "Database",
+      "ja": "データベース",
+      "zh-CN": "数据库"
+    },
+    "category_Machine Learning": {
+      "ko": "Machine Learning (머신러닝)",
+      "en": "Machine Learning",
+      "ja": "機械学習",
+      "zh-CN": "机器学习"
+    },
+    "category_Tools": {
+      "ko": "Tools (도구)",
+      "en": "Tools",
+      "ja": "ツール",
+      "zh-CN": "工具"
+    },
+    "category_C-Language": {
+      "ko": "C Language (C언어)",
+      "en": "C Language",
+      "ja": "C言語",
+      "zh-CN": "C 语言"
+    },
+    "category_C-Sharp": {
+      "ko": "C# (.NET)",
+      "en": "C#",
+      "ja": "C#",
+      "zh-CN": "C#"
+    },
+
+    // General templates
+    "posted_on": {
+      "ko": "작성일:",
+      "en": "Posted on",
+      "ja": "投稿日:",
+      "zh-CN": "发布于"
+    },
+    "read_more": {
+      "ko": "더 보기",
+      "en": "Read More",
+      "ja": "続きを読む",
+      "zh-CN": "阅读更多"
+    },
+    "tags": {
+      "ko": "태그:",
+      "en": "Tags:",
+      "ja": "タグ:",
+      "zh-CN": "标签:"
+    },
+    "newer_posts": {
+      "ko": "이전 글",
+      "en": "Newer Posts",
+      "ja": "新しい投稿",
+      "zh-CN": "较新的文章"
+    },
+    "older_posts": {
+      "ko": "다음 글",
+      "en": "Older Posts",
+      "ja": "古い投稿",
+      "zh-CN": "较旧的文章"
+    },
+    "prev_post_label": {
+      "ko": "이전 포스트",
+      "en": "Previous Post",
+      "ja": "前の投稿",
+      "zh-CN": "上一篇文章"
+    },
+    "first_post_label": {
+      "ko": "첫 번째 포스트입니다",
+      "en": "This is the first post",
+      "ja": "これが最初の投稿です",
+      "zh-CN": "这是第一篇文章"
+    },
+    "next_post_label": {
+      "ko": "다음 포스트",
+      "en": "Next Post",
+      "ja": "次の投稿",
+      "zh-CN": "下一篇文章"
+    },
+    "last_post_label": {
+      "ko": "마지막 포스트입니다",
+      "en": "This is the last post",
+      "ja": "これが最後の投稿です",
+      "zh-CN": "这是最后一篇文章"
+    },
+
+    // Daily quiz tooltips
+    "quiz_medal_bronze_title": {
+      "ko": "7일 연속 정답 (동메달)",
+      "en": "7-day consecutive correct (Bronze Medal)",
+      "ja": "7日連続正解 (銅メダル)",
+      "zh-CN": "连续 7 天答对 (铜牌)"
+    },
+    "quiz_medal_silver_title": {
+      "ko": "14일 연속 정답 (은메달)",
+      "en": "14-day consecutive correct (Silver Medal)",
+      "ja": "14日連続正解 (銀メダル)",
+      "zh-CN": "连续 14 天答对 (银牌)"
+    },
+    "quiz_medal_gold_title": {
+      "ko": "30일 연속 정답 (금메달)",
+      "en": "30-day consecutive correct (Gold Medal)",
+      "ja": "30日連続正解 (金メダル)",
+      "zh-CN": "连续 30 天答对 (金牌)"
+    }
+  };
 
   // 1. 구글 번역용 숨김 앵커 생성
   let gtDiv = document.getElementById("google_translate_element");
@@ -179,12 +443,10 @@ document.addEventListener("DOMContentLoaded", function() {
       autoDisplay: false
     }, 'google_translate_element');
     
-    // 로드 직후 로컬 스토리지 선호 언어 반영
+    // 로드 직후 로컬 스토리지 선호 언어 반영 (약간 지연을 두어 콤보박스 파싱 대기)
     setTimeout(() => {
       const preferredLang = localStorage.getItem('blog_preferred_lang') || 'ko';
-      if (preferredLang !== 'ko') {
-        applyLanguage(preferredLang);
-      }
+      applyLanguage(preferredLang);
     }, 800);
   };
 
@@ -200,8 +462,14 @@ document.addEventListener("DOMContentLoaded", function() {
     applyLanguage(langCode);
   };
 
-  // 5. 실제 구글 번역 콤보 박스 제어 및 라벨 갱신
+  // 5. 실제 번역 적용 기능 (로컬 번역 + 구글 번역 콤보 박스 제어 및 라벨 갱신)
   function applyLanguage(langCode) {
+    // 로컬 딕셔너리 기반 네이티브 번역 적용
+    applyNativeTranslations(langCode);
+
+    // 이벤트 브로드캐스트하여 동적 컴포넌트(퀴즈, 추천) 리렌더링 유도
+    window.dispatchEvent(new CustomEvent('blogLanguageChanged', { detail: { language: langCode } }));
+
     const selectEl = document.querySelector('.goog-te-combo');
     if (selectEl) {
       selectEl.value = langCode;
@@ -218,13 +486,67 @@ document.addEventListener("DOMContentLoaded", function() {
         currentLangLabel.innerText = labels[langCode] || 'KO';
       }
     } else {
-      // 아직 콤보박스가 DOM에 파싱되지 않은 경우 200ms 후 재시도 (폴링)
-      setTimeout(() => applyLanguage(langCode), 200);
+      // 아직 구글 콤보박스가 DOM에 파싱되지 않은 경우 폴링 재시도
+      setTimeout(() => {
+        const selectElRetry = document.querySelector('.goog-te-combo');
+        if (selectElRetry) {
+          selectElRetry.value = langCode;
+          selectElRetry.dispatchEvent(new Event('change'));
+        }
+      }, 500);
+
+      const currentLangLabel = document.getElementById('current-lang-label');
+      if (currentLangLabel) {
+        const labels = {
+          'ko': 'KO',
+          'en': 'EN',
+          'ja': 'JA',
+          'zh-CN': 'ZH'
+        };
+        currentLangLabel.innerText = labels[langCode] || 'KO';
+      }
     }
   }
 
-  // 6. DOM 로드 직후 라벨 초기화
-  const preferredLang = localStorage.getItem('blog_preferred_lang') || 'ko';
+  // 로컬 번역 처리기 구현
+  function applyNativeTranslations(lang) {
+    const dict = window.UI_TRANSLATIONS;
+    if (!dict) return;
+
+    // 1. data-i18n 처리 (textContent / innerHTML)
+    document.querySelectorAll('[data-i18n]').forEach(el => {
+      const key = el.getAttribute('data-i18n');
+      if (dict[key] && dict[key][lang] !== undefined) {
+        const val = dict[key][lang];
+        if (val.includes('<') && val.includes('>')) {
+          el.innerHTML = val;
+        } else {
+          el.textContent = val;
+        }
+      }
+    });
+
+    // 2. data-i18n-title 처리
+    document.querySelectorAll('[data-i18n-title]').forEach(el => {
+      const key = el.getAttribute('data-i18n-title');
+      if (dict[key] && dict[key][lang] !== undefined) {
+        el.setAttribute('title', dict[key][lang]);
+      }
+    });
+
+    // 3. data-i18n-placeholder 처리
+    document.querySelectorAll('[data-i18n-placeholder]').forEach(el => {
+      const key = el.getAttribute('data-i18n-placeholder');
+      if (dict[key] && dict[key][lang] !== undefined) {
+        el.setAttribute('placeholder', dict[key][lang]);
+      }
+    });
+  }
+
+  // 6. DOM 로드 직후 로컬 번역 즉시 적용 (레이아웃 깜빡임 및 지연 방지)
+  const initialPreferredLang = localStorage.getItem('blog_preferred_lang') || 'ko';
+  applyNativeTranslations(initialPreferredLang);
+  
   const currentLangLabel = document.getElementById('current-lang-label');
   if (currentLangLabel) {
     const labels = {
@@ -233,6 +555,6 @@ document.addEventListener("DOMContentLoaded", function() {
       'ja': 'JA',
       'zh-CN': 'ZH'
     };
-    currentLangLabel.innerText = labels[preferredLang] || 'KO';
+    currentLangLabel.innerText = labels[initialPreferredLang] || 'KO';
   }
 });

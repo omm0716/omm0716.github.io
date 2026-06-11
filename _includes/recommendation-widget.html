@@ -12,15 +12,15 @@
         <div class="recommender-icon-wrapper">
           <i class="fas fa-compass"></i>
         </div>
-        <h2 class="recommender-title">나에게 딱 맞는 개발 로드맵 찾기 🎯</h2>
-        <p class="recommender-subtitle">
+        <h2 class="recommender-title" data-i18n="rec_title">나에게 딱 맞는 개발 로드맵 찾기 🎯</h2>
+        <p class="recommender-subtitle" data-i18n="rec_subtitle">
           어떤 언어부터 시작해야 할지 고민이신가요?<br>
           3개의 짧은 질문에 답하시면 omm0716 블로그의 포스트 중 지금 읽기 가장 좋은 최적의 가이드를 추천해 드립니다!
         </p>
       </div>
       <div class="recommender-body text-center">
         <button class="btn btn-primary recommender-start-btn" onclick="startRecommender()">
-          진단 시작하기 <i class="fas fa-chevron-right ml-1"></i>
+          <span data-i18n="rec_start">진단 시작하기</span> <i class="fas fa-chevron-right ml-1"></i>
         </button>
       </div>
     </div>
@@ -28,29 +28,29 @@
     <!-- Question 1 -->
     <div class="recommender-step" id="step-q1">
       <div class="recommender-header">
-        <span class="step-badge">Question 1 / 3</span>
-        <h3 class="question-title">지금 가장 공부하고 싶거나 달성하고자 하는 목표는 무엇인가요?</h3>
+        <span class="step-badge" data-i18n="rec_q1_badge">Question 1 / 3</span>
+        <h3 class="question-title" data-i18n="rec_q1_title">지금 가장 공부하고 싶거나 달성하고자 하는 목표는 무엇인가요?</h3>
       </div>
       <div class="recommender-options">
         <button class="recommender-option-btn" onclick="selectOption(1, 'A')">
           <span class="option-icon">⚙️</span>
-          <span class="option-text">컴퓨터 작동 방식과 프로그래밍의 깊은 기초 원리를 이해하고 싶습니다.</span>
+          <span class="option-text" data-i18n="rec_q1_a">컴퓨터 작동 방식과 프로그래밍의 깊은 기초 원리를 이해하고 싶습니다.</span>
         </button>
         <button class="recommender-option-btn" onclick="selectOption(1, 'B')">
           <span class="option-icon">🌐</span>
-          <span class="option-text">웹 데이터 자동 수집(크롤링), 간단한 API 활용 등 실용적인 기능을 구현해 보고 싶습니다.</span>
+          <span class="option-text" data-i18n="rec_q1_b">웹 데이터 자동 수집(크롤링), 간단한 API 활용 등 실용적인 기능을 구현해 보고 싶습니다.</span>
         </button>
         <button class="recommender-option-btn" onclick="selectOption(1, 'C')">
           <span class="option-icon">🗄️</span>
-          <span class="option-text">데이터베이스 설계와 SQL 조리를 자유자재로 다루며 데이터를 다루는 법을 마스터하고 싶습니다.</span>
+          <span class="option-text" data-i18n="rec_q1_c">데이터베이스 설계와 SQL 조리를 자유자재로 다루며 데이터를 다루는 법을 마스터하고 싶습니다.</span>
         </button>
         <button class="recommender-option-btn" onclick="selectOption(1, 'D')">
           <span class="option-icon">🧠</span>
-          <span class="option-text">인공지능(AI)과 머신러닝의 알고리즘을 분석하고, PDF 문서 기반 RAG 챗봇을 만들어 보고 싶습니다.</span>
+          <span class="option-text" data-i18n="rec_q1_d">인공지능(AI)과 머신러닝의 알고리즘을 분석하고, PDF 문서 기반 RAG 챗봇을 만들어 보고 싶습니다.</span>
         </button>
         <button class="recommender-option-btn" onclick="selectOption(1, 'E')">
           <span class="option-icon">💻</span>
-          <span class="option-text">Windows용 데스크톱 프로그램(GUI) 개발과 견고한 객체 지향 프로그래밍 설계를 배우고 싶습니다.</span>
+          <span class="option-text" data-i18n="rec_q1_e">Windows용 데스크톱 프로그램(GUI) 개발과 견고한 객체 지향 프로그래밍 설계를 배우고 싶습니다.</span>
         </button>
       </div>
     </div>
@@ -58,21 +58,21 @@
     <!-- Question 2 -->
     <div class="recommender-step" id="step-q2">
       <div class="recommender-header">
-        <span class="step-badge">Question 2 / 3</span>
-        <h3 class="question-title">자신의 현재 코딩 숙련도 및 원하시는 강좌 스타일은 어떤가요?</h3>
+        <span class="step-badge" data-i18n="rec_q2_badge">Question 2 / 3</span>
+        <h3 class="question-title" data-i18n="rec_q2_title">자신의 현재 코딩 숙련도 및 원하시는 강좌 스타일은 어떤가요?</h3>
       </div>
       <div class="recommender-options">
         <button class="recommender-option-btn" onclick="selectOption(2, 'A')">
           <span class="option-icon">🌱</span>
-          <span class="option-text"><strong>완전 기초부터 차근차근:</strong> 변수, 제어문 등 아주 기본적인 문법 개념부터 차근차근 다지는 입문 코스가 필요합니다.</span>
+          <span class="option-text" data-i18n="rec_q2_a"><strong>완전 기초부터 차근차근:</strong> 변수, 제어문 등 아주 기본적인 문법 개념부터 차근차근 다지는 입문 코스가 필요합니다.</span>
         </button>
         <button class="recommender-option-btn" onclick="selectOption(2, 'B')">
           <span class="option-icon">🚀</span>
-          <span class="option-text"><strong>실전 활용 및 심화:</strong> 기본 문법보다는 데이터 분석, 알고리즘 구현, 클래스 설계 등 동작하는 프로젝트 실습 중심이 좋습니다.</span>
+          <span class="option-text" data-i18n="rec_q2_b"><strong>실전 활용 및 심화:</strong> 기본 문법보다는 데이터 분석, 알고리즘 구현, 클래스 설계 등 동작하는 프로젝트 실습 중심이 좋습니다.</span>
         </button>
         <button class="recommender-option-btn" onclick="selectOption(2, 'C')">
           <span class="option-icon">🛠️</span>
-          <span class="option-text"><strong>핵심 도구 활용:</strong> 깃(Git)과 깃허브(GitHub) 버전 관리처럼 개발자 협업의 핵심 필수 도구를 빠르게 익히고 싶습니다.</span>
+          <span class="option-text" data-i18n="rec_q2_c"><strong>핵심 도구 활용:</strong> 깃(Git)과 깃허브(GitHub) 버전 관리처럼 개발자 협업의 핵심 필수 도구를 빠르게 익히고 싶습니다.</span>
         </button>
       </div>
     </div>
@@ -80,33 +80,33 @@
     <!-- Question 3 -->
     <div class="recommender-step" id="step-q3">
       <div class="recommender-header">
-        <span class="step-badge">Question 3 / 3</span>
-        <h3 class="question-title">아래 나열된 실습 프로젝트 중 가장 직접 만들어 보고 싶은 것은 무엇인가요?</h3>
+        <span class="step-badge" data-i18n="rec_q3_badge">Question 3 / 3</span>
+        <h3 class="question-title" data-i18n="rec_q3_title">아래 나열된 실습 프로젝트 중 가장 직접 만들어 보고 싶은 것은 무엇인가요?</h3>
       </div>
       <div class="recommender-options">
         <button class="recommender-option-btn" onclick="selectOption(3, 'A')">
           <span class="option-icon">🧮</span>
-          <span class="option-text">금액권별 지폐 계산기 및 선택/버블 정렬 등의 정렬 알고리즘 실습</span>
+          <span class="option-text" data-i18n="rec_q3_a">금액권별 지폐 계산기 및 선택/버블 정렬 등의 정렬 알고리즘 실습</span>
         </button>
         <button class="recommender-option-btn" onclick="selectOption(3, 'B')">
           <span class="option-icon">🏭</span>
-          <span class="option-text">반도체 장비 DB 설계, 4테이블 결합, 공정 센서 측정 데이터 이상값 분석</span>
+          <span class="option-text" data-i18n="rec_q3_b">반도체 장비 DB 설계, 4테이블 결합, 공정 센서 측정 데이터 이상값 분석</span>
         </button>
         <button class="recommender-option-btn" onclick="selectOption(3, 'C')">
           <span class="option-icon">🤖</span>
-          <span class="option-text">K-Means/DBSCAN 군집 분석 및 LangChain 기반 PDF 문서 연동 AI 챗봇</span>
+          <span class="option-text" data-i18n="rec_q3_c">K-Means/DBSCAN 군집 분석 및 LangChain 기반 PDF 문서 연동 AI 챗봇</span>
         </button>
         <button class="recommender-option-btn" onclick="selectOption(3, 'D')">
           <span class="option-icon">☕</span>
-          <span class="option-text">카페 무인 주문 영수증 출력 루프 및 다중 클래스 기반 재고 관리 WinForms 프로그램</span>
+          <span class="option-text" data-i18n="rec_q3_d">카페 무인 주문 영수증 출력 루프 및 다중 클래스 기반 재고 관리 WinForms 프로그램</span>
         </button>
         <button class="recommender-option-btn" onclick="selectOption(3, 'E')">
           <span class="option-icon">☁️</span>
-          <span class="option-text">실시간 날씨 공공 API 호출 데이터 파싱 및 파일(CSV, JSON) 저장 프로그램</span>
+          <span class="option-text" data-i18n="rec_q3_e">실시간 날씨 공공 API 호출 데이터 파싱 및 파일(CSV, JSON) 저장 프로그램</span>
         </button>
         <button class="recommender-option-btn" onclick="selectOption(3, 'F')">
           <span class="option-icon">📦</span>
-          <span class="option-text">내 컴퓨터의 코드를 로컬 저장소에 커밋하고 GitHub 클라우드 저장소와 연동하기</span>
+          <span class="option-text" data-i18n="rec_q3_f">내 컴퓨터의 코드를 로컬 저장소에 커밋하고 GitHub 클라우드 저장소와 연동하기</span>
         </button>
       </div>
     </div>
@@ -114,7 +114,7 @@
     <!-- Result Step -->
     <div class="recommender-step" id="step-result">
       <div class="recommender-header text-center">
-        <span class="result-badge">✨ 맞춤 추천 결과</span>
+        <span class="result-badge" data-i18n="rec_result_badge">✨ 맞춤 추천 결과</span>
         <h3 class="result-title" id="result-category-title">추천 카테고리</h3>
         <p class="result-desc" id="result-category-desc">회원님께 가장 어울리는 맞춤형 포스트들입니다.</p>
       </div>
@@ -123,10 +123,10 @@
       </div>
       <div class="recommender-footer text-center mt-4">
         <button class="btn btn-secondary recommender-restart-btn mr-2" onclick="restartRecommender()">
-          <i class="fas fa-redo-alt mr-1"></i> 테스트 다시 하기
+          <i class="fas fa-redo-alt mr-1"></i> <span data-i18n="rec_restart">테스트 다시 하기</span>
         </button>
         <a href="" id="result-category-link" class="btn btn-outline-primary recommender-explore-btn">
-          카테고리 전체보기 <i class="fas fa-chevron-right ml-1"></i>
+          <span data-i18n="rec_explore">카테고리 전체보기</span> <i class="fas fa-chevron-right ml-1"></i>
         </a>
       </div>
     </div>
@@ -164,36 +164,105 @@
 
   const CATEGORY_MAP = {
     'Python': {
-      name: 'Python (파이썬)',
-      desc: '문법이 직관적이며 풍부한 생태계를 가져, 웹 크롤링/API 활용/머신러닝 등 다방면에서 유용한 최고의 입문 언어입니다.',
+      name: {
+        'ko': 'Python (파이썬)',
+        'en': 'Python',
+        'ja': 'Python (パイソン)',
+        'zh-CN': 'Python (派森)'
+      },
+      desc: {
+        'ko': '문법이 직관적이며 풍부한 생태계를 가져, 웹 크롤링/API 활용/머신러닝 등 다방면에서 유용한 최고의 입문 언어입니다.',
+        'en': 'An intuitive programming language with a rich ecosystem, making it the best starting language for web scraping, APIs, and machine learning.',
+        'ja': '直感的な文法と豊富なエコシステムを持ち、ウェブスクレイピング、API連携、機械学習など多方面で役立つ最高の入門言語です。',
+        'zh-CN': '语法直观且生态丰富，是用于网页爬虫、API对接及机器学习等各领域的最优入门语言。'
+      },
       link: '/python/'
     },
     'Database': {
-      name: 'Database & SQL (데이터베이스)',
-      desc: '데이터를 유기적으로 구성하는 방법과, 대용량 데이터를 고속으로 조회·조작·분석하는 백엔드 핵심 지식입니다.',
+      name: {
+        'ko': 'Database & SQL (데이터베이스)',
+        'en': 'Database & SQL',
+        'ja': 'データベース & SQL',
+        'zh-CN': '数据库 & SQL'
+      },
+      desc: {
+        'ko': '데이터를 유기적으로 구성하는 방법과, 대용량 데이터를 고속으로 조회·조작·분석하는 백엔드 핵심 지식입니다.',
+        'en': 'Core backend knowledge covering organic data modeling and high-speed querying, manipulation, and analysis of large datasets.',
+        'ja': 'データを有機的に構築する方法や、大容量データを高速に照会・操作・分析するバックエンドの核となる知識です。',
+        'zh-CN': '有机构建数据的方法，以及高速查询、操作和分析海量数据的后端核心知识。'
+      },
       link: '/database/'
     },
     'Machine Learning': {
-      name: 'Machine Learning (머신러닝)',
-      desc: '데이터 분석부터 예측 분석, 분류 알고리즘, 더 나아가 챗봇과 같은 거대 언어 모델(LLM) 연동 실전 프로젝트를 학습합니다.',
+      name: {
+        'ko': 'Machine Learning (머신러닝)',
+        'en': 'Machine Learning',
+        'ja': '機械学習 (Machine Learning)',
+        'zh-CN': '机器学习 (Machine Learning)'
+      },
+      desc: {
+        'ko': '데이터 분석부터 예측 분석, 분류 알고리즘, 더 나아가 챗봇과 같은 거대 언어 모델(LLM) 연동 실전 프로젝트를 학습합니다.',
+        'en': 'From data analysis to predictive modeling, classification algorithms, and practical projects integrating Large Language Models (LLM) like chatbots.',
+        'ja': 'データ分析から予測分析、分類アルゴリズム、さらにはチャットボットなどの大規模言語モデル（LLM）連携の実戦プロジェクトを学びます。',
+        'zh-CN': '学习从数据分析到预测分析、分类算法，乃至对接大语言模型（LLM）构建聊天机器人等实战项目。'
+      },
       link: '/machine-learning/'
     },
     'Tools': {
-      name: 'Tools (Git & GitHub)',
-      desc: '코드의 버전 히스토리를 추적하고 협업하는 개발자 필수 공통 장비로, 기초 사용법과 호스팅 환경을 제공합니다.',
+      name: {
+        'ko': 'Tools (Git & GitHub)',
+        'en': 'Tools (Git & GitHub)',
+        'ja': 'ツール (Git & GitHub)',
+        'zh-CN': '工具 (Git & GitHub)'
+      },
+      desc: {
+        'ko': '코드의 버전 히스토리를 추적하고 협업하는 개발자 필수 공통 장비로, 기초 사용법과 호스팅 환경을 제공합니다.',
+        'en': 'Essential shared tools for tracking version history and collaboration, covering basic usage and hosting environments.',
+        'ja': 'コードのバージョン履歴を追跡し共同開発するための必須ツール。基礎的な使い方とホスティング環境を提供します。',
+        'zh-CN': '用于追踪代码版本历史和协同开发的程序员必备工具，涵盖基础用法及托管环境。'
+      },
       link: '/tools/'
     },
     'C-Language': {
-      name: 'C Language (C언어)',
-      desc: '하드웨어와 시스템 메모리를 직접 다뤄 컴퓨터 과학의 근본을 배우고 절차 지향 프로그램의 근본을 세우는 명품 언어입니다.',
+      name: {
+        'ko': 'C Language (C언어)',
+        'en': 'C Language',
+        'ja': 'C言語 (C Language)',
+        'zh-CN': 'C 语言 (C Language)'
+      },
+      desc: {
+        'ko': '하드웨어와 시스템 메모리를 직접 다뤄 컴퓨터 과학의 근본을 배우고 절차 지향 프로그램의 근본을 세우는 명품 언어입니다.',
+        'en': 'A foundational language for computer science that teaches direct hardware and memory access and procedural programming principles.',
+        'ja': 'ハードウェアやシステムメモリを直接操作し、コンピュータ科学の基礎を学び、手続き型プログラミングの根底を築く名作言語です。',
+        'zh-CN': '直接操作硬件和系统内存，以此学习计算机科学的根本，并奠定过程化编程基础的经典语言。'
+      },
       link: '/c-language/'
     },
     'C-Sharp': {
-      name: 'C# (.NET 프로그래밍)',
-      desc: '강력한 형식의 완전한 객체 지향 언어로, 대형 프로젝트 설계 역량 및 Windows Forms GUI 프로그램을 실습합니다.',
+      name: {
+        'ko': 'C# (.NET 프로그래밍)',
+        'en': 'C# (.NET Programming)',
+        'ja': 'C# (.NETプログラミング)',
+        'zh-CN': 'C# (.NET 编程)'
+      },
+      desc: {
+        'ko': '강력한 형식의 완전한 객체 지향 언어로, 대형 프로젝트 설계 역량 및 Windows Forms GUI 프로그램을 실습합니다.',
+        'en': 'A strongly-typed object-oriented language for learning enterprise-scale software architecture and Windows Forms GUI application development.',
+        'ja': '強力な型付けの完全なオブジェクト指向言語。大規模なプロジェクト設計力やWindows Forms GUIアプリ開発を実習します。',
+        'zh-CN': '强类型的完全面向对象语言，实战演练大型项目设计能力以及 Windows Forms GUI 应用程序。'
+      },
       link: '/c-sharp/'
     }
   };
+
+  document.addEventListener('DOMContentLoaded', () => {
+    // Listen to native language changes and re-render results if active
+    window.addEventListener('blogLanguageChanged', (e) => {
+      if (currentStep === 'result') {
+        showResults();
+      }
+    });
+  });
 
   function startRecommender() {
     // Reset answers
@@ -244,6 +313,7 @@
   }
 
   function showResults() {
+    const lang = localStorage.getItem('blog_preferred_lang') || 'ko';
     let scores = {
       'Python': 0,
       'Database': 0,
@@ -312,9 +382,11 @@
 
     // Generate output results based on highest category and difficulty preference
     let recommendedCategoryInfo = CATEGORY_MAP[maxCategory];
+    const catName = recommendedCategoryInfo.name[lang] || recommendedCategoryInfo.name['en'] || recommendedCategoryInfo.name['ko'];
+    const catDesc = recommendedCategoryInfo.desc[lang] || recommendedCategoryInfo.desc['en'] || recommendedCategoryInfo.desc['ko'];
     
-    document.getElementById('result-category-title').innerText = recommendedCategoryInfo.name;
-    document.getElementById('result-category-desc').innerText = recommendedCategoryInfo.desc;
+    document.getElementById('result-category-title').innerText = catName;
+    document.getElementById('result-category-desc').innerText = catDesc;
     
     const categoryLinkBtn = document.getElementById('result-category-link');
     categoryLinkBtn.href = '{{ "" | relative_url }}' + recommendedCategoryInfo.link;
@@ -378,6 +450,16 @@
     const resultsContainer = document.getElementById('recommendation-results');
     resultsContainer.innerHTML = '';
 
+    const actionTextMap = {
+      'ko': '강좌 읽기',
+      'en': 'Read Lesson',
+      'ja': 'レッスンを読む',
+      'zh-CN': '阅读教程'
+    };
+    const actionText = actionTextMap[lang] || '강좌 읽기';
+
+    const shortCategoryName = (recommendedCategoryInfo.name['en'] || maxCategory).split(' ')[0];
+
     recommendations.forEach((post, idx) => {
       let tagsHTML = '';
       if (post.tags && post.tags.length > 0) {
@@ -392,7 +474,7 @@
       card.innerHTML = `
         <div class="rec-card-body">
           <div class="rec-meta">
-            <span class="badge badge-category mr-2">${recommendedCategoryInfo.name.split(' ')[0]}</span>
+            <span class="badge badge-category mr-2">${shortCategoryName}</span>
             <span class="rec-date text-muted">${post.date}</span>
           </div>
           <h4 class="rec-post-title mt-2">
@@ -403,7 +485,7 @@
         </div>
         <div class="rec-card-action">
           <a href="${post.url}" class="btn btn-sm btn-link text-primary p-0">
-            강좌 읽기 <i class="fas fa-chevron-right ml-1"></i>
+            ${actionText} <i class="fas fa-chevron-right ml-1"></i>
           </a>
         </div>
       `;

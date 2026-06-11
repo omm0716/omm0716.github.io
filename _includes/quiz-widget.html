@@ -26,20 +26,20 @@
     <!-- Quiz Header -->
     <div class="quiz-header d-flex justify-content-between align-items-center flex-wrap">
       <div class="quiz-header-title">
-        <h3 class="quiz-main-title">🐍 오늘의 파이썬 1일 1문제</h3>
-        <p class="quiz-subtitle text-muted">매일 파이썬 문제를 풀고 연속 정답 스탬프를 모아보세요!</p>
+        <h3 class="quiz-main-title" data-i18n="quiz_main_title">🐍 오늘의 파이썬 1일 1문제</h3>
+        <p class="quiz-subtitle text-muted" data-i18n="quiz_subtitle">매일 파이썬 문제를 풀고 연속 정답 스탬프를 모아보세요!</p>
       </div>
       <div class="quiz-stats d-flex align-items-center">
         <!-- Streak badge -->
         <div class="quiz-stat-item mr-3">
-          <span class="stat-label">🔥 연속 정답</span>
-          <span class="stat-value" id="quiz-streak-count">0</span>일
+          <span class="stat-label" data-i18n="quiz_streak_label">🔥 연속 정답</span>
+          <span class="stat-value" id="quiz-streak-count">0</span><span data-i18n="quiz_streak_suffix">일</span>
         </div>
         <!-- Medal badges -->
         <div class="quiz-medals d-flex">
-          <div class="quiz-medal-badge bronze" id="medal-bronze" title="7일 연속 정답 (동메달)">🥉</div>
-          <div class="quiz-medal-badge silver" id="medal-silver" title="14일 연속 정답 (은메달)">🥈</div>
-          <div class="quiz-medal-badge gold" id="medal-gold" title="30일 연속 정답 (금메달)">🥇</div>
+          <div class="quiz-medal-badge bronze" id="medal-bronze" title="7일 연속 정답 (동메달)" data-i18n-title="quiz_medal_bronze_title">🥉</div>
+          <div class="quiz-medal-badge silver" id="medal-silver" title="14일 연속 정답 (은메달)" data-i18n-title="quiz_medal_silver_title">🥈</div>
+          <div class="quiz-medal-badge gold" id="medal-gold" title="30일 연속 정답 (금메달)" data-i18n-title="quiz_medal_gold_title">🥇</div>
         </div>
       </div>
     </div>
@@ -48,7 +48,7 @@
 
     <!-- Stamp Card Board -->
     <div class="stamp-board-container">
-      <h4 class="stamp-board-title">🍎 주간 스탬프 카드 (7칸)</h4>
+      <h4 class="stamp-board-title" data-i18n="quiz_stamp_title">🍎 주간 스탬프 카드 (7칸)</h4>
       <div class="stamp-board" id="quiz-stamp-board">
         <div class="stamp-slot" data-index="1">1</div>
         <div class="stamp-slot" data-index="2">2</div>
@@ -66,13 +66,13 @@
         <div class="spinner-border text-primary" role="status">
           <span class="sr-only">Loading...</span>
         </div>
-        <p class="mt-2 text-muted">오늘의 문제를 가져오는 중입니다...</p>
+        <p class="mt-2 text-muted" data-i18n="quiz_loading">오늘의 문제를 가져오는 중입니다...</p>
       </div>
     </div>
 
     <div class="quiz-body mt-4" id="quiz-active-body" style="display: none;">
       <div class="quiz-question-container">
-        <span class="quiz-q-num">Q. <span id="quiz-question-id">1</span>번 문제</span>
+        <span class="quiz-q-num" id="quiz-question-num-header">Q. <span id="quiz-question-id">1</span>번 문제</span>
         <h4 class="quiz-question-text" id="quiz-question-text">질문 내용</h4>
         <div class="quiz-code-block" id="quiz-code-container" style="display: none;">
           <pre><code class="language-python" id="quiz-code-text"># 코드 내용</code></pre>
@@ -101,20 +101,20 @@
   <div class="quiz-modal-content">
     <div class="quiz-modal-header text-center">
       <div class="modal-medal-icon" id="modal-medal-icon">🥉</div>
-      <h3 class="quiz-modal-title">🏆 명예의 전당 메달 획득! 🏆</h3>
-      <p class="quiz-modal-subtitle">축하합니다! <span id="modal-streak-count">7</span>일 연속 정답을 달성하셨습니다.</p>
+      <h3 class="quiz-modal-title" data-i18n="quiz_modal_title">🏆 명예의 전당 메달 획득! 🏆</h3>
+      <p class="quiz-modal-subtitle" id="quiz-modal-subtitle-text">축하합니다! <span id="modal-streak-count">7</span>일 연속 정답을 달성하셨습니다.</p>
     </div>
     <div class="quiz-modal-body mt-3">
-      <p class="text-center text-muted">전 세계 리더보드와 외부 DB에 기록할 닉네임을 입력해 주세요.</p>
+      <p class="text-center text-muted" data-i18n="quiz_modal_desc">전 세계 리더보드와 외부 DB에 기록할 닉네임을 입력해 주세요.</p>
       <div class="form-group">
-        <input type="text" class="form-control text-center" id="quiz-nickname-input" placeholder="닉네임을 입력하세요 (최대 10자)" maxlength="10">
+        <input type="text" class="form-control text-center" id="quiz-nickname-input" placeholder="닉네임을 입력하세요 (최대 10자)" data-i18n-placeholder="quiz_modal_placeholder" maxlength="10">
       </div>
-      <div class="quiz-modal-error text-danger text-center mt-2" id="quiz-modal-error" style="display: none;">
+      <div class="quiz-modal-error text-danger text-center mt-2" id="quiz-modal-error" style="display: none;" data-i18n="quiz_modal_error_empty">
         닉네임을 입력해 주세요.
       </div>
     </div>
     <div class="quiz-modal-footer text-center mt-4">
-      <button class="btn btn-primary btn-block modal-submit-btn" id="modal-submit-btn" onclick="submitMedalRecord()">
+      <button class="btn btn-primary btn-block modal-submit-btn" id="modal-submit-btn" onclick="submitMedalRecord()" data-i18n="quiz_modal_submit">
         명예의 전당 등록 <i class="fas fa-paper-plane ml-1"></i>
       </button>
     </div>
@@ -138,6 +138,13 @@
   document.addEventListener('DOMContentLoaded', () => {
     loadQuizState();
     fetchQuizData();
+
+    // Listen to native language changes and re-render
+    window.addEventListener('blogLanguageChanged', (e) => {
+      if (todayQuestion) {
+        renderQuiz();
+      }
+    });
   });
 
   function loadQuizState() {
@@ -219,7 +226,7 @@
   async function fetchQuizData() {
     try {
       const response = await fetch('{{ "/assets/data/python-quiz.json" | relative_url }}');
-      if (!response.ok) throw new Error('퀴즈 데이터를 불러오는데 실패했습니다.');
+      if (!response.ok) throw new Error('Failed to load quiz data.');
       const questions = await response.json();
       
       // Determine today's question based on day index
@@ -234,7 +241,7 @@
       document.getElementById('quiz-loading-body').innerHTML = `
         <div class="text-center py-4 text-danger">
           <i class="fas fa-exclamation-triangle fa-2x"></i>
-          <p class="mt-2 font-weight-bold">퀴즈 데이터를 로드할 수 없습니다.</p>
+          <p class="mt-2 font-weight-bold" data-i18n="quiz_load_error">퀴즈 데이터를 로드할 수 없습니다.</p>
           <small>${error.message}</small>
         </div>
       `;
@@ -242,11 +249,24 @@
   }
 
   function renderQuiz() {
+    const lang = localStorage.getItem('blog_preferred_lang') || 'ko';
+
     document.getElementById('quiz-loading-body').style.display = 'none';
     document.getElementById('quiz-active-body').style.display = 'block';
 
-    document.getElementById('quiz-question-id').innerText = todayQuestion.id;
-    document.getElementById('quiz-question-text').innerText = todayQuestion.question;
+    // Update Question ID label
+    const idHeader = document.getElementById('quiz-question-num-header');
+    if (idHeader) {
+      let format = 'Q. ${id}번 문제';
+      if (lang === 'en') format = 'Question #${id}';
+      else if (lang === 'ja') format = 'Q. ${id}問目';
+      else if (lang === 'zh-CN') format = 'Q. 第${id}题';
+      idHeader.innerHTML = format.replace('${id}', `<span id="quiz-question-id">${todayQuestion.id}</span>`);
+    }
+
+    // Set Question Text
+    const questionText = (lang === 'en' && todayQuestion.question_en) ? todayQuestion.question_en : todayQuestion.question;
+    document.getElementById('quiz-question-text').innerText = questionText;
 
     const codeContainer = document.getElementById('quiz-code-container');
     if (todayQuestion.code) {
@@ -259,7 +279,8 @@
     const optionsContainer = document.getElementById('quiz-options-container');
     optionsContainer.innerHTML = '';
 
-    todayQuestion.options.forEach((opt, idx) => {
+    const opts = (lang === 'en' && todayQuestion.options_en) ? todayQuestion.options_en : todayQuestion.options;
+    opts.forEach((opt, idx) => {
       const btn = document.createElement('button');
       btn.className = 'quiz-option-btn';
       btn.innerHTML = `
@@ -275,12 +296,15 @@
     if (quizState.lastSolved === todayStr) {
       hasSolvedToday = true;
       lockQuizAndShowFeedback(todayQuestion.answer, true);
+    } else {
+      document.getElementById('quiz-feedback').style.display = 'none';
     }
   }
 
   function submitAnswer(selectedIndex) {
     if (hasSolvedToday) return;
 
+    const lang = localStorage.getItem('blog_preferred_lang') || 'ko';
     const correctIndex = todayQuestion.answer;
     const isCorrect = (selectedIndex === correctIndex);
 
@@ -325,13 +349,28 @@
       const feedbackDesc = document.getElementById('quiz-feedback-desc');
 
       feedbackAlert.className = 'alert alert-danger';
-      feedbackTitle.innerText = '❌ 오답입니다!';
-      feedbackDesc.innerText = '아쉽게도 틀렸습니다. 연속 정답이 초기화되었습니다. 다시 한 번 생각하고 정답을 골라 보세요!';
+
+      let title = '❌ 오답입니다!';
+      let desc = '아쉽게도 틀렸습니다. 연속 정답이 초기화되었습니다. 다시 한 번 생각하고 정답을 골라 보세요!';
+      if (lang === 'en') {
+        title = '❌ Incorrect!';
+        desc = 'Unfortunately, that is incorrect. Your streak has been reset. Think again and choose another answer!';
+      } else if (lang === 'ja') {
+        title = '❌ 不正解です！';
+        desc = '残念ながら不正解です。連続正解がリセットされました。もう一度考えて正解を選んでみてください！';
+      } else if (lang === 'zh-CN') {
+        title = '❌ 答错了！';
+        desc = '很遗憾答错了。连续答对天数已被重置。再想一想，重新选择一个答案吧！';
+      }
+
+      feedbackTitle.innerText = title;
+      feedbackDesc.innerText = desc;
       feedback.style.display = 'block';
     }
   }
 
   function lockQuizAndShowFeedback(chosenIndex, isCorrect) {
+    const lang = localStorage.getItem('blog_preferred_lang') || 'ko';
     const btns = document.querySelectorAll('.quiz-option-btn');
     btns.forEach((btn, idx) => {
       btn.disabled = true;
@@ -348,8 +387,23 @@
     const feedbackDesc = document.getElementById('quiz-feedback-desc');
 
     feedbackAlert.className = 'alert alert-success';
-    feedbackTitle.innerText = '🎉 정답입니다! (오늘의 학습 완료)';
-    feedbackDesc.innerHTML = `<strong>정답: ${chosenIndex + 1}번</strong><br><br>${escapeHTML(todayQuestion.explanation)}`;
+
+    let title = '🎉 정답입니다! (오늘의 학습 완료)';
+    let prefix = '정답: ${index}번';
+    if (lang === 'en') {
+      title = '🎉 Correct! (Today\'s study complete)';
+      prefix = 'Correct Answer: Option #${index}';
+    } else if (lang === 'ja') {
+      title = '🎉 正解です！ (今日の学習完了)';
+      prefix = '正解: ${index}番';
+    } else if (lang === 'zh-CN') {
+      title = '🎉 答对了！ (今日学习完成)';
+      prefix = '正确答案: 第 ${index} 个选项';
+    }
+    feedbackTitle.innerText = title;
+
+    const explanation = (lang === 'en' && todayQuestion.explanation_en) ? todayQuestion.explanation_en : todayQuestion.explanation;
+    feedbackDesc.innerHTML = `<strong>${prefix.replace('${index}', chosenIndex + 1)}</strong><br><br>${escapeHTML(explanation)}`;
     feedback.style.display = 'block';
   }
 
@@ -367,12 +421,10 @@
   }
 
   function openMedalModal(streak) {
+    const lang = localStorage.getItem('blog_preferred_lang') || 'ko';
     const modal = document.getElementById('quiz-medal-modal');
     const medalIcon = document.getElementById('modal-medal-icon');
-    const streakCount = document.getElementById('modal-streak-count');
     
-    streakCount.innerText = streak;
-
     if (streak === 7) {
       medalIcon.innerText = '🥉';
       medalIcon.className = 'modal-medal-icon bronze';
@@ -382,6 +434,20 @@
     } else if (streak === 30) {
       medalIcon.innerText = '🥇';
       medalIcon.className = 'modal-medal-icon gold';
+    }
+
+    // Set congratulations subtitle
+    const subtitleEl = document.getElementById('quiz-modal-subtitle-text');
+    if (subtitleEl) {
+      let text = '축하합니다! ${streak}일 연속 정답을 달성하셨습니다.';
+      if (lang === 'en') {
+        text = 'Congratulations! You have achieved a ${streak}-day streak.';
+      } else if (lang === 'ja') {
+        text = 'おめでとうございます！ ${streak}日連続正解を達成しました。';
+      } else if (lang === 'zh-CN') {
+        text = '恭喜！您已达成了连续 ${streak} 天答对的记录。';
+      }
+      subtitleEl.innerHTML = text.replace('${streak}', `<span id="modal-streak-count">${streak}</span>`);
     }
 
     modal.style.display = 'flex';
@@ -395,20 +461,30 @@
   }
 
   async function submitMedalRecord() {
+    const lang = localStorage.getItem('blog_preferred_lang') || 'ko';
     const nicknameInput = document.getElementById('quiz-nickname-input');
     const nickname = nicknameInput.value.trim();
     const errorDiv = document.getElementById('quiz-modal-error');
     const submitBtn = document.getElementById('modal-submit-btn');
 
     if (!nickname) {
-      errorDiv.innerText = '닉네임을 입력해 주세요.';
+      let errMsg = '닉네임을 입력해 주세요.';
+      if (lang === 'en') errMsg = 'Please enter a nickname.';
+      else if (lang === 'ja') errMsg = 'ニックネームを入力してください。';
+      else if (lang === 'zh-CN') errMsg = '请输入昵称。';
+      errorDiv.innerText = errMsg;
       errorDiv.style.display = 'block';
       return;
     }
 
     errorDiv.style.display = 'none';
     submitBtn.disabled = true;
-    submitBtn.innerHTML = `등록 중 <i class="fas fa-spinner fa-spin ml-1"></i>`;
+
+    let loadingText = '등록 중';
+    if (lang === 'en') loadingText = 'Submitting';
+    else if (lang === 'ja') loadingText = '登録中';
+    else if (lang === 'zh-CN') loadingText = '提交中';
+    submitBtn.innerHTML = `${loadingText} <i class="fas fa-spinner fa-spin ml-1"></i>`;
 
     const medalType = activeMilestone === 7 ? 'Bronze' : activeMilestone === 14 ? 'Silver' : 'Gold';
 
@@ -421,13 +497,28 @@
       
       // Close modal and show success feedback
       closeMedalModal();
-      alert(`🎉 명예의 전당 등록이 완료되었습니다! (닉네임: ${nickname})`);
+
+      let successMsg = `🎉 명예의 전당 등록이 완료되었습니다! (닉네임: ${nickname})`;
+      if (lang === 'en') successMsg = `🎉 Registration to the Hall of Fame complete! (Nickname: ${nickname})`;
+      else if (lang === 'ja') successMsg = `🎉 殿堂入り登録が完了しました！ (ニックネーム: ${nickname})`;
+      else if (lang === 'zh-CN') successMsg = `🎉 成功登记至名人堂！ (昵称: ${nickname})`;
+      alert(successMsg);
     } catch (e) {
       console.error(e);
-      errorDiv.innerText = '기록 저장 중 오류가 발생했습니다. 다시 시도해 주세요.';
+
+      let errorMsg = '기록 저장 중 오류가 발생했습니다. 다시 시도해 주세요.';
+      if (lang === 'en') errorMsg = 'An error occurred while saving. Please try again.';
+      else if (lang === 'ja') errorMsg = '記録の保存中にエラーが発生しました。もう一度お試しください。';
+      else if (lang === 'zh-CN') errorMsg = '保存记录时出错，请重试。';
+      errorDiv.innerText = errorMsg;
       errorDiv.style.display = 'block';
+
       submitBtn.disabled = false;
-      submitBtn.innerHTML = `명예의 전당 등록 <i class="fas fa-paper-plane ml-1"></i>`;
+      let submitText = '명예의 전당 등록';
+      if (lang === 'en') submitText = 'Register to Hall of Fame';
+      else if (lang === 'ja') submitText = '殿堂入りを登録する';
+      else if (lang === 'zh-CN') submitText = '登记至名人堂';
+      submitBtn.innerHTML = `${submitText} <i class="fas fa-paper-plane ml-1"></i>`;
     }
   }
 
@@ -435,66 +526,6 @@
   // 외부 DB 연동 알고리즘 함수 (Supabase / Firebase 통합 대응)
   // =========================================================================
   async function saveMedalRecord(nickname, streak, medalType) {
-    // -----------------------------------------------------------------------
-    // [사용자 구성 가능 영역] 
-    // Supabase 또는 Firebase를 실제로 사용하실 때 아래 주석을 풀고 변수를 설정하세요.
-    // -----------------------------------------------------------------------
-    
-    /*
-    // 1. Supabase REST API 연동 시 예시
-    const SUPABASE_URL = "https://YOUR_PROJECT_ID.supabase.co";
-    const SUPABASE_ANON_KEY = "YOUR_ANON_KEY";
-    
-    const response = await fetch(`${SUPABASE_URL}/rest/v1/medal_leaderboard`, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        'apikey': SUPABASE_ANON_KEY,
-        'Authorization': `Bearer ${SUPABASE_ANON_KEY}`,
-        'Prefer': 'return=minimal'
-      },
-      body: JSON.stringify({
-        nickname: nickname,
-        streak: streak,
-        medal_type: medalType,
-        created_at: new Date().toISOString()
-      })
-    });
-    
-    if (!response.ok) {
-      const errText = await response.text();
-      throw new Error(`Supabase error: ${errText}`);
-    }
-    return true;
-    */
-
-    /*
-    // 2. Firebase Realtime Database 연동 시 예시
-    const FIREBASE_DB_URL = "https://YOUR_PROJECT_ID.firebaseio.com/medals.json";
-    
-    const response = await fetch(FIREBASE_DB_URL, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify({
-        nickname: nickname,
-        streak: streak,
-        medal_type: medalType,
-        created_at: new Date().toISOString()
-      })
-    });
-    
-    if (!response.ok) {
-      throw new Error('Firebase DB error occurred.');
-    }
-    return true;
-    */
-
-    // -----------------------------------------------------------------------
-    // [데모 가상 작동 영역] 
-    // 실제 DB 연동 URL 설정 전까지 비동기 DB 저장을 모의 실험할 수 있는 모의 응답 코드입니다.
-    // -----------------------------------------------------------------------
     console.log(`[외부 DB 통신 전송 데이터]`, {
       nickname: nickname,
       streak: streak,
