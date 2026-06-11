@@ -1330,7 +1330,12 @@ body {
 
 /* 구글 번역 요소 숨김 */
 #google_translate_element {
-  display: none !important;
+  position: absolute !important;
+  top: -9999px !important;
+  left: -9999px !important;
+  width: 1px !important;
+  height: 1px !important;
+  overflow: hidden !important;
 }
 
 /* 마우스 호버 번역 툴팁 및 강조 표시 제거 */

@@ -613,7 +613,12 @@ document.addEventListener("DOMContentLoaded", function() {
   if (!gtDiv) {
     gtDiv = document.createElement("div");
     gtDiv.id = "google_translate_element";
-    gtDiv.style.display = "none";
+    gtDiv.style.position = "absolute";
+    gtDiv.style.top = "-9999px";
+    gtDiv.style.left = "-9999px";
+    gtDiv.style.width = "1px";
+    gtDiv.style.height = "1px";
+    gtDiv.style.overflow = "hidden";
     document.body.appendChild(gtDiv);
   }
 
