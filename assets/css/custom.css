@@ -1029,11 +1029,24 @@ pre.highlight,
   margin-bottom: 1.2rem;
   border-radius: 8px;
   overflow: hidden;
+  border: 1px solid #3e3d32;
 }
 
 .quiz-code-block pre {
   margin: 0;
   padding: 1rem;
+  background-color: #272822 !important;
+  color: #f8f8f2 !important;
+  font-family: SFMono-Regular, Consolas, "Liberation Mono", Menlo, monospace;
+  font-size: 0.9rem;
+  line-height: 1.4;
+  overflow-x: auto;
+}
+
+.quiz-code-block pre code {
+  color: #f8f8f2 !important;
+  background-color: transparent !important;
+  font-family: inherit;
 }
 
 /* Option Buttons */
