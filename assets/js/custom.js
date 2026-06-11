@@ -1,5 +1,52 @@
 document.addEventListener("DOMContentLoaded", function() {
-  // --- Dark Mode Toggle ---
+
+  // =========================================================
+  // Fixed Navbar Overlap Fix
+  // 네비게이션 바 + Google Translate 바 높이를 감지해
+  // scroll-padding-top을 동적으로 맞춰 가림 현상을 방지합니다.
+  // =========================================================
+  function adjustScrollPadding() {
+    const navbar = document.querySelector('.navbar-custom');
+    if (!navbar) return;
+
+    // 네비게이션 바 실제 높이 측정
+    const navHeight = navbar.getBoundingClientRect().height;
+
+    // Google Translate 배너 바 높이 측정 (없으면 0)
+    const gtBanner = document.querySelector('.goog-te-banner-frame, #goog-gt-tt, .skiptranslate iframe');
+    let gtHeight = 0;
+    if (gtBanner) {
+      gtHeight = gtBanner.getBoundingClientRect().height || 40;
+    }
+
+    // body의 실제 상단 위치 확인 (구글 번역이 body를 밀어내는 경우)
+    const bodyTop = parseInt(document.body.style.top || '0', 10);
+    if (bodyTop < 0) {
+      gtHeight = Math.abs(bodyTop);
+    }
+
+    const totalOffset = Math.ceil(navHeight + gtHeight + 8); // 8px 여유
+    document.documentElement.style.scrollPaddingTop = totalOffset + 'px';
+  }
+
+  // 초기 실행
+  adjustScrollPadding();
+
+  // 네비게이션 바 크기 변화 감지 (모바일 ↔ 데스크탑 전환 등)
+  const navbar = document.querySelector('.navbar-custom');
+  if (navbar && typeof ResizeObserver !== 'undefined') {
+    const navObserver = new ResizeObserver(adjustScrollPadding);
+    navObserver.observe(navbar);
+  }
+
+  // 스크롤 / 리사이즈 시에도 재적용
+  window.addEventListener('resize', adjustScrollPadding);
+
+  // Google Translate 로드 후 배너 감지를 위해 약간 지연 후 재실행
+  setTimeout(adjustScrollPadding, 1000);
+  setTimeout(adjustScrollPadding, 3000);
+
+
   const toggleBtn = document.getElementById("dark-mode-toggle");
   const icon = document.getElementById("dark-mode-icon");
   
