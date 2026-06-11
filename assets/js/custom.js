@@ -623,7 +623,9 @@ document.addEventListener("DOMContentLoaded", function() {
   }
 
   // 2. 구글 번역 엔진 초기화 콜백 정의 (글로벌 바인딩)
+  console.log("custom.js: Defining window.googleTranslateElementInit...");
   window.googleTranslateElementInit = function() {
+    console.log("custom.js: googleTranslateElementInit triggered by Google script!");
     new google.translate.TranslateElement({
       pageLanguage: 'ko',
       includedLanguages: 'en,ja,zh-CN',
@@ -633,10 +635,12 @@ document.addEventListener("DOMContentLoaded", function() {
     
     // 로드 즉시 바로 로컬 스토리지 선호 언어 반영
     const preferredLang = localStorage.getItem('blog_preferred_lang') || 'ko';
+    console.log("custom.js: Initial preferred language on load: " + preferredLang);
     applyLanguage(preferredLang);
   };
 
   // 3. 구글 번역 스크립트 비동기 삽입
+  console.log("custom.js: Appending Google Translate script tag...");
   const gtScript = document.createElement("script");
   gtScript.type = "text/javascript";
   gtScript.src = "//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit";
@@ -644,6 +648,7 @@ document.addEventListener("DOMContentLoaded", function() {
 
   // 4. 전역 언어 변경 이벤트 핸들러 바인딩
   window.changeLanguage = function(langCode) {
+    console.log("custom.js: changeLanguage clicked! Target: " + langCode);
     localStorage.setItem('blog_preferred_lang', langCode);
     applyLanguage(langCode);
   };
@@ -651,6 +656,7 @@ document.addEventListener("DOMContentLoaded", function() {
   // 5. 실제 번역 적용 기능 (로컬 번역 + 구글 번역 콤보 박스 제어 및 라벨 갱신 - 폴링 방식)
   let translatePollInterval = null;
   function applyLanguage(langCode) {
+    console.log("custom.js: applyLanguage called for: " + langCode);
     // 로컬 딕셔너리 기반 네이티브 번역 적용
     applyNativeTranslations(langCode);
 
@@ -671,15 +677,18 @@ document.addEventListener("DOMContentLoaded", function() {
 
     // 기존 폴링이 있으면 제거
     if (translatePollInterval) {
+      console.log("custom.js: Clearing existing poll interval");
       clearInterval(translatePollInterval);
       translatePollInterval = null;
     }
 
     let attempts = 0;
     const maxAttempts = 50; // 50 * 200ms = 10초 동안 대기
+    console.log("custom.js: Starting polling for .goog-te-combo...");
     translatePollInterval = setInterval(() => {
       const selectEl = document.querySelector('.goog-te-combo');
       if (selectEl) {
+        console.log("custom.js: Found .goog-te-combo in DOM! Attempt: " + attempts);
         clearInterval(translatePollInterval);
         translatePollInterval = null;
 
@@ -694,14 +703,20 @@ document.addEventListener("DOMContentLoaded", function() {
             }
           }
           targetValue = hasKo ? 'ko' : '';
+          console.log("custom.js: Restoring original language (targetValue: '" + targetValue + "')");
         }
 
+        console.log("custom.js: Current combo value: '" + selectEl.value + "', setting to: '" + targetValue + "'");
         if (selectEl.value !== targetValue) {
           selectEl.value = targetValue;
           selectEl.dispatchEvent(new Event('change'));
+          console.log("custom.js: Dispatched change event to combo!");
         }
       } else {
         attempts++;
+        if (attempts % 10 === 0) {
+          console.log("custom.js: Polling for .goog-te-combo... attempt " + attempts);
+        }
         if (attempts >= maxAttempts) {
           clearInterval(translatePollInterval);
           translatePollInterval = null;
