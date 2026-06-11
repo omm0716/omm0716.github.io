@@ -1,0 +1,504 @@
+<!-- Daily Python Quiz Widget -->
+<div class="quiz-container mb-5">
+  <div class="quiz-card">
+    <!-- Quiz Header -->
+    <div class="quiz-header d-flex justify-content-between align-items-center flex-wrap">
+      <div class="quiz-header-title">
+        <h3 class="quiz-main-title">🐍 오늘의 파이썬 1일 1문제</h3>
+        <p class="quiz-subtitle text-muted">매일 파이썬 문제를 풀고 연속 정답 스탬프를 모아보세요!</p>
+      </div>
+      <div class="quiz-stats d-flex align-items-center">
+        <!-- Streak badge -->
+        <div class="quiz-stat-item mr-3">
+          <span class="stat-label">🔥 연속 정답</span>
+          <span class="stat-value" id="quiz-streak-count">0</span>일
+        </div>
+        <!-- Medal badges -->
+        <div class="quiz-medals d-flex">
+          <div class="quiz-medal-badge bronze" id="medal-bronze" title="7일 연속 정답 (동메달)">🥉</div>
+          <div class="quiz-medal-badge silver" id="medal-silver" title="14일 연속 정답 (은메달)">🥈</div>
+          <div class="quiz-medal-badge gold" id="medal-gold" title="30일 연속 정답 (금메달)">🥇</div>
+        </div>
+      </div>
+    </div>
+
+    <hr class="quiz-divider">
+
+    <!-- Stamp Card Board -->
+    <div class="stamp-board-container">
+      <h4 class="stamp-board-title">🍎 주간 스탬프 카드 (7칸)</h4>
+      <div class="stamp-board" id="quiz-stamp-board">
+        <div class="stamp-slot" data-index="1">1</div>
+        <div class="stamp-slot" data-index="2">2</div>
+        <div class="stamp-slot" data-index="3">3</div>
+        <div class="stamp-slot" data-index="4">4</div>
+        <div class="stamp-slot" data-index="5">5</div>
+        <div class="stamp-slot" data-index="6">6</div>
+        <div class="stamp-slot" data-index="7">7</div>
+      </div>
+    </div>
+
+    <!-- Quiz Body (Question Area) -->
+    <div class="quiz-body mt-4" id="quiz-loading-body">
+      <div class="text-center py-4">
+        <div class="spinner-border text-primary" role="status">
+          <span class="sr-only">Loading...</span>
+        </div>
+        <p class="mt-2 text-muted">오늘의 문제를 가져오는 중입니다...</p>
+      </div>
+    </div>
+
+    <div class="quiz-body mt-4" id="quiz-active-body" style="display: none;">
+      <div class="quiz-question-container">
+        <span class="quiz-q-num">Q. <span id="quiz-question-id">1</span>번 문제</span>
+        <h4 class="quiz-question-text" id="quiz-question-text">질문 내용</h4>
+        <div class="quiz-code-block" id="quiz-code-container" style="display: none;">
+          <pre><code class="language-python" id="quiz-code-text"># 코드 내용</code></pre>
+        </div>
+      </div>
+
+      <!-- Quiz Options List -->
+      <div class="quiz-options-list mt-3" id="quiz-options-container">
+        <!-- Injected options -->
+      </div>
+
+      <!-- Feedback Area -->
+      <div class="quiz-feedback-area mt-3" id="quiz-feedback" style="display: none;">
+        <div class="alert" id="quiz-feedback-alert">
+          <h5 class="alert-heading" id="quiz-feedback-title">정답입니다!</h5>
+          <p id="quiz-feedback-desc">설명이 여기에 들어갑니다.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Medal Nickname Modal -->
+<div class="quiz-modal" id="quiz-medal-modal" style="display: none;">
+  <div class="quiz-modal-backdrop" onclick="closeMedalModal()"></div>
+  <div class="quiz-modal-content">
+    <div class="quiz-modal-header text-center">
+      <div class="modal-medal-icon" id="modal-medal-icon">🥉</div>
+      <h3 class="quiz-modal-title">🏆 명예의 전당 메달 획득! 🏆</h3>
+      <p class="quiz-modal-subtitle">축하합니다! <span id="modal-streak-count">7</span>일 연속 정답을 달성하셨습니다.</p>
+    </div>
+    <div class="quiz-modal-body mt-3">
+      <p class="text-center text-muted">전 세계 리더보드와 외부 DB에 기록할 닉네임을 입력해 주세요.</p>
+      <div class="form-group">
+        <input type="text" class="form-control text-center" id="quiz-nickname-input" placeholder="닉네임을 입력하세요 (최대 10자)" maxlength="10">
+      </div>
+      <div class="quiz-modal-error text-danger text-center mt-2" id="quiz-modal-error" style="display: none;">
+        닉네임을 입력해 주세요.
+      </div>
+    </div>
+    <div class="quiz-modal-footer text-center mt-4">
+      <button class="btn btn-primary btn-block modal-submit-btn" id="modal-submit-btn" onclick="submitMedalRecord()">
+        명예의 전당 등록 <i class="fas fa-paper-plane ml-1"></i>
+      </button>
+    </div>
+  </div>
+</div>
+
+<!-- Quiz Core JavaScript Logic -->
+<script>
+  // Initial state variables
+  let quizState = {
+    streak: 0,
+    stamps: 0,
+    lastSolved: null, // YYYY-MM-DD
+    loggedMilestones: [] // [7, 14, 30]
+  };
+
+  let todayQuestion = null;
+  let hasSolvedToday = false;
+
+  // Load Quiz data on DOM loaded
+  document.addEventListener('DOMContentLoaded', () => {
+    loadQuizState();
+    fetchQuizData();
+  });
+
+  function loadQuizState() {
+    const savedState = localStorage.getItem('python_quiz_state');
+    if (savedState) {
+      try {
+        quizState = JSON.parse(savedState);
+        if (!quizState.loggedMilestones) quizState.loggedMilestones = [];
+      } catch (e) {
+        console.error('Failed to parse local storage quiz state, resetting to default.', e);
+      }
+    }
+    
+    // Validate Streak (check if consecutive day is broken)
+    const todayStr = getTodayDateString();
+    
+    if (quizState.lastSolved) {
+      const lastDate = new Date(quizState.lastSolved);
+      const todayDate = new Date(todayStr);
+      const diffTime = Math.abs(todayDate - lastDate);
+      const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+      
+      // If user missed solving yesterday, reset streak and stamps
+      if (diffDays > 1 && quizState.lastSolved !== todayStr) {
+        quizState.streak = 0;
+        quizState.stamps = 0;
+        saveQuizState();
+      }
+    }
+
+    updateUIStats();
+  }
+
+  function saveQuizState() {
+    localStorage.setItem('python_quiz_state', JSON.stringify(quizState));
+    updateUIStats();
+  }
+
+  function getTodayDateString() {
+    // Return date in local time YYYY-MM-DD format
+    const d = new Date();
+    const year = d.getFullYear();
+    const month = String(d.getMonth() + 1).padStart(2, '0');
+    const day = String(d.getDate()).padStart(2, '0');
+    return `${year}-${month}-${day}`;
+  }
+
+  function updateUIStats() {
+    document.getElementById('quiz-streak-count').innerText = quizState.streak;
+
+    // Update medals glowing state
+    const bronzeMedal = document.getElementById('medal-bronze');
+    const silverMedal = document.getElementById('medal-silver');
+    const goldMedal = document.getElementById('medal-gold');
+
+    if (quizState.streak >= 7) bronzeMedal.classList.add('active');
+    else bronzeMedal.classList.remove('active');
+
+    if (quizState.streak >= 14) silverMedal.classList.add('active');
+    else silverMedal.classList.remove('active');
+
+    if (quizState.streak >= 30) goldMedal.classList.add('active');
+    else goldMedal.classList.remove('active');
+
+    // Update Stamps Board
+    const stampSlots = document.querySelectorAll('.stamp-slot');
+    stampSlots.forEach((slot, idx) => {
+      const slotIndex = idx + 1;
+      if (slotIndex <= quizState.stamps) {
+        slot.classList.add('active');
+        slot.innerHTML = '🍎'; // Apple stamp
+      } else {
+        slot.classList.remove('active');
+        slot.innerHTML = slotIndex;
+      }
+    });
+  }
+
+  async function fetchQuizData() {
+    try {
+      const response = await fetch('{{ "/assets/data/python-quiz.json" | relative_url }}');
+      if (!response.ok) throw new Error('퀴즈 데이터를 불러오는데 실패했습니다.');
+      const questions = await response.json();
+      
+      // Determine today's question based on day index
+      const d = new Date();
+      // Use KST-aligned calculation
+      const dayIndex = Math.floor(d.getTime() / (1000 * 60 * 60 * 24)) % questions.length;
+      todayQuestion = questions[dayIndex];
+      
+      renderQuiz();
+    } catch (error) {
+      console.error(error);
+      document.getElementById('quiz-loading-body').innerHTML = `
+        <div class="text-center py-4 text-danger">
+          <i class="fas fa-exclamation-triangle fa-2x"></i>
+          <p class="mt-2 font-weight-bold">퀴즈 데이터를 로드할 수 없습니다.</p>
+          <small>${error.message}</small>
+        </div>
+      `;
+    }
+  }
+
+  function renderQuiz() {
+    document.getElementById('quiz-loading-body').style.display = 'none';
+    document.getElementById('quiz-active-body').style.display = 'block';
+
+    document.getElementById('quiz-question-id').innerText = todayQuestion.id;
+    document.getElementById('quiz-question-text').innerText = todayQuestion.question;
+
+    const codeContainer = document.getElementById('quiz-code-container');
+    if (todayQuestion.code) {
+      document.getElementById('quiz-code-text').innerText = todayQuestion.code;
+      codeContainer.style.display = 'block';
+    } else {
+      codeContainer.style.display = 'none';
+    }
+
+    const optionsContainer = document.getElementById('quiz-options-container');
+    optionsContainer.innerHTML = '';
+
+    todayQuestion.options.forEach((opt, idx) => {
+      const btn = document.createElement('button');
+      btn.className = 'quiz-option-btn';
+      btn.innerHTML = `
+        <span class="option-num">${idx + 1}</span>
+        <span class="option-content">${escapeHTML(opt)}</span>
+      `;
+      btn.onclick = () => submitAnswer(idx);
+      optionsContainer.appendChild(btn);
+    });
+
+    // If already solved today, lock input and show explanation
+    const todayStr = getTodayDateString();
+    if (quizState.lastSolved === todayStr) {
+      hasSolvedToday = true;
+      lockQuizAndShowFeedback(todayQuestion.answer, true);
+    }
+  }
+
+  function submitAnswer(selectedIndex) {
+    if (hasSolvedToday) return;
+
+    const correctIndex = todayQuestion.answer;
+    const isCorrect = (selectedIndex === correctIndex);
+
+    if (isCorrect) {
+      // Correct Answer!
+      hasSolvedToday = true;
+      
+      const todayStr = getTodayDateString();
+      if (quizState.lastSolved !== todayStr) {
+        quizState.streak += 1;
+        // Stamp card increments
+        quizState.stamps += 1;
+        if (quizState.stamps > 7) {
+          quizState.stamps = 1; // resets stamp board and start next card
+        }
+        quizState.lastSolved = todayStr;
+        saveQuizState();
+        
+        // Check Milestone Medals
+        checkMilestoneMedals();
+      }
+
+      lockQuizAndShowFeedback(selectedIndex, true);
+    } else {
+      // Incorrect Answer!
+      // Reset streak and stamps instantly as per rules
+      quizState.streak = 0;
+      quizState.stamps = 0;
+      saveQuizState();
+      
+      // Highlight incorrect choice
+      const btns = document.querySelectorAll('.quiz-option-btn');
+      if (btns[selectedIndex]) {
+        btns[selectedIndex].classList.add('incorrect');
+      }
+      
+      // Let user retry the problem, but today's streak is reset to 0.
+      // Show failure feedback briefly
+      const feedback = document.getElementById('quiz-feedback');
+      const feedbackAlert = document.getElementById('quiz-feedback-alert');
+      const feedbackTitle = document.getElementById('quiz-feedback-title');
+      const feedbackDesc = document.getElementById('quiz-feedback-desc');
+
+      feedbackAlert.className = 'alert alert-danger';
+      feedbackTitle.innerText = '❌ 오답입니다!';
+      feedbackDesc.innerText = '아쉽게도 틀렸습니다. 연속 정답이 초기화되었습니다. 다시 한 번 생각하고 정답을 골라 보세요!';
+      feedback.style.display = 'block';
+    }
+  }
+
+  function lockQuizAndShowFeedback(chosenIndex, isCorrect) {
+    const btns = document.querySelectorAll('.quiz-option-btn');
+    btns.forEach((btn, idx) => {
+      btn.disabled = true;
+      if (idx === todayQuestion.answer) {
+        btn.classList.add('correct');
+      } else if (idx === chosenIndex && !isCorrect) {
+        btn.classList.add('incorrect');
+      }
+    });
+
+    const feedback = document.getElementById('quiz-feedback');
+    const feedbackAlert = document.getElementById('quiz-feedback-alert');
+    const feedbackTitle = document.getElementById('quiz-feedback-title');
+    const feedbackDesc = document.getElementById('quiz-feedback-desc');
+
+    feedbackAlert.className = 'alert alert-success';
+    feedbackTitle.innerText = '🎉 정답입니다! (오늘의 학습 완료)';
+    feedbackDesc.innerHTML = `<strong>정답: ${chosenIndex + 1}번</strong><br><br>${escapeHTML(todayQuestion.explanation)}`;
+    feedback.style.display = 'block';
+  }
+
+  // Check if current streak reaches 7, 14, 30 days milestone
+  let activeMilestone = null;
+
+  function checkMilestoneMedals() {
+    const currentStreak = quizState.streak;
+    
+    // Check if milestone achieved and not yet logged
+    if ([7, 14, 30].includes(currentStreak) && !quizState.loggedMilestones.includes(currentStreak)) {
+      activeMilestone = currentStreak;
+      openMedalModal(currentStreak);
+    }
+  }
+
+  function openMedalModal(streak) {
+    const modal = document.getElementById('quiz-medal-modal');
+    const medalIcon = document.getElementById('modal-medal-icon');
+    const streakCount = document.getElementById('modal-streak-count');
+    
+    streakCount.innerText = streak;
+
+    if (streak === 7) {
+      medalIcon.innerText = '🥉';
+      medalIcon.className = 'modal-medal-icon bronze';
+    } else if (streak === 14) {
+      medalIcon.innerText = '🥈';
+      medalIcon.className = 'modal-medal-icon silver';
+    } else if (streak === 30) {
+      medalIcon.innerText = '🥇';
+      medalIcon.className = 'modal-medal-icon gold';
+    }
+
+    modal.style.display = 'flex';
+    document.getElementById('quiz-nickname-input').value = '';
+    document.getElementById('quiz-modal-error').style.display = 'none';
+  }
+
+  function closeMedalModal() {
+    document.getElementById('quiz-medal-modal').style.display = 'none';
+    activeMilestone = null;
+  }
+
+  async function submitMedalRecord() {
+    const nicknameInput = document.getElementById('quiz-nickname-input');
+    const nickname = nicknameInput.value.trim();
+    const errorDiv = document.getElementById('quiz-modal-error');
+    const submitBtn = document.getElementById('modal-submit-btn');
+
+    if (!nickname) {
+      errorDiv.innerText = '닉네임을 입력해 주세요.';
+      errorDiv.style.display = 'block';
+      return;
+    }
+
+    errorDiv.style.display = 'none';
+    submitBtn.disabled = true;
+    submitBtn.innerHTML = `등록 중 <i class="fas fa-spinner fa-spin ml-1"></i>`;
+
+    const medalType = activeMilestone === 7 ? 'Bronze' : activeMilestone === 14 ? 'Silver' : 'Gold';
+
+    try {
+      await saveMedalRecord(nickname, activeMilestone, medalType);
+      
+      // Success! Log the milestone
+      quizState.loggedMilestones.push(activeMilestone);
+      saveQuizState();
+      
+      // Close modal and show success feedback
+      closeMedalModal();
+      alert(`🎉 명예의 전당 등록이 완료되었습니다! (닉네임: ${nickname})`);
+    } catch (e) {
+      console.error(e);
+      errorDiv.innerText = '기록 저장 중 오류가 발생했습니다. 다시 시도해 주세요.';
+      errorDiv.style.display = 'block';
+      submitBtn.disabled = false;
+      submitBtn.innerHTML = `명예의 전당 등록 <i class="fas fa-paper-plane ml-1"></i>`;
+    }
+  }
+
+  // =========================================================================
+  // 외부 DB 연동 알고리즘 함수 (Supabase / Firebase 통합 대응)
+  // =========================================================================
+  async function saveMedalRecord(nickname, streak, medalType) {
+    // -----------------------------------------------------------------------
+    // [사용자 구성 가능 영역] 
+    // Supabase 또는 Firebase를 실제로 사용하실 때 아래 주석을 풀고 변수를 설정하세요.
+    // -----------------------------------------------------------------------
+    
+    /*
+    // 1. Supabase REST API 연동 시 예시
+    const SUPABASE_URL = "https://YOUR_PROJECT_ID.supabase.co";
+    const SUPABASE_ANON_KEY = "YOUR_ANON_KEY";
+    
+    const response = await fetch(`${SUPABASE_URL}/rest/v1/medal_leaderboard`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'apikey': SUPABASE_ANON_KEY,
+        'Authorization': `Bearer ${SUPABASE_ANON_KEY}`,
+        'Prefer': 'return=minimal'
+      },
+      body: JSON.stringify({
+        nickname: nickname,
+        streak: streak,
+        medal_type: medalType,
+        created_at: new Date().toISOString()
+      })
+    });
+    
+    if (!response.ok) {
+      const errText = await response.text();
+      throw new Error(`Supabase error: ${errText}`);
+    }
+    return true;
+    */
+
+    /*
+    // 2. Firebase Realtime Database 연동 시 예시
+    const FIREBASE_DB_URL = "https://YOUR_PROJECT_ID.firebaseio.com/medals.json";
+    
+    const response = await fetch(FIREBASE_DB_URL, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({
+        nickname: nickname,
+        streak: streak,
+        medal_type: medalType,
+        created_at: new Date().toISOString()
+      })
+    });
+    
+    if (!response.ok) {
+      throw new Error('Firebase DB error occurred.');
+    }
+    return true;
+    */
+
+    // -----------------------------------------------------------------------
+    // [데모 가상 작동 영역] 
+    // 실제 DB 연동 URL 설정 전까지 비동기 DB 저장을 모의 실험할 수 있는 모의 응답 코드입니다.
+    // -----------------------------------------------------------------------
+    console.log(`[외부 DB 통신 전송 데이터]`, {
+      nickname: nickname,
+      streak: streak,
+      medal: medalType,
+      timestamp: new Date().toISOString()
+    });
+
+    // 1초간 지연(서버 통신 시연) 후 성공 프로미스 반환
+    return new Promise((resolve) => {
+      setTimeout(() => {
+        console.log(`[외부 DB 통신 완료] ${medalType} 메달 기록 등록 성공`);
+        resolve(true);
+      }, 1000);
+    });
+  }
+
+  function escapeHTML(str) {
+    if (!str) return '';
+    return str.replace(/[&<>'"]/g, 
+      tag => ({
+        '&': '&amp;',
+        '<': '&lt;',
+        '>': '&gt;',
+        "'": '&#39;',
+        '"': '&quot;'
+      }[tag] || tag)
+    );
+  }
+</script>
