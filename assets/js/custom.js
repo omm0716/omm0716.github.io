@@ -72,9 +72,13 @@ document.addEventListener("DOMContentLoaded", function() {
     });
   }
 
-  // --- Code Block Copy Button ---
+  // --- Code Block Copy Button & Translation Prevention ---
   const codeBlocks = document.querySelectorAll("div.highlighter-rouge, figure.highlight");
   codeBlocks.forEach(function(block) {
+    // Add notranslate class to prevent Google Translate from translating code blocks
+    block.classList.add("notranslate");
+    block.setAttribute("translate", "no");
+
     // Prevent adding multiple headers if script runs twice
     if (block.querySelector('.code-header')) return;
 
@@ -101,6 +105,12 @@ document.addEventListener("DOMContentLoaded", function() {
     
     header.appendChild(copyBtn);
     block.insertBefore(header, block.firstChild);
+  });
+
+  // Protect all inline code tags from being translated
+  document.querySelectorAll("code").forEach(function(el) {
+    el.classList.add("notranslate");
+    el.setAttribute("translate", "no");
   });
 
   // --- Dynamic Floating TOC & Active Highlight (Scrollspy) ---
