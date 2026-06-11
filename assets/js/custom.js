@@ -608,125 +608,84 @@ document.addEventListener("DOMContentLoaded", function() {
     }
   };
 
-  // 1. 구글 번역용 숨김 앵커 생성
-  let gtDiv = document.getElementById("google_translate_element");
+  // ==========================================================================
+  // Google Translate - googtrans 쿠키 방식 (가장 안정적인 방법)
+  // ==========================================================================
+
+  // 쿠키 설정 헬퍼
+  function setGoogTransCookie(value) {
+    // 만료일 없으면 세션 쿠키가 되므로 1년 후로 설정
+    const expires = new Date();
+    expires.setFullYear(expires.getFullYear() + 1);
+    // path=/ 으로 사이트 전체에 적용, domain도 설정
+    document.cookie = `googtrans=${value}; expires=${expires.toUTCString()}; path=/`;
+    // GitHub Pages 서브도메인에도 적용 (omm0716.github.io)
+    const domain = window.location.hostname;
+    document.cookie = `googtrans=${value}; expires=${expires.toUTCString()}; path=/; domain=${domain}`;
+    // .github.io 루트 도메인에도 설정 시도
+    const parts = domain.split('.');
+    if (parts.length >= 2) {
+      const rootDomain = '.' + parts.slice(-2).join('.')
+      document.cookie = `googtrans=${value}; expires=${expires.toUTCString()}; path=/; domain=${rootDomain}`;
+    }
+  }
+
+  // googtrans 쿠키 삭제 헬퍼 (한국어 복원용)
+  function clearGoogTransCookie() {
+    const past = 'Thu, 01 Jan 1970 00:00:00 GMT';
+    const domain = window.location.hostname;
+    document.cookie = `googtrans=; expires=${past}; path=/`;
+    document.cookie = `googtrans=; expires=${past}; path=/; domain=${domain}`;
+    const parts = domain.split('.');
+    if (parts.length >= 2) {
+      const rootDomain = '.' + parts.slice(-2).join('.');
+      document.cookie = `googtrans=; expires=${past}; path=/; domain=${rootDomain}`;
+    }
+  }
+
+  // 구글 번역 초기화용 숨김 div (Google Translate 엔진 초기화에 필요)
+  let gtDiv = document.getElementById('google_translate_element');
   if (!gtDiv) {
-    gtDiv = document.createElement("div");
-    gtDiv.id = "google_translate_element";
-    gtDiv.style.position = "absolute";
-    gtDiv.style.top = "-9999px";
-    gtDiv.style.left = "-9999px";
-    gtDiv.style.width = "1px";
-    gtDiv.style.height = "1px";
-    gtDiv.style.overflow = "hidden";
+    gtDiv = document.createElement('div');
+    gtDiv.id = 'google_translate_element';
+    gtDiv.style.cssText = 'position:absolute;top:-9999px;left:-9999px;width:1px;height:1px;overflow:hidden;';
     document.body.appendChild(gtDiv);
   }
 
-  // 2. 구글 번역 엔진 초기화 콜백 정의 (글로벌 바인딩)
-  console.log("custom.js: Defining window.googleTranslateElementInit...");
+  // Google Translate 초기화 콜백 (단순 초기화만, 쿠키가 있으면 자동 적용됨)
   window.googleTranslateElementInit = function() {
-    console.log("custom.js: googleTranslateElementInit triggered by Google script!");
     new google.translate.TranslateElement({
       pageLanguage: 'ko',
       includedLanguages: 'en,ja,zh-CN',
       layout: google.translate.TranslateElement.InlineLayout.SIMPLE,
       autoDisplay: false
     }, 'google_translate_element');
-    
-    // 로드 즉시 바로 로컬 스토리지 선호 언어 반영
-    const preferredLang = localStorage.getItem('blog_preferred_lang') || 'ko';
-    console.log("custom.js: Initial preferred language on load: " + preferredLang);
-    applyLanguage(preferredLang);
   };
 
-  // 3. 구글 번역 스크립트 비동기 삽입
-  console.log("custom.js: Appending Google Translate script tag...");
-  const gtScript = document.createElement("script");
-  gtScript.type = "text/javascript";
-  gtScript.src = "//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit";
+  // Google Translate 스크립트 삽입
+  const gtScript = document.createElement('script');
+  gtScript.type = 'text/javascript';
+  gtScript.src = '//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit';
   document.head.appendChild(gtScript);
 
-  // 4. 전역 언어 변경 이벤트 핸들러 바인딩
+  // 전역 언어 변경 함수 (쿠키 설정 후 페이지 리로드)
   window.changeLanguage = function(langCode) {
-    console.log("custom.js: changeLanguage clicked! Target: " + langCode);
+    // 로컬스토리지에 선호 언어 저장
     localStorage.setItem('blog_preferred_lang', langCode);
-    applyLanguage(langCode);
+
+    if (langCode === 'ko') {
+      // 한국어: 구글 번역 쿠키 제거 후 리로드
+      clearGoogTransCookie();
+    } else {
+      // 다른 언어: /ko/목표언어 형식으로 쿠키 설정
+      setGoogTransCookie(`/ko/${langCode}`);
+    }
+
+    // 페이지 리로드로 Google Translate가 쿠키를 읽어 번역 적용
+    window.location.reload();
   };
 
-  // 5. 실제 번역 적용 기능 (로컬 번역 + 구글 번역 콤보 박스 제어 및 라벨 갱신 - 폴링 방식)
-  let translatePollInterval = null;
-  function applyLanguage(langCode) {
-    console.log("custom.js: applyLanguage called for: " + langCode);
-    // 로컬 딕셔너리 기반 네이티브 번역 적용
-    applyNativeTranslations(langCode);
-
-    // 이벤트 브로드캐스트하여 동적 컴포넌트(퀴즈, 추천) 리렌더링 유도
-    window.dispatchEvent(new CustomEvent('blogLanguageChanged', { detail: { language: langCode } }));
-
-    // 언어 라벨 업데이트
-    const currentLangLabel = document.getElementById('current-lang-label');
-    if (currentLangLabel) {
-      const labels = {
-        'ko': 'KO',
-        'en': 'EN',
-        'ja': 'JA',
-        'zh-CN': 'ZH'
-      };
-      currentLangLabel.innerText = labels[langCode] || 'KO';
-    }
-
-    // 기존 폴링이 있으면 제거
-    if (translatePollInterval) {
-      console.log("custom.js: Clearing existing poll interval");
-      clearInterval(translatePollInterval);
-      translatePollInterval = null;
-    }
-
-    let attempts = 0;
-    const maxAttempts = 50; // 50 * 200ms = 10초 동안 대기
-    console.log("custom.js: Starting polling for .goog-te-combo...");
-    translatePollInterval = setInterval(() => {
-      const selectEl = document.querySelector('.goog-te-combo');
-      if (selectEl) {
-        console.log("custom.js: Found .goog-te-combo in DOM! Attempt: " + attempts);
-        clearInterval(translatePollInterval);
-        translatePollInterval = null;
-
-        let targetValue = langCode;
-        if (langCode === 'ko') {
-          // 한국어인 경우 'ko' 옵션이 있는지 확인하고 없으면 빈 문자열("")로 설정하여 번역 해제
-          let hasKo = false;
-          for (let i = 0; i < selectEl.options.length; i++) {
-            if (selectEl.options[i].value === 'ko') {
-              hasKo = true;
-              break;
-            }
-          }
-          targetValue = hasKo ? 'ko' : '';
-          console.log("custom.js: Restoring original language (targetValue: '" + targetValue + "')");
-        }
-
-        console.log("custom.js: Current combo value: '" + selectEl.value + "', setting to: '" + targetValue + "'");
-        if (selectEl.value !== targetValue) {
-          selectEl.value = targetValue;
-          selectEl.dispatchEvent(new Event('change'));
-          console.log("custom.js: Dispatched change event to combo!");
-        }
-      } else {
-        attempts++;
-        if (attempts % 10 === 0) {
-          console.log("custom.js: Polling for .goog-te-combo... attempt " + attempts);
-        }
-        if (attempts >= maxAttempts) {
-          clearInterval(translatePollInterval);
-          translatePollInterval = null;
-          console.warn('Google Translate combo box not found after 10 seconds.');
-        }
-      }
-    }, 200);
-  }
-
-  // 로컬 번역 처리기 구현
+  // 로컬 번역 처리기 (UI 요소 즉시 반영)
   function applyNativeTranslations(lang) {
     const dict = window.UI_TRANSLATIONS;
     if (!dict) return;
@@ -772,24 +731,24 @@ document.addEventListener("DOMContentLoaded", function() {
       } else if (lang === 'zh-CN') {
         readTimeDispEl.textContent = mins >= 1 ? `预计阅读时间 ${mins} 分钟` : `预计阅读时间少于 1 分钟`;
       } else {
-        // English
         readTimeDispEl.textContent = mins >= 1 ? `${mins} minute read` : `< 1 minute read`;
       }
     }
   }
 
-  // 6. DOM 로드 직후 로컬 번역 즉시 적용 (레이아웃 깜빡임 및 지연 방지)
+  // DOM 로드 즉시 로컬 UI 번역 적용 (깜빡임 방지)
   const initialPreferredLang = localStorage.getItem('blog_preferred_lang') || 'ko';
-  applyNativeTranslations(initialPreferredLang);
-  
+
+  // 언어 라벨 업데이트
   const currentLangLabel = document.getElementById('current-lang-label');
   if (currentLangLabel) {
-    const labels = {
-      'ko': 'KO',
-      'en': 'EN',
-      'ja': 'JA',
-      'zh-CN': 'ZH'
-    };
+    const labels = { 'ko': 'KO', 'en': 'EN', 'ja': 'JA', 'zh-CN': 'ZH' };
     currentLangLabel.innerText = labels[initialPreferredLang] || 'KO';
   }
+
+  // 로컬 UI 번역 즉시 적용
+  applyNativeTranslations(initialPreferredLang);
+
+  // 동적 컴포넌트(퀴즈, 추천 위젯) 언어 이벤트 브로드캐스트
+  window.dispatchEvent(new CustomEvent('blogLanguageChanged', { detail: { language: initialPreferredLang } }));
 });
