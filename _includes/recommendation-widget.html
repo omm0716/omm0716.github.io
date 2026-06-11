@@ -134,19 +134,19 @@
 </div>
 
 <!-- Jekyll Site Posts to JSON Script -->
-<script>
-  window.BLOG_POSTS = [
+<script id="blog-posts-data" type="text/plain">
+  [
     {% for post in site.posts %}
       {
-        title: {{ post.title | jsonify }},
-        url: {{ post.url | relative_url | jsonify }},
-        date: {{ post.date | date: "%Y-%m-%d" | jsonify }},
-        category: {{ post.categories[0] | jsonify }},
-        subtitle: {{ post.subtitle | jsonify }},
-        tags: {{ post.tags | jsonify }}
+        "title": {{ post.title | jsonify }},
+        "url": {{ post.url | relative_url | jsonify }},
+        "date": {{ post.date | date: "%Y-%m-%d" | jsonify }},
+        "category": {{ post.categories[0] | jsonify }},
+        "subtitle": {{ post.subtitle | jsonify }},
+        "tags": {{ post.tags | jsonify }}
       }{% unless forloop.last %},{% endunless %}
     {% endfor %}
-  ];
+  ]
 </script>
 
 <!-- Recommender JavaScript Logic -->
@@ -157,6 +157,10 @@
     q2: null,
     q3: null
   };
+
+  // Safe parsing of Jekyll posts list to avoid IDE syntax warnings
+  const rawPostsData = document.getElementById('blog-posts-data').textContent;
+  window.BLOG_POSTS = JSON.parse(rawPostsData);
 
   const CATEGORY_MAP = {
     'Python': {
