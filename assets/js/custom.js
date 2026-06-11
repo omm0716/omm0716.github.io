@@ -626,11 +626,9 @@ document.addEventListener("DOMContentLoaded", function() {
       autoDisplay: false
     }, 'google_translate_element');
     
-    // 로드 직후 로컬 스토리지 선호 언어 반영 (약간 지연을 두어 콤보박스 파싱 대기)
-    setTimeout(() => {
-      const preferredLang = localStorage.getItem('blog_preferred_lang') || 'ko';
-      applyLanguage(preferredLang);
-    }, 800);
+    // 로드 즉시 바로 로컬 스토리지 선호 언어 반영
+    const preferredLang = localStorage.getItem('blog_preferred_lang') || 'ko';
+    applyLanguage(preferredLang);
   };
 
   // 3. 구글 번역 스크립트 비동기 삽입
@@ -645,7 +643,8 @@ document.addEventListener("DOMContentLoaded", function() {
     applyLanguage(langCode);
   };
 
-  // 5. 실제 번역 적용 기능 (로컬 번역 + 구글 번역 콤보 박스 제어 및 라벨 갱신)
+  // 5. 실제 번역 적용 기능 (로컬 번역 + 구글 번역 콤보 박스 제어 및 라벨 갱신 - 폴링 방식)
+  let translatePollInterval = null;
   function applyLanguage(langCode) {
     // 로컬 딕셔너리 기반 네이티브 번역 적용
     applyNativeTranslations(langCode);
@@ -653,42 +652,58 @@ document.addEventListener("DOMContentLoaded", function() {
     // 이벤트 브로드캐스트하여 동적 컴포넌트(퀴즈, 추천) 리렌더링 유도
     window.dispatchEvent(new CustomEvent('blogLanguageChanged', { detail: { language: langCode } }));
 
-    const selectEl = document.querySelector('.goog-te-combo');
-    if (selectEl) {
-      selectEl.value = langCode;
-      selectEl.dispatchEvent(new Event('change'));
-      
-      const currentLangLabel = document.getElementById('current-lang-label');
-      if (currentLangLabel) {
-        const labels = {
-          'ko': 'KO',
-          'en': 'EN',
-          'ja': 'JA',
-          'zh-CN': 'ZH'
-        };
-        currentLangLabel.innerText = labels[langCode] || 'KO';
-      }
-    } else {
-      // 아직 구글 콤보박스가 DOM에 파싱되지 않은 경우 폴링 재시도
-      setTimeout(() => {
-        const selectElRetry = document.querySelector('.goog-te-combo');
-        if (selectElRetry) {
-          selectElRetry.value = langCode;
-          selectElRetry.dispatchEvent(new Event('change'));
-        }
-      }, 500);
-
-      const currentLangLabel = document.getElementById('current-lang-label');
-      if (currentLangLabel) {
-        const labels = {
-          'ko': 'KO',
-          'en': 'EN',
-          'ja': 'JA',
-          'zh-CN': 'ZH'
-        };
-        currentLangLabel.innerText = labels[langCode] || 'KO';
-      }
+    // 언어 라벨 업데이트
+    const currentLangLabel = document.getElementById('current-lang-label');
+    if (currentLangLabel) {
+      const labels = {
+        'ko': 'KO',
+        'en': 'EN',
+        'ja': 'JA',
+        'zh-CN': 'ZH'
+      };
+      currentLangLabel.innerText = labels[langCode] || 'KO';
     }
+
+    // 기존 폴링이 있으면 제거
+    if (translatePollInterval) {
+      clearInterval(translatePollInterval);
+      translatePollInterval = null;
+    }
+
+    let attempts = 0;
+    const maxAttempts = 50; // 50 * 200ms = 10초 동안 대기
+    translatePollInterval = setInterval(() => {
+      const selectEl = document.querySelector('.goog-te-combo');
+      if (selectEl) {
+        clearInterval(translatePollInterval);
+        translatePollInterval = null;
+
+        let targetValue = langCode;
+        if (langCode === 'ko') {
+          // 한국어인 경우 'ko' 옵션이 있는지 확인하고 없으면 빈 문자열("")로 설정하여 번역 해제
+          let hasKo = false;
+          for (let i = 0; i < selectEl.options.length; i++) {
+            if (selectEl.options[i].value === 'ko') {
+              hasKo = true;
+              break;
+            }
+          }
+          targetValue = hasKo ? 'ko' : '';
+        }
+
+        if (selectEl.value !== targetValue) {
+          selectEl.value = targetValue;
+          selectEl.dispatchEvent(new Event('change'));
+        }
+      } else {
+        attempts++;
+        if (attempts >= maxAttempts) {
+          clearInterval(translatePollInterval);
+          translatePollInterval = null;
+          console.warn('Google Translate combo box not found after 10 seconds.');
+        }
+      }
+    }, 200);
   }
 
   // 로컬 번역 처리기 구현
