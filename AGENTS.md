@@ -46,9 +46,6 @@
 navbar-links:
   About Me: "aboutme"
   Github: "https://github.com/omm0716"
-  C#: "c-sharp"
-  C Language: "c-language"
-  Tools: "tools"
   🎮 게임:
     - 🍉 수박 게임: "watermelon-game"
     - 🍎 사과 게임: "fruit-box-game"
@@ -198,6 +195,7 @@ date: 2026-06-04 09:00:00 +0900  # 시간으로 순서 구분
 | 2026-06-10 | **🍎 사과 게임 프레임 버그 수정** (첫 프레임 dt 스파이크 방지, removingMap O(1) 탐색, 파티클 중복 방지) |
 | 2026-06-10 | **AGENTS.md 자동 업데이트 규칙 추가** (모든 작업 완료 후 필수 업데이트 명시) |
 | 2026-06-11 | **Machine Learning 섹션 대규모 리뉴얼** (기존 4건 삭제, 10강 시리즈로 상세 튜토리얼 추가) |
+| 2026-06-11 | **네비게이션 메뉴 정리** (미사용하는 C#, C Language, Tools 상단 메뉴 비활성화) |
 
 ## 요약
 
@@ -211,7 +209,7 @@ date: 2026-06-04 09:00:00 +0900  # 시간으로 순서 구분
 
 **2026-06-10 업데이트**: **C# 카테고리 신규 추가** (`csharp.md` → permalink `/c-sharp/`). Visual Studio 프로젝트 파일(`2604340032 오민`)을 분석하여 C# 1강~7강 포스트 작성 완료. 네비게이션 메뉴에 `C#` 링크 등록. 7강 시리즈: 변수·자료형 → 조건문 → 반복문 → while심화(카페 주문) → List\<T\>·Random → 클래스·메서드·static → 다중 클래스 설계(LM재고관리) + Windows Forms 입문. **C# 카테고리 404 버그 수정** (`permalink /csharp/` → `/c-sharp/`). **🍉 수박 게임 물리 엔진 개선** (댐핑↓, 질량비 임펄스, 슬립 안착, 서브스텝 6). **🍎 사과 게임 프레임 버그 수정** (첫 프레임 dt 스파이크, O(1) Map 탐색, 파티클 중복 방지). **AGENTS.md 자동 업데이트 규칙 추가**.
 
-**2026-06-11 업데이트**: **Machine Learning 섹션 대규모 리뉴얼**. 기존 4건 삭제 후, 1강~10강(선형회귀, KNN, 군집, DBSCAN, LangChain 등) 시리즈를 초보자 맞춤형 튜토리얼 포맷으로 전면 재작성 (YAML 파싱 오류 수정 및 날짜 오름차순 반영).
+**2026-06-11 업데이트**: **Machine Learning 섹션 대규모 리뉴얼**. 기존 4건 삭제 후, 1강~10강(선형회귀, KNN, 군집, DBSCAN, LangChain 등) 시리즈를 초보자 맞춤형 튜토리얼 포맷으로 전면 재작성 (YAML 파싱 오류 수정 및 날짜 오름차순 반영). **네비게이션 메뉴 정리** (자주 쓰지 않는 C#, C Language, Tools 상단 링크 제거).
 
 ---
 # Project Overview: omm0716.github.io
@@ -235,9 +233,6 @@ This project is a **Jekyll static blog** hosted on GitHub Pages. It is built usi
 navbar-links:
   About Me: "aboutme"
   Github: "https://github.com/omm0716"
-  C#: "csharp"
-  C Language: "c-language"
-  Tools: "tools"
   🎮 게임:
     - 🍉 수박 게임: "watermelon-game"
     - 🍎 사과 게임: "fruit-box-game"
@@ -354,3 +349,4 @@ This folder contains the source code for a personal learning Jekyll blog operate
 
 **2026-06-11 Update**:
 - **Major Renewal of Machine Learning Category**: Deleted 4 old placeholder posts and created a full 10-lesson tutorial series covering Regression, KNN, Clustering, and LangChain. Fixed YAML front matter parsing errors and applied detailed, beginner-friendly explanations. All posts dated 2026-06-11 from 09:00 to 18:00.
+- **Navbar Clean Up**: Removed links to C#, C Language, and Tools from the top-right navigation menu as per request.

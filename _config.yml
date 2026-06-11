@@ -21,9 +21,6 @@ author: omm0716
 navbar-links:
   About Me: "aboutme"
   Github: "https://github.com/omm0716"
-  C#: "c-sharp"
-  C Language: "c-language"
-  Tools: "tools"
   🎮 게임:
     - 🍉 수박 게임: "watermelon-game"
     - 🍎 사과 게임: "fruit-box-game"
