@@ -1,378 +1,97 @@
 ---
 layout: post
-title: [7강] 앙상블: 랜덤 포레스트
-subtitle: 결정 트리의 앙상블 모델인 Random Forest 실습
-categories: [Machine Learning]
-tags: [머신러닝, Machine Learning]
-author: omm0716
-date: 2026-06-11 15:00:00 +0900
+title: "[7강] 앙상블: 랜덤 포레스트"
+subtitle: "백지장도 맞들면 낫다! 결정 트리들의 집단 지성, Random Forest"
+categories: ["Machine Learning"]
+tags: ["머신러닝", "Machine Learning", "앙상블", "Ensemble", "랜덤포레스트", "Random Forest"]
+author: "omm0716"
+date: "2026-06-11 15:00:00 +0900"
 ---
 
-# Google Colab 데이터 로드
+안녕하세요! 오늘은 머신러닝의 꽃이자, 실무에서도 캐글(Kaggle) 같은 데이터 분석 대회에서도 가장 널리 쓰이는 강력한 기법, **앙상블(Ensemble) 학습**에 대해 배워보겠습니다.
+
+단일 모델(예를 들어 결정 트리 하나)은 질문을 아무리 정교하게 짜도 판단력이 한쪽으로 치우치거나, 훈련 데이터에만 너무 과도하게 맞춰져 실전에서 약해지는 과대적합(Overfitting)에 빠지기 쉽습니다. 
+
+이 문제를 어떻게 해결할 수 있을까요? 
+"한 명의 똑똑한 전문가보다, 여러 명의 평범한 사람들의 의견을 다수결로 모으는 것이 더 정확하다"는 집단 지성의 원리를 머신러닝에 도입한 것이 바로 앙상블 학습입니다. 그리고 그중에서 **결정 트리(Decision Tree)를 수백 개 모아서 숲(Forest)을 이룬 모델이 바로 랜덤 포레스트(Random Forest)**입니다.
+
+---
+
+## 1. 랜덤 포레스트는 어떻게 동작할까?
+
+이름이 왜 '랜덤(Random)' 포레스트일까요? 수백 개의 결정 트리를 만들 때, 모든 트리가 똑같은 데이터로 똑같은 학습을 한다면 결국 모두 똑같은 결과만 내놓겠죠? 다양성을 확보하기 위해 랜덤 포레스트는 꼼수를 부립니다.
+
+1. **데이터 무작위 샘플링 (부트스트랩 방식)**: 전체 훈련 데이터에서 무작위로 복원 추출을 하여, 각각의 트리에게 서로 조금씩 다른 훈련 데이터를 나눠줍니다.
+2. **특성 무작위 선택**: 트리가 분기점(노드)을 만들 때, 모든 특성을 다 검토하지 않고 일부 특성만 무작위로 골라내어 그중에서 최선을 찾게 만듭니다.
+
+이렇게 되면 각각의 트리는 서로 다른 시각(특성)과 경험(데이터)을 가진 개성 있는 전문가들로 자라납니다. 마지막에 이 숲(Forest)의 나무들이 내놓은 결과를 취합해 **다수결 투표(분류)**를 하거나 **평균(회귀)**을 내어 최종 결정을 내립니다.
+
+---
+
+## 2. 랜덤 포레스트 실습하기 (과일 분류)
+
+파이썬의 `scikit-learn`에서는 `RandomForestClassifier`를 통해 정말 손쉽게 랜덤 포레스트를 사용할 수 있습니다.
 
 ```python
-#Step 1. 구글 코랩에 한글 폰트 설정하기
-
-!sudo apt-get install -y fonts-nanum
-!sudo fc-cache -fv
-!rm ~/.cache/matplotlib -rf
-```
-
-```python
-#Step 2.분석할 데이터가 저장된 파일을 불러와서 변수에 할당합니다.
-from google.colab import files
-myfile = files.upload()
-import io
 import pandas as pd
-#pd.read_csv로 csv파일 불러오기
-과일채소목록 = pd.read_csv(io.BytesIO(myfile['과일채소목록.csv']),
-                       encoding='cp949')
-과일채소목록
-```
-
-# 로컬 데이터 로드
-
-```python
-#컴퓨터에서 작업하려면 아래 코드의 주석을 제거하고 실행하면 됩니다
-import pandas as pd
-src_data = pd.read_csv('./머신러닝실습용자료/과일채소목록.csv',encoding='cp949')
-src_data
-```
-```text
-      종류  무게_g  길이_cm  색상   당도
-0     수박  2000   30.0   1  8.0
-1     수박  2500   25.0   1  7.0
-2     수박  1800   20.0   1  6.5
-3     수박  1500   16.0   1  8.5
-4     수박  2200   21.0   1  9.5
-5     자두   100    3.5   3  6.0
-6     자두   120    3.7   3  7.0
-7     자두    90    2.8   3  8.0
-8     자두   150    3.8   3  8.5
-9     자두   110    3.6   3  7.5
-10    참외   500    8.0   2  8.0
-11    참외   400    7.5   2  7.2
-12    참외   450    8.0   2  7.5
-13    참외   400    6.5   2  6.5
-14    참외   600    8.5   2  8.0
-15   옥수수   450   20.0   1  3.0
-16   옥수수   500   25.0   1  2.0
-17   옥수수   380   22.0   1  1.5
-18   옥수수   400   23.0   1  1.0
-19   옥수수   350   20.0   1  1.3
-20  거봉포도   280   28.0   3  8.0
-21  거봉포도   250   25.0   3  7.5
-22  거봉포도   220   22.0   3  7.0
-23  거봉포도   270   26.0   3  8.5
-24  거봉포도   290   29.0   3  9.0
-25    수박  2001   30.5   1  8.1
-26    수박  2501   25.1   1  7.1
-27    수박  1801   20.1   1  6.6
-28    수박  1501   16.1   1  8.6
-29    수박  2201   21.1   1  9.6
-30    자두   101    3.6   3  6.1
-31    자두   121    3.8   3  7.1
-32    자두    91    2.9   3  8.1
-33    자두   151    3.9   3  8.6
-34    자두   111    3.7   3  7.6
-35    참외   501    8.1   2  8.1
-36    참외   401    7.6   2  7.3
-37    참외   451    8.1   2  7.6
-38    참외   401    6.6   2  6.6
-39    참외   601    8.6   2  8.1
-40   옥수수   451   20.1   1  3.1
-41   옥수수   501   25.1   1  2.1
-42   옥수수   381   22.1   1  1.6
-43   옥수수   401   23.1   1  1.1
-44   옥수수   351   20.1   1  1.4
-45  거봉포도   281   28.1   3  8.1
-46  거봉포도   251   25.1   3  7.6
-47  거봉포도   221   22.1   3  7.1
-48  거봉포도   271   26.1   3  8.6
-49  거봉포도   291   29.1   3  9.1
-```
-
-# 공통 실습 코드
-
-```python
-#Step 3. 훈련용 세트와 테스트용 세트로 나눕니다.
-# '무게_g','길이_cm','색상','당도'에 따른 과일종류 분류
-data = src_data[['무게_g','길이_cm','색상','당도']]
-target = src_data['종류']
-
-# train, test 데이터 분리
-from sklearn.model_selection import train_test_split
-훈련용_data, 테스트용_data , 훈련용_target , 테스트용_target = train_test_split(
-    data, target, test_size= 0.3, random_state=40
-)
-```
-
-```python
-# 각각의 데이터 확인
-print(훈련용_data.shape , 테스트용_data.shape)
-print(훈련용_data)
-print(훈련용_target)
-```
-```text
-(35, 4) (15, 4)
-    무게_g  길이_cm  색상   당도
-41   501   25.1   1  2.1
-23   270   26.0   3  8.5
-36   401    7.6   2  7.3
-5    100    3.5   3  6.0
-13   400    6.5   2  6.5
-39   601    8.6   2  8.1
-17   380   22.0   1  1.5
-43   401   23.1   1  1.1
-24   290   29.0   3  9.0
-3   1500   16.0   1  8.5
-22   220   22.0   3  7.0
-40   451   20.1   1  3.1
-26  2501   25.1   1  7.1
-34   111    3.7   3  7.6
-20   280   28.0   3  8.0
-28  1501   16.1   1  8.6
-14   600    8.5   2  8.0
-15   450   20.0   1  3.0
-30   101    3.6   3  6.1
-8    150    3.8   3  8.5
-46   251   25.1   3  7.6
-32    91    2.9   3  8.1
-9    110    3.6   3  7.5
-48   271   26.1   3  8.6
-42   381   22.1   1  1.6
-10   500    8.0   2  8.0
-31   121    3.8   3  7.1
-19   350   20.0   1  1.3
-47   221   22.1   3  7.1
-12   450    8.0   2  7.5
-1   2500   25.0   1  7.0
-37   451    8.1   2  7.6
-7     90    2.8   3  8.0
-27  1801   20.1   1  6.6
-6    120    3.7   3  7.0
-41     옥수수
-23    거봉포도
-36      참외
-5       자두
-13      참외
-39      참외
-17     옥수수
-43     옥수수
-24    거봉포도
-3       수박
-22    거봉포도
-40     옥수수
-26      수박
-34      자두
-20    거봉포도
-28      수박
-14      참외
-15     옥수수
-30      자두
-8       자두
-46    거봉포도
-32      자두
-9       자두
-48    거봉포도
-42     옥수수
-10      참외
-31      자두
-19     옥수수
-47    거봉포도
-12      참외
-1       수박
-37      참외
-7       자두
-27      수박
-6       자두
-Name: 종류, dtype: str
-
-```
-
-```python
-# 랜덤 포레스트 모델 생성
+from sklearn.model_selection import train_test_split, cross_validate
 from sklearn.ensemble import RandomForestClassifier
-# 학습
-tree = RandomForestClassifier(n_estimators=10, n_jobs=-1, random_state= 40)
-tree.fit(훈련용_data, 훈련용_target)
-# 예측
-print(tree.predict(테스트용_data))
-# score
-print(tree.score(테스트용_data, 테스트용_target))
-```
-```text
-['자두' '수박' '거봉포도' '참외' '거봉포도' '수박' '옥수수' '수박' '참외' '수박' '옥수수' '참외' '수박'
- '거봉포도' '옥수수']
-1.0
 
+# 1. 데이터 불러오기
+fruit = pd.read_csv('./머신러닝실습용자료/의사결정나무_과일종류_2가지.csv', encoding='cp949')
+data = fruit[['길이', '무게']].to_numpy()
+target = fruit['종류'].to_numpy()
+
+# 2. 훈련/테스트 데이터 분할
+훈련용_data, 테스트용_data, 훈련용_target, 테스트용_target = train_test_split(
+    data, target, test_size=0.2, random_state=42
+)
+
+# 3. 랜덤 포레스트 모델 생성
+# n_estimators=100 : 기본적으로 100개의 결정 트리를 만들어 숲을 구성합니다.
+rf = RandomForestClassifier(n_jobs=-1, random_state=42)
+
+# 4. 교차 검증으로 성능 평가
+scores = cross_validate(rf, 훈련용_data, 훈련용_target, return_train_score=True, n_jobs=-1)
+
+import numpy as np
+print("훈련 세트 평균 점수:", np.mean(scores['train_score']))
+print("검증 세트 평균 점수:", np.mean(scores['test_score']))
 ```
 
-### 결과표 작성 및 시각화
+결과를 확인해보면 단일 결정 트리를 썼을 때보다 훈련 세트와 검증 세트의 점수 격차가 줄어들어, 과대적합이 방지되고 성능이 안정된 것을 확인할 수 있습니다.
+
+---
+
+## 3. 특성 중요도 (Feature Importance) 파악
+
+랜덤 포레스트의 훌륭한 장점 중 하나는 **"어떤 특징(Feature)이 예측에 가장 크게 기여했는가?"**를 알 수 있다는 점입니다. 수백 개의 나무들이 학습하면서 얻은 지식을 종합해 각 특성의 중요도를 계산해줍니다.
 
 ```python
-# 테스트 데이터 확인
-테스트용_data
+# 최종 학습 (feature_importances_ 를 보려면 반드시 fit을 먼저 해야 합니다)
+rf.fit(훈련용_data, 훈련용_target)
+
+# 특성 중요도 출력
+print("특성 중요도 (길이, 무게):", rf.feature_importances_)
 ```
+
+출력 예시:
 ```text
-    무게_g  길이_cm  색상   당도
-33   151    3.9   3  8.6
-29  2201   21.1   1  9.6
-49   291   29.1   3  9.1
-38   401    6.6   2  6.6
-45   281   28.1   3  8.1
-0   2000   30.0   1  8.0
-18   400   23.0   1  1.0
-4   2200   21.0   1  9.5
-11   400    7.5   2  7.2
-2   1800   20.0   1  6.5
-16   500   25.0   1  2.0
-35   501    8.1   2  8.1
-25  2001   30.5   1  8.1
-21   250   25.0   3  7.5
-44   351   20.1   1  1.4
+특성 중요도 (길이, 무게): [0.25 0.75]
 ```
 
-```python
-# 예측결과 데이터프레임을 만들고
-예측결과 = pd.DataFrame(tree.predict(테스트용_data),columns=['예측결과'])
-# concat을 통해 기존 테스트 data와 예측결과 데이터를 합친다.
-result = pd.concat([테스트용_data.reset_index(drop=True), 예측결과], axis= 1)
-print(result)
+만약 결과가 `[0.25, 0.75]`라면, 수박과 참외를 구별하는 데 있어 '길이'보다 '무게'가 3배 더 중요한 역할을 했다는 뜻입니다! 이처럼 랜덤 포레스트는 성능도 뛰어나면서 분석의 해석력(Interpretability)까지 제공하는 멋진 도구입니다.
 
-from sklearn.metrics import classification_report
+---
 
-pred = tree.predict(테스트용_data)
-print(classification_report(테스트용_target, pred))
-```
-```text
-    무게_g  길이_cm  색상   당도  예측결과
-0    151    3.9   3  8.6    자두
-1   2201   21.1   1  9.6    수박
-2    291   29.1   3  9.1  거봉포도
-3    401    6.6   2  6.6    참외
-4    281   28.1   3  8.1  거봉포도
-5   2000   30.0   1  8.0    수박
-6    400   23.0   1  1.0   옥수수
-7   2200   21.0   1  9.5    수박
-8    400    7.5   2  7.2    참외
-9   1800   20.0   1  6.5    수박
-10   500   25.0   1  2.0   옥수수
-11   501    8.1   2  8.1    참외
-12  2001   30.5   1  8.1    수박
-13   250   25.0   3  7.5  거봉포도
-14   351   20.1   1  1.4   옥수수
-              precision    recall  f1-score   support
+## 💡 요약
 
-        거봉포도       1.00      1.00      1.00         3
-          수박       1.00      1.00      1.00         5
-         옥수수       1.00      1.00      1.00         3
-          자두       1.00      1.00      1.00         1
-          참외       1.00      1.00      1.00         3
+| 개념 | 설명 |
+|---|---|
+| **앙상블 학습 (Ensemble)** | 여러 개의 약한 예측 모델(Weak Learner)을 엮어 하나의 강력한 예측 모델을 만드는 기법 |
+| **랜덤 포레스트 (Random Forest)** | 결정 트리(Decision Tree)를 무작위로 여러 개 만들어 숲을 이루고, 다수결을 통해 최종 결과를 내는 대표적인 앙상블 알고리즘 |
+| **특성 중요도 (Feature Importance)** | 모델이 정답을 맞추는 데 어떤 특징이 가장 중요하게 작용했는지 점수로 나타낸 지표 |
 
-    accuracy                           1.00        15
-   macro avg       1.00      1.00      1.00        15
-weighted avg       1.00      1.00      1.00        15
+뛰어난 성능, 과대적합 방지, 사용의 편리함까지 삼박자를 갖춘 랜덤 포레스트는 실무에서 **"무엇을 써야 할지 모르겠다면 일단 랜덤 포레스트부터 돌려보라"**는 말이 있을 정도로 필수적인 알고리즘입니다.
 
-
-```
-
-```python
-# k-fold 교차 검증
-from sklearn.model_selection import cross_validate, cross_val_score
-from sklearn.tree import DecisionTreeClassifier
-dt1 = DecisionTreeClassifier(random_state = 10)
-
-scores_3 = cross_validate(dt1, 훈련용_data, 훈련용_target, cv = 5)
-scores_4 = cross_val_score(dt1, 훈련용_data, 훈련용_target, cv = 5)
-
-print("cross_validate 결과", scores_3)
-print("cross_val_score 결과", scores_4)
-```
-```text
-cross_validate 결과 {'fit_time': array([0.00273681, 0.00269222, 0.0019567 , 0.00150013, 0.00178194]), 'score_time': array([0.00143933, 0.00154948, 0.00101423, 0.00086236, 0.00170422]), 'test_score': array([1., 1., 1., 1., 1.])}
-cross_val_score 결과 [1. 1. 1. 1. 1.]
-
-```
-
-```python
-# 중요 속성 지표값 출력
-
-import matplotlib.pyplot as plt
-plt.rc('font', family='NanumBarunGothic')
-
-imp = tree.feature_importances_
-print('중요속성지표값:',imp)
-
-plt.figure()
-plt.bar(range(len(imp)),imp)
-plt.xticks(range(len(imp)),data.columns, rotation=90)
-plt.show()
-```
-```text
-findfont: Font family 'NanumBarunGothic' not found.
-findfont: Font family 'NanumBarunGothic' not found.
-C:\Users\user\AppData\Roaming\Python\Python313\site-packages\IPython\core\pylabtools.py:170: UserWarning: Glyph 47924 (\N{HANGUL SYLLABLE MU}) missing from font(s) DejaVu Sans.
-  fig.canvas.print_figure(bytes_io, **kw)
-C:\Users\user\AppData\Roaming\Python\Python313\site-packages\IPython\core\pylabtools.py:170: UserWarning: Glyph 44172 (\N{HANGUL SYLLABLE GE}) missing from font(s) DejaVu Sans.
-  fig.canvas.print_figure(bytes_io, **kw)
-findfont: Font family 'NanumBarunGothic' not found.
-C:\Users\user\AppData\Roaming\Python\Python313\site-packages\IPython\core\pylabtools.py:170: UserWarning: Glyph 44600 (\N{HANGUL SYLLABLE GIL}) missing from font(s) DejaVu Sans.
-  fig.canvas.print_figure(bytes_io, **kw)
-C:\Users\user\AppData\Roaming\Python\Python313\site-packages\IPython\core\pylabtools.py:170: UserWarning: Glyph 51060 (\N{HANGUL SYLLABLE I}) missing from font(s) DejaVu Sans.
-  fig.canvas.print_figure(bytes_io, **kw)
-findfont: Font family 'NanumBarunGothic' not found.
-C:\Users\user\AppData\Roaming\Python\Python313\site-packages\IPython\core\pylabtools.py:170: UserWarning: Glyph 49353 (\N{HANGUL SYLLABLE SAEG}) missing from font(s) DejaVu Sans.
-  fig.canvas.print_figure(bytes_io, **kw)
-C:\Users\user\AppData\Roaming\Python\Python313\site-packages\IPython\core\pylabtools.py:170: UserWarning: Glyph 49345 (\N{HANGUL SYLLABLE SANG}) missing from font(s) DejaVu Sans.
-  fig.canvas.print_figure(bytes_io, **kw)
-findfont: Font family 'NanumBarunGothic' not found.
-C:\Users\user\AppData\Roaming\Python\Python313\site-packages\IPython\core\pylabtools.py:170: UserWarning: Glyph 45817 (\N{HANGUL SYLLABLE DANG}) missing from font(s) DejaVu Sans.
-  fig.canvas.print_figure(bytes_io, **kw)
-C:\Users\user\AppData\Roaming\Python\Python313\site-packages\IPython\core\pylabtools.py:170: UserWarning: Glyph 46020 (\N{HANGUL SYLLABLE DO}) missing from font(s) DejaVu Sans.
-  fig.canvas.print_figure(bytes_io, **kw)
-findfont: Font family 'NanumBarunGothic' not found.
-findfont: Font family 'NanumBarunGothic' not found.
-findfont: Font family 'NanumBarunGothic' not found.
-findfont: Font family 'NanumBarunGothic' not found.
-findfont: Font family 'NanumBarunGothic' not found.
-findfont: Font family 'NanumBarunGothic' not found.
-findfont: Font family 'NanumBarunGothic' not found.
-findfont: Font family 'NanumBarunGothic' not found.
-findfont: Font family 'NanumBarunGothic' not found.
-findfont: Font family 'NanumBarunGothic' not found.
-findfont: Font family 'NanumBarunGothic' not found.
-findfont: Font family 'NanumBarunGothic' not found.
-findfont: Font family 'NanumBarunGothic' not found.
-findfont: Font family 'NanumBarunGothic' not found.
-findfont: Font family 'NanumBarunGothic' not found.
-findfont: Font family 'NanumBarunGothic' not found.
-findfont: Font family 'NanumBarunGothic' not found.
-findfont: Font family 'NanumBarunGothic' not found.
-findfont: Font family 'NanumBarunGothic' not found.
-findfont: Font family 'NanumBarunGothic' not found.
-findfont: Font family 'NanumBarunGothic' not found.
-findfont: Font family 'NanumBarunGothic' not found.
-findfont: Font family 'NanumBarunGothic' not found.
-findfont: Font family 'NanumBarunGothic' not found.
-findfont: Font family 'NanumBarunGothic' not found.
-findfont: Font family 'NanumBarunGothic' not found.
-findfont: Font family 'NanumBarunGothic' not found.
-findfont: Font family 'NanumBarunGothic' not found.
-findfont: Font family 'NanumBarunGothic' not found.
-findfont: Font family 'NanumBarunGothic' not found.
-findfont: Font family 'NanumBarunGothic' not found.
-findfont: Font family 'NanumBarunGothic' not found.
-findfont: Font family 'NanumBarunGothic' not found.
-findfont: Font family 'NanumBarunGothic' not found.
-findfont: Font family 'NanumBarunGothic' not found.
-findfont: Font family 'NanumBarunGothic' not found.
-
-```
-```text
-중요속성지표값: [0.42564394 0.27820286 0.10204579 0.1941074 ]
-
-```
-```text
-<Figure size 640x480 with 1 Axes>
-```
+지금까지는 정답(Target)이 존재하는 '지도 학습'을 배웠습니다. 다음 8강부터는 정답이 주어지지 않은 상태에서 데이터 스스로 패턴을 찾는 **비지도 학습 (군집 분석)**의 세계로 떠나보겠습니다.

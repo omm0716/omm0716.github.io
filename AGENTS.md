@@ -115,12 +115,18 @@ date: 2026-06-04 09:00:00 +0900  # 시간으로 순서 구분
 **같은 날짜(2026-06-04) 포스트 시간 배분:**
 - 5강: `09:00:00`, 6강: `10:00:00`, 7강: `11:00:00`
 
-### 3. Machine Learning 학습 (총 4건)
+### 3. Machine Learning 학습 (총 10건) — 2026-06-11 대규모 리뉴얼
 
-- `2026-06-04-machine-learning-linear-regression.md`: 선형 회귀 분석 기초 (`09:00:00`)
-- `2026-06-04-machine-learning-multiple-regression.md`: 다중 회귀 분석 (`10:00:00`)
-- `2026-06-04-machine-learning-logistic-regression.md`: 로지스틱 회귀 분석 (`11:00:00`)
-- `2026-06-04-machine-learning-langchain-tutorial.md`: LangChain 기반 챗봇 실습 (`12:00:00`)
+- `2026-06-11-machine-learning-01-linear-regression.md`: [1강] 선형 회귀 분석 기초 (`09:00:00`)
+- `2026-06-11-machine-learning-02-multiple-regression.md`: [2강] 다중 회귀 분석 (`10:00:00`)
+- `2026-06-11-machine-learning-03-logistic-regression.md`: [3강] 로지스틱 회귀 분석 (`11:00:00`)
+- `2026-06-11-machine-learning-04-knn.md`: [4강] KNN 알고리즘 (`12:00:00`)
+- `2026-06-11-machine-learning-05-k-fold.md`: [5강] K-Fold 교차검증 (`13:00:00`)
+- `2026-06-11-machine-learning-06-grid-search.md`: [6강] 그리드 서치 (`14:00:00`)
+- `2026-06-11-machine-learning-07-random-forest.md`: [7강] 앙상블: 랜덤 포레스트 (`15:00:00`)
+- `2026-06-11-machine-learning-08-kmeans.md`: [8강] 군집 분석: K-Means (`16:00:00`)
+- `2026-06-11-machine-learning-09-dbscan.md`: [9강] 군집 분석: DBSCAN (`17:00:00`)
+- `2026-06-11-machine-learning-10-langchain.md`: [10강] LangChain 문서 기반 챗봇 실습 (`18:00:00`)
 
 ### 4. Tools 학습 (총 1건) — 2026-06-05 신규 추가
 
@@ -191,6 +197,7 @@ date: 2026-06-04 09:00:00 +0900  # 시간으로 순서 구분
 | 2026-06-10 | **🍉 수박 게임 물리 엔진 개선** (댐핑·마찰·질량비 임펄스·슬립 안착·서브스텝6 적용) |
 | 2026-06-10 | **🍎 사과 게임 프레임 버그 수정** (첫 프레임 dt 스파이크 방지, removingMap O(1) 탐색, 파티클 중복 방지) |
 | 2026-06-10 | **AGENTS.md 자동 업데이트 규칙 추가** (모든 작업 완료 후 필수 업데이트 명시) |
+| 2026-06-11 | **Machine Learning 섹션 대규모 리뉴얼** (기존 4건 삭제, 10강 시리즈로 상세 튜토리얼 추가) |
 
 ## 요약
 
@@ -203,6 +210,8 @@ date: 2026-06-04 09:00:00 +0900  # 시간으로 순서 구분
 **2026-06-09 업데이트**: **C Language 카테고리 신규 추가** (`c-language.md`). Visual Studio 프로젝트 파일(`2026하이테크`)을 분석하여 C언어 1강~7강 포스트 작성 완료. 네비게이션 메뉴에 `C Language` 링크 등록.
 
 **2026-06-10 업데이트**: **C# 카테고리 신규 추가** (`csharp.md` → permalink `/c-sharp/`). Visual Studio 프로젝트 파일(`2604340032 오민`)을 분석하여 C# 1강~7강 포스트 작성 완료. 네비게이션 메뉴에 `C#` 링크 등록. 7강 시리즈: 변수·자료형 → 조건문 → 반복문 → while심화(카페 주문) → List\<T\>·Random → 클래스·메서드·static → 다중 클래스 설계(LM재고관리) + Windows Forms 입문. **C# 카테고리 404 버그 수정** (`permalink /csharp/` → `/c-sharp/`). **🍉 수박 게임 물리 엔진 개선** (댐핑↓, 질량비 임펄스, 슬립 안착, 서브스텝 6). **🍎 사과 게임 프레임 버그 수정** (첫 프레임 dt 스파이크, O(1) Map 탐색, 파티클 중복 방지). **AGENTS.md 자동 업데이트 규칙 추가**.
+
+**2026-06-11 업데이트**: **Machine Learning 섹션 대규모 리뉴얼**. 기존 4건 삭제 후, 1강~10강(선형회귀, KNN, 군집, DBSCAN, LangChain 등) 시리즈를 초보자 맞춤형 튜토리얼 포맷으로 전면 재작성 (YAML 파싱 오류 수정 및 날짜 오름차순 반영).
 
 ---
 # Project Overview: omm0716.github.io
@@ -273,11 +282,17 @@ Implemented in `_layouts/post.html` (2026-06-05). Navigates within the **same ca
 - `2026-06-04-database-semicon-expanded.md`: [Lesson 6] SemiconDB Expansion: Department, MaintenanceLog & Data Reading Training
 - `2026-06-04-database-processsensor.md`: [Lesson 7] Process Sensor Data Analysis: Anomaly Detection with ProcessSensorDB
 
-### 3. Machine Learning Learning (4 posts total)
-- `2026-06-04-machine-learning-linear-regression.md`: Linear Regression Basics (`09:00`)
-- `2026-06-04-machine-learning-multiple-regression.md`: Multiple Regression (`10:00`)
-- `2026-06-04-machine-learning-logistic-regression.md`: Logistic Regression (`11:00`)
-- `2026-06-04-machine-learning-langchain-tutorial.md`: LangChain Chatbot Tutorial (`12:00`)
+### 3. Machine Learning Learning (10 posts total) — Major Renewal on 2026-06-11
+- `2026-06-11-machine-learning-01-linear-regression.md`: [Lesson 1] Linear Regression Basics (`09:00`)
+- `2026-06-11-machine-learning-02-multiple-regression.md`: [Lesson 2] Multiple Regression (`10:00`)
+- `2026-06-11-machine-learning-03-logistic-regression.md`: [Lesson 3] Logistic Regression (`11:00`)
+- `2026-06-11-machine-learning-04-knn.md`: [Lesson 4] KNN Algorithm (`12:00`)
+- `2026-06-11-machine-learning-05-k-fold.md`: [Lesson 5] K-Fold Cross Validation (`13:00`)
+- `2026-06-11-machine-learning-06-grid-search.md`: [Lesson 6] Grid Search (`14:00`)
+- `2026-06-11-machine-learning-07-random-forest.md`: [Lesson 7] Random Forest (`15:00`)
+- `2026-06-11-machine-learning-08-kmeans.md`: [Lesson 8] K-Means Clustering (`16:00`)
+- `2026-06-11-machine-learning-09-dbscan.md`: [Lesson 9] DBSCAN Clustering (`17:00`)
+- `2026-06-11-machine-learning-10-langchain.md`: [Lesson 10] LangChain Chatbot Tutorial (`18:00`)
 
 ### 4. Tools Learning (1 post total) — Added 2026-06-05
 - `2026-06-05-tools-test.md`: [Lesson 1] Git & GitHub Basics: Version Control Fundamentals (`09:00`)
@@ -336,3 +351,6 @@ This folder contains the source code for a personal learning Jekyll blog operate
 - Added C# Lessons 1–7 based on Visual Studio projects in `D:\2604340032 오민`
   - Lessons cover: Basics → Conditionals → Loops → while Advanced (Café System) → List<T>/Random → Class/Method/static/Overloading → Multi-Class Design (LM Stock Mgmt) + Windows Forms
 - All 7 posts dated 2026-06-10 with times from 09:00 to 15:00 (+0900) for correct ordering
+
+**2026-06-11 Update**:
+- **Major Renewal of Machine Learning Category**: Deleted 4 old placeholder posts and created a full 10-lesson tutorial series covering Regression, KNN, Clustering, and LangChain. Fixed YAML front matter parsing errors and applied detailed, beginner-friendly explanations. All posts dated 2026-06-11 from 09:00 to 18:00.

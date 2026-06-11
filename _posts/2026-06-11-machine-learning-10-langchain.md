@@ -1,286 +1,127 @@
 ---
 layout: post
-title: [10강] LangChain 문서 기반 챗봇 실습
-subtitle: 문서(PDF, TXT 등)를 활용한 RAG 기반 챗봇 구현
-categories: [Machine Learning]
-tags: [머신러닝, Machine Learning]
-author: omm0716
-date: 2026-06-11 18:00:00 +0900
+title: "[10강] LangChain 문서 기반 챗봇 실습"
+subtitle: "내 PDF 문서를 읽고 답변하는 똑똑한 RAG 챗봇 만들기"
+categories: ["Machine Learning"]
+tags: ["머신러닝", "Machine Learning", "LangChain", "LLM", "RAG", "Chatbot"]
+author: "omm0716"
+date: "2026-06-11 18:00:00 +0900"
 ---
 
+안녕하세요! 대망의 머신러닝 시리즈 10강입니다. 
+지금까지 우리는 정형화된 숫자 데이터(CSV)를 바탕으로 예측하고 분류하는 전통적인 머신러닝 기법들을 배웠습니다. 이번 마지막 시간은 요즘 인공지능의 트렌드인 **LLM(Large Language Model)**을 다루어 볼 텐데요, 그중에서도 내가 가진 문서(PDF, 텍스트)를 바탕으로 대답해주는 똑똑한 챗봇을 만들어보겠습니다.
+
+단순히 ChatGPT에게 질문하는 것이 아닙니다. 회사 내규, 학교 교재, 개인적인 법률 문서 등 인터넷에 없는 **"나만의 문서"**를 기계에게 읽히고, 오직 그 문서의 내용만을 바탕으로 답변하게 만드는 **RAG (Retrieval-Augmented Generation)** 기술을 **LangChain** 라이브러리를 통해 구현해 보겠습니다.
+
+---
+
+## 1. RAG 모델과 LangChain이란?
+
+- **RAG (검색 증강 생성)**: 사용자가 질문을 하면, LLM이 자기 머릿속(사전 학습 지식)에서만 답을 찾는 것이 아니라, 우리가 건네준 문서 더미에서 관련 내용을 '검색(Retrieval)'해 온 뒤, 그 검색 결과를 덧붙여서(Augmented) 답변을 '생성(Generation)'하는 기술입니다. 이 기술을 쓰면 환각 현상(거짓말)을 막고 출처가 분명한 답변을 얻을 수 있습니다.
+- **LangChain**: 이런 복잡한 RAG 파이프라인(문서 쪼개기 -> 벡터화 -> 검색 -> LLM 답변)을 블록 조립하듯 아주 쉽게 연결해(Chain) 주는 파이썬 프레임워크입니다.
+
+---
+
+## 2. 문서 준비 및 쪼개기 (Document Split)
+
+우선 챗봇이 읽을 PDF나 TXT 파일이 필요합니다. 전체 문서를 한 번에 LLM에게 먹일 수는 없습니다. 글자 수 제한이 있기 때문이죠. 따라서 문서를 적당한 크기의 덩어리(Chunk)로 잘게 쪼개주어야 합니다.
+
 ```python
-#!/usr/bin/env python3
-"""LangChain 문서 기반 챗봇 예제 스크립트
-
-설치:
-    pip install -r requirements.txt
-
-사용 방법:
-    python langchain.py
-
-파일 경로 및 질문은 스크립트 내부 또는 커맨드라인 인자를 통해 수정하세요.
-"""
-
-import os
-from pathlib import Path
-from typing import List
-
-import requests
-from langchain_community.document_loaders import PyPDFLoader, TextLoader, UnstructuredWordDocumentLoader
-from langchain_community.vectorstores import FAISS
-from langchain_core.documents import Document
-from langchain_core.embeddings import Embeddings
-from langchain_core.prompts import PromptTemplate
+from langchain_community.document_loaders import PyPDFLoader, TextLoader
 from langchain_text_splitters import RecursiveCharacterTextSplitter
 
-# Google API 키 설정
-GOOGLE_API_KEY = "your api key"
-os.environ["GOOGLE_API_KEY"] = GOOGLE_API_KEY
+# 1. 문서 불러오기
+loader = TextLoader("./data/주택임대차보호법(법률).txt", encoding="utf-8")
+docs = loader.load()
 
+# 2. 문서 쪼개기 (청크 사이즈 1000자, 앞뒤 문맥 겹침 100자)
+splitter = RecursiveCharacterTextSplitter(chunk_size=1000, chunk_overlap=100)
+split_docs = splitter.split_documents(docs)
 
-class GoogleTextEmbedding(Embeddings):
-    def __init__(self, api_key: str, model: str = "textembedding-gecko-001"):
-        self.api_key = api_key
-        self.model = model
-        self.endpoint = "https://embedding.googleapis.com/v1/embeddings"
-
-    def _request(self, payload: dict) -> dict:
-        response = requests.post(
-            self.endpoint,
-            params={"key": self.api_key},
-            json=payload,
-            timeout=60,
-        )
-        response.raise_for_status()
-        return response.json()
-
-    def embed_documents(self, texts: list[str]) -> list[list[float]]:
-        if not texts:
-            return []
-        response = self._request({"model": self.model, "input": texts})
-        return [item["embedding"] for item in response["data"]]
-
-    def embed_query(self, text: str) -> list[float]:
-        return self.embed_documents([text])[0]
-
-
-class GoogleTextGenerator:
-    def __init__(
-        self,
-        api_key: str,
-        model_name: str = "text-bison-001",
-        temperature: float = 0.0,
-        max_output_tokens: int = 1024,
-    ):
-        self.api_key = api_key
-        self.model_name = model_name
-        self.temperature = temperature
-        self.max_output_tokens = max_output_tokens
-        self.base_url = "https://generativelanguage.googleapis.com/v1beta2/models"
-
-    def invoke(self, prompt: str) -> str:
-        response = requests.post(
-            f"{self.base_url}/{self.model_name}:generate",
-            params={"key": self.api_key},
-            json={
-                "prompt": {"text": prompt},
-                "temperature": self.temperature,
-                "maxOutputTokens": self.max_output_tokens,
-            },
-            timeout=60,
-        )
-        response.raise_for_status()
-        data = response.json()
-        candidates = data.get("candidates", [])
-        if not candidates:
-            raise ValueError("Google API returned no text generation candidates.")
-        candidate = candidates[0]
-        return candidate.get("output") or candidate.get("content") or ""
-
-
-def load_pdf(pdf_path: str) -> List[Document]:
-    loader = PyPDFLoader(pdf_path)
-    return loader.load()
-
-
-def load_text(txt_path: str, encoding: str = "utf-8") -> List[Document]:
-    loader = TextLoader(txt_path, encoding=encoding)
-    return loader.load()
-
-
-def load_docx(docx_path: str) -> List[Document]:
-    loader = UnstructuredWordDocumentLoader(docx_path)
-    return loader.load()
-
-
-def load_documents_from_data_dir(data_dir: Path) -> List[Document]:
-    supported_ext = {".pdf", ".txt", ".docx"}
-    docs: List[Document] = []
-
-    if not data_dir.exists():
-        print(f"[WARN] data 디렉토리가 없습니다: {data_dir}. 생성합니다.")
-        data_dir.mkdir(parents=True, exist_ok=True)
-        return docs
-
-    for path in sorted(data_dir.iterdir()):
-        if not path.is_file():
-            continue
-
-        ext = path.suffix.lower()
-        if ext not in supported_ext:
-            print(f"[WARN] 지원되지 않는 파일 형식입니다: {path.name}")
-            continue
-
-        try:
-            if ext == ".pdf":
-                loaded = load_pdf(str(path))
-            elif ext == ".txt":
-                for enc in ("utf-8", "cp949", "euc-kr"):
-                    try:
-                        loaded = load_text(str(path), encoding=enc)
-                        break
-                    except Exception:
-                        loaded = []
-            elif ext == ".docx":
-                loaded = load_docx(str(path))
-            else:
-                loaded = []
-
-            print(f"[INFO] 로드 완료: {path.name} ({len(loaded)} 문서)")
-            docs.extend(loaded)
-        except Exception as exc:
-            print(f"[ERROR] {path.name} 로드 실패: {exc}")
-
-    return docs
-
-
-def split_documents(docs: List[Document], chunk_size: int = 1000, chunk_overlap: int = 100) -> List[Document]:
-    splitter = RecursiveCharacterTextSplitter(chunk_size=chunk_size, chunk_overlap=chunk_overlap)
-    return splitter.split_documents(docs)
-
-
-def build_faiss_index(documents: List[Document]) -> FAISS:
-    return FAISS.from_documents(documents=documents, embedding=GoogleTextEmbedding(api_key=GOOGLE_API_KEY))
-
-
-def build_rag_chain(retriever, model_name: str = "text-bison-001", temperature: float = 0.0):
-    prompt = PromptTemplate.from_template(
-        """당신은 질문-답변(Question-Answering)을 수행하는 친절한 AI 어시스턴트입니다.
-검색된 다음 문맥(context)을 사용하여 질문(question)에 답하세요.
-만약, 주어진 문맥(context)에서 답을 찾을 수 없다면, `주어진 정보에서 질문에 대한 정보를 찾을 수 없습니다`라고 답하세요.
-한글로 답변해 주세요. 단, 기술적인 용어나 이름은 번역하지 않고 그대로 사용해 주세요.
-
-#Question:
-{question}
-
-#Context:
-{context}
-
-#Answer:"""
-    )
-
-    llm = GoogleTextGenerator(api_key=GOOGLE_API_KEY, model_name=model_name, temperature=temperature)
-
-    def run(question: str):
-        docs = retriever.get_relevant_documents(question)
-        if not docs:
-            return "주어진 정보에서 질문에 대한 정보를 찾을 수 없습니다"
-        context_text = "\n\n".join(doc.page_content for doc in docs)
-        prompt_text = prompt.format(question=question, context=context_text)
-        return llm.invoke(prompt_text)
-
-    return run
-
-
-def build_rag_chain_with_sources(retriever, model_name: str = "text-bison-001", temperature: float = 0.0):
-    prompt = PromptTemplate.from_template(
-        """당신은 질문-답변(Question-Answering)을 수행하는 친절한 AI 어시스턴트입니다.
-검색된 다음 문맥(context)을 사용하여 질문(question)에 답하세요.
-만약, 주어진 문맥(context)에서 답을 찾을 수 없다면, `주어진 정보에서 질문에 대한 정보를 찾을 수 없습니다`라고 답하세요.
-한글로 답변해 주세요. 단, 기술적인 용어나 이름은 번역하지 않고 그대로 사용해 주세요.
-반드시 출처도 제공해주세요.
-
-#Question:
-{question}
-
-#Context:
-{context}
-
-#사용된 문서 유형:
-{sources}
-
-#Answer:"""
-    )
-
-    llm = GoogleTextGenerator(api_key=GOOGLE_API_KEY, model_name=model_name, temperature=temperature)
-
-    def run(question: str):
-        docs = retriever.get_relevant_documents(question)
-        if not docs:
-            return "주어진 정보에서 질문에 대한 정보를 찾을 수 없습니다"
-        sources = ", ".join(sorted({doc.metadata.get("source", "Unknown") for doc in docs}))
-        context_text = "\n\n".join(doc.page_content for doc in docs)
-        prompt_text = prompt.format(question=question, context=context_text, sources=sources)
-        return llm.invoke(prompt_text)
-
-    return run
-
-
-def add_document_to_vectorstore(vectorstore: FAISS, text: str, splitter: RecursiveCharacterTextSplitter):
-    new_doc = Document(page_content=text)
-    split_docs = splitter.split_documents([new_doc])
-    vectorstore.add_documents(split_docs)
-    return len(split_docs)
-
-
-def main():
-    base_dir = Path(__file__).resolve().parent
-    data_dir = base_dir / "data"
-    data_dir.mkdir(parents=True, exist_ok=True)
-
-    print("[INFO] LangChain 문서 기반 챗봇 스크립트 실행")
-    print("[INFO] Google API 키가 설정되었습니다.")
-    print(f"[INFO] data 폴더 경로: {data_dir}")
-
-    loaded_docs = load_documents_from_data_dir(data_dir)
-    if not loaded_docs:
-        print("[WARN] data 폴더에 로드할 문서가 없습니다. PDF, TXT, DOCX 파일을 추가하세요.")
-        print("[INFO] 스크립트 실행 종료")
-        return
-
-    split_docs = split_documents(loaded_docs, chunk_size=1000, chunk_overlap=100)
-    print(f"[INFO] 총 문서 청크 생성 완료: {len(split_docs)}개")
-
-    vectorstore = build_faiss_index(split_docs)
-    retriever = vectorstore.as_retriever()
-
-    rag_chain = build_rag_chain(retriever)
-
-    print("\n[질문 예시]: 금융기관에 대해서 분류해줘.")
-    print("[질문 예시]: 주택 임대시 주의점은 무엇인가요?")
-
-    # 대화형 QA 루프
-    print("\n" + "=" * 50)
-    print("[INFO] 직접 질문해보세요. 종료하려면 'q' 또는 '종료'를 입력하세요.")
-    print("=" * 50)
-
-    while True:
-        try:
-            user_input = input("\n질문: ").strip()
-        except (EOFError, KeyboardInterrupt):
-            print("\n[INFO] 종료합니다.")
-            break
-
-        if not user_input:
-            continue
-        if user_input.lower() in ("q", "quit", "exit", "종료"):
-            print("[INFO] 종료합니다.")
-            break
-
-        response = rag_chain.invoke(user_input)
-        print(f"응답: {response}")
-
-
-if __name__ == "__main__":
-    main()
+print(f"문서가 총 {len(split_docs)}개의 조각으로 쪼개졌습니다.")
 ```
+
+---
+
+## 3. 벡터화 (Embedding) 및 검색 저장소 (FAISS) 구축
+
+컴퓨터는 한글을 이해하지 못합니다. 쪼개진 글 조각들을 컴퓨터가 이해할 수 있는 수많은 숫자의 나열(좌표)로 바꾸는 작업을 **임베딩(Embedding)**이라고 합니다. 그리고 이 숫자들을 잘 보관했다가, 사용자의 질문과 가장 좌표가 가까운 글 조각을 0.1초 만에 찾아주는 데이터베이스가 바로 **FAISS (벡터 DB)**입니다.
+
+여기서는 구글의 텍스트 임베딩 모델을 사용하겠습니다.
+
+```python
+import os
+from langchain_community.vectorstores import FAISS
+
+# Google API 키 등록 (본인의 키 입력)
+os.environ["GOOGLE_API_KEY"] = "YOUR_GOOGLE_API_KEY"
+
+# 벡터 DB(FAISS) 구축
+# split_docs들을 Google 임베딩 모델로 숫자로 변환하여 FAISS에 저장합니다.
+vectorstore = FAISS.from_documents(
+    documents=split_docs,
+    embedding=GoogleTextEmbedding(api_key=os.environ["GOOGLE_API_KEY"])
+)
+
+# 문서를 검색해주는 도구(Retriever)로 변환
+retriever = vectorstore.as_retriever()
+```
+
+---
+
+## 4. 프롬프트 세팅 및 챗봇 실행
+
+이제 LLM(두뇌)과 Retriever(눈)를 연결해 줄 차례입니다. LLM에게 **"오직 검색해 온 내용(Context)만 보고 질문(Question)에 답해"**라고 엄격한 지시사항(프롬프트)을 내립니다.
+
+```python
+from langchain_core.prompts import PromptTemplate
+
+# 엄격한 프롬프트 작성
+prompt = PromptTemplate.from_template(
+    """당신은 친절한 법률/문서 어시스턴트입니다.
+반드시 아래의 검색된 문맥(Context)만을 사용하여 질문에 답하세요.
+만약 문맥에 없는 내용이라면 "주어진 정보에서는 찾을 수 없습니다"라고만 답하세요.
+
+#Question:
+{question}
+
+#Context:
+{context}
+
+#Answer:"""
+)
+
+# LLM 객체 생성
+llm = GoogleTextGenerator(api_key=os.environ["GOOGLE_API_KEY"])
+
+# 질문 답변 실행 함수 만들기
+def ask_chatbot(question: str):
+    # 1. 질문과 비슷한 문서를 벡터 DB에서 검색
+    relevant_docs = retriever.get_relevant_documents(question)
+    
+    # 2. 검색된 문서들의 텍스트를 하나로 이어붙임
+    context_text = "\n\n".join(doc.page_content for doc in relevant_docs)
+    
+    # 3. 프롬프트 완성
+    final_prompt = prompt.format(question=question, context=context_text)
+    
+    # 4. LLM에게 답변 요청
+    return llm.invoke(final_prompt)
+
+# 실행 예시
+print(ask_chatbot("주택 임대시 주의할 점이 뭐야?"))
+```
+
+실행하면 우리가 넣어둔 주택임대차보호법 텍스트 파일의 내용을 바탕으로 똑똑하게 답변을 생성해 내는 것을 볼 수 있습니다!
+
+---
+
+## 💡 시리즈를 마치며
+
+| 개념 | 설명 |
+|---|---|
+| **RAG** | 외부 문서를 검색해 와서 그 정보를 바탕으로 답변을 생성하는 언어 모델 아키텍처 |
+| **임베딩 (Embedding)** | 자연어(글)를 기계가 유사도를 계산할 수 있도록 고차원 숫자 벡터로 변환하는 기술 |
+| **벡터 데이터베이스** | 임베딩된 문서를 저장하고, 질문과 가장 의미가 비슷한 문서를 빛의 속도로 찾아주는 검색 엔진 |
+
+1강의 기초적인 방정식 찾기(선형 회귀)부터 출발해 마지막 10강의 최신 LLM RAG 시스템 구축까지, 쉼 없이 달려오신 여러분 고생 많으셨습니다. 머신러닝의 기본 원리를 깨우쳤으니, 이제 여러분의 도메인 지식을 더해 무궁무진한 AI 서비스를 직접 만들어 보시기 바랍니다! 감사합니다.
