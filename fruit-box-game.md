@@ -311,6 +311,7 @@ let isDragging   = false;
 let dragStart    = null;
 let dragCurrent  = null;
 let removingApples = []; // 제거 애니메이션 목록
+let removingMap  = new Map(); // (r*COLS+c) → item, O(1) 탐색용
 
 /* ========== 유틸 ========== */
 function appleCenter(col, row) {
@@ -371,12 +372,14 @@ function startGame() {
   timeLeft = TOTAL_TIME;
   gameState = 'playing';
   removingApples = [];
+  removingMap.clear();
   isDragging = false;
   initGrid();
   updateHUD();
   overlay.classList.remove('active');
   if (timerIntervalId) clearInterval(timerIntervalId);
   timerIntervalId = setInterval(tickTimer, 100);
+  lastFrame = performance.now(); // 첫 프레임 dt 스파이크 방지
   requestAnimationFrame(loop);
 }
 
@@ -461,7 +464,9 @@ function removeApples(selected) {
     apple.active   = false;
     apple.removing = true;
     apple.alpha    = 1;
-    removingApples.push({ r, c, alpha: 1 });
+    const item = { r, c, alpha: 1, spawned: false };
+    removingApples.push(item);
+    removingMap.set(r * COLS + c, item); // Map에도 등록
   });
   score += selected.length;
   if (score > bestScore) {
@@ -471,7 +476,7 @@ function removeApples(selected) {
   updateHUD();
   // 효과음
   playPop(selected.length);
-  // 모두 지웠으면 바로 종료
+  // 모두 지웄으면 바로 종료
   let remain = 0;
   for (let r = 0; r < ROWS; r++)
     for (let c = 0; c < COLS; c++)
@@ -637,10 +642,13 @@ function spawnParticles(x, y) {
 /* ========== 메인 루프 ========== */
 let lastFrame = 0;
 let animId = null;
+let loopRunning = false; // 중복 루프 방지
 
 function loop(ts) {
   animId = requestAnimationFrame(loop);
-  const dt = Math.min((ts - lastFrame) / 16.67, 3);
+  // 첫 프레임이거나 너무 큰 dt(탭 발생)는 16ms로 클램프
+  const raw = lastFrame === 0 ? 16.67 : ts - lastFrame;
+  const dt = Math.min(raw / 16.67, 2.5); // 최대 2.5프레임 해어치 허용
   lastFrame = ts;
 
   ctx.clearRect(0, 0, CW, CH);
@@ -655,12 +663,15 @@ function loop(ts) {
   ctx.lineWidth = 3;
   ctx.strokeRect(PAD_X, PAD_Y, COLS * CELL, ROWS * CELL);
 
-  // 제거 애니메이션 (스케일 다운 + 투명)
-  removingApples = removingApples.filter(item => item.alpha > 0);
-  for (const item of removingApples) {
-    item.alpha -= 0.07 * dt;
-    if (item.alpha < 0) item.alpha = 0;
-  }
+  // 제거 애니메이션 업데이트
+  removingApples = removingApples.filter(item => {
+    item.alpha -= 0.055 * dt; // 이전보다 조금 더 쳌천히 페이드
+    if (item.alpha <= 0) {
+      removingMap.delete(item.r * COLS + item.c);
+      return false;
+    }
+    return true;
+  });
 
   // 선택 정보
   let selected = [];
@@ -680,12 +691,16 @@ function loop(ts) {
     for (let c = 0; c < COLS; c++) {
       const apple = grid[r][c];
       if (!apple.active) {
-        // 제거 애니메이션 중인 것 찾기
-        const anim = removingApples.find(a => a.r === r && a.c === c);
+        // Map으로 O(1) 탐색
+        const anim = removingMap.get(r * COLS + c);
         if (anim && anim.alpha > 0) {
-          const sc = 0.5 + anim.alpha * 0.5;
+          const sc = 0.3 + anim.alpha * 0.7; // 스케일: 1→0.3 부드럽게
           drawApple(apple.x, apple.y, apple.val, true, anim.alpha, sc);
-          if (anim.alpha < 0.5) spawnParticles(apple.x, apple.y);
+          // 파티클: 한 번만 스폰 (중복 방지)
+          if (!anim.spawned && anim.alpha < 0.7) {
+            spawnParticles(apple.x, apple.y);
+            anim.spawned = true;
+          }
         }
         continue;
       }
@@ -784,7 +799,8 @@ overlayBtn.addEventListener('click',  () => startGame());
 
 /* ========== 시작 ========== */
 bestEl.textContent = bestScore.toLocaleString();
-loop(0); // idle 상태로 루프 시작 (안내 화면)
+lastFrame = 0; // idle 상태로 루프 시작
+requestAnimationFrame(loop); // idle 상태로 루프 시작 (안내 화면)
 
 })();
 </script>
