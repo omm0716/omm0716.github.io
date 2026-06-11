@@ -26,7 +26,7 @@
   - `_config.yml`: 블로그의 전체적인 설정(제목, 메뉴 링크, 작성자 정보, 연동 서비스 등)을 담고 있는 핵심 설정 파일입니다.
   - `_posts/`: 블로그의 게시글들이 마크다운(`.md`) 형식으로 저장되는 디렉토리입니다.
   - `_layouts/post.html`: 포스트 레이아웃. 같은 카테고리 내 이전/다음 포스트 네비게이션 포함.
-  - `_layouts/`, `_includes/`: 블로그의 디자인 및 레이아웃을 구성하는 HTML/Liquid 템플릿입니다.
+  - `_layouts/`, `_includes/`: 블로그의 디자인 및 레이아웃을 구성하는 HTML/Liquid 템플릿입니다. (`_includes/recommendation-widget.html` 대화형 추천 위젯 추가)
   - `assets/`: 이미지, CSS, JavaScript 등 정적 파일이 포함되어 있습니다.
   - `assets/img/logo.jpg`: 현재 사용 중인 블로그 네비게이션 바 아바타 이미지.
   - `assets/css/custom.css`: 다크모드, 코드 하이라이팅, TOC, 포스트 네비게이션 등 커스텀 스타일.
@@ -196,6 +196,7 @@ date: 2026-06-04 09:00:00 +0900  # 시간으로 순서 구분
 | 2026-06-10 | **AGENTS.md 자동 업데이트 규칙 추가** (모든 작업 완료 후 필수 업데이트 명시) |
 | 2026-06-11 | **Machine Learning 섹션 대규모 리뉴얼** (기존 4건 삭제, 10강 시리즈로 상세 튜토리얼 추가) |
 | 2026-06-11 | **네비게이션 메뉴 정리** (미사용하는 C#, C Language, Tools 상단 메뉴 비활성화) |
+| 2026-06-11 | **메인 화면 대화형 학습 추천 위젯 추가** (3단계 질문 기반 맞춤 포스트 추천 기믹 도입) |
 
 ## 요약
 
@@ -209,7 +210,7 @@ date: 2026-06-04 09:00:00 +0900  # 시간으로 순서 구분
 
 **2026-06-10 업데이트**: **C# 카테고리 신규 추가** (`csharp.md` → permalink `/c-sharp/`). Visual Studio 프로젝트 파일(`2604340032 오민`)을 분석하여 C# 1강~7강 포스트 작성 완료. 네비게이션 메뉴에 `C#` 링크 등록. 7강 시리즈: 변수·자료형 → 조건문 → 반복문 → while심화(카페 주문) → List\<T\>·Random → 클래스·메서드·static → 다중 클래스 설계(LM재고관리) + Windows Forms 입문. **C# 카테고리 404 버그 수정** (`permalink /csharp/` → `/c-sharp/`). **🍉 수박 게임 물리 엔진 개선** (댐핑↓, 질량비 임펄스, 슬립 안착, 서브스텝 6). **🍎 사과 게임 프레임 버그 수정** (첫 프레임 dt 스파이크, O(1) Map 탐색, 파티클 중복 방지). **AGENTS.md 자동 업데이트 규칙 추가**.
 
-**2026-06-11 업데이트**: **Machine Learning 섹션 대규모 리뉴얼**. 기존 4건 삭제 후, 1강~10강(선형회귀, KNN, 군집, DBSCAN, LangChain 등) 시리즈를 초보자 맞춤형 튜토리얼 포맷으로 전면 재작성 (YAML 파싱 오류 수정 및 날짜 오름차순 반영). **네비게이션 메뉴 정리** (자주 쓰지 않는 C#, C Language, Tools 상단 링크 제거).
+**2026-06-11 업데이트**: **Machine Learning 섹션 대규모 리뉴얼**. 기존 4건 삭제 후, 1강~10강 시리즈를 초보자 맞춤형 튜토리얼 포맷으로 전면 재작성. **네비게이션 메뉴 정리** (자주 쓰지 않는 C#, C Language, Tools 상단 링크 제거). **메인 화면 대화형 학습 추천 위젯 추가**: 3개 질문을 통해 사용자의 성향을 진단하고 적합한 3개 포스트를 추천하는 위젯 구현 (`_includes/recommendation-widget.html`, `index.html`, `assets/css/custom.css`).
 
 ---
 # Project Overview: omm0716.github.io
@@ -350,3 +351,4 @@ This folder contains the source code for a personal learning Jekyll blog operate
 **2026-06-11 Update**:
 - **Major Renewal of Machine Learning Category**: Deleted 4 old placeholder posts and created a full 10-lesson tutorial series covering Regression, KNN, Clustering, and LangChain. Fixed YAML front matter parsing errors and applied detailed, beginner-friendly explanations. All posts dated 2026-06-11 from 09:00 to 18:00.
 - **Navbar Clean Up**: Removed links to C#, C Language, and Tools from the top-right navigation menu as per request.
+- **Interactive Learning Recommender Widget**: Added a 3-step dynamic survey widget on the homepage that scores user goals, difficulty level, and project choices, offering top 3 personalized post recommendations.
