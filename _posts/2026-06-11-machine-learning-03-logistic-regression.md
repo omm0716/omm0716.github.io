@@ -1,11 +1,11 @@
 ---
 layout: post
-title: 로지스틱 회귀 분석 (Logistic Regression)
-subtitle: 로지스틱 회귀 분석을 이용한 분류 문제 해결 방법을 배웁니다.
+title: [3강] 로지스틱 회귀 분석
+subtitle: 분류를 위한 로지스틱 회귀 분석 실습
 categories: [Machine Learning]
-tags: [머신러닝, 분류, 로지스틱회귀]
-author: min oh
-date: 2026-06-04 11:00:00 +0900
+tags: [머신러닝, Machine Learning]
+author: omm0716
+date: 2026-06-11 11:00:00 +0900
 ---
 
 # Google Colab 데이터 로드
@@ -30,7 +30,6 @@ import pandas as pd
 study = pd.read_csv('./머신러닝실습용자료/공부시간과시험합격.csv',encoding='cp949')
 study
 ```
-
 ```text
        이름  공부시간  시험점수 합격여부
 0     이원재  15.0  85.0   합격
@@ -84,7 +83,6 @@ data, target, test_size= 0.2, random_state=40)
 ```python
 print(훈련용_data)
 ```
-
 ```text
 [[13.5]
  [ 8. ]
@@ -124,7 +122,6 @@ lr.fit(훈련용_data,훈련용_target)
 # 테스트용_data로 예측
 print(lr.predict(테스트용_data))
 ```
-
 ```text
 ['불합격' '불합격' '불합격' '불합격' '합격']
 
@@ -136,7 +133,6 @@ import numpy as np
 # 각 항목별 확률값 출력
 print(np.round(lr.predict_proba(테스트용_data),3))
 ```
-
 ```text
 [[0.668 0.332]
  [0.984 0.016]
@@ -169,7 +165,6 @@ import pandas as pd
 fruit_2 = pd.read_csv('./머신러닝실습용자료/과일채소목록_2.csv',encoding='cp949')
 fruit_2
 ```
-
 ```text
       종류  무게_g  길이_cm   당도 등급
 0   거봉포도   291   29.1  9.1  A
@@ -267,7 +262,6 @@ print(np.round(sofrmax_reg.predict_proba(표준화_테스트용_data), 3))
 # 분류 점수 확인
 print(sofrmax_reg.score(표준화_테스트용_data, 테스트용_target))
 ```
-
 ```text
 ['자두' '옥수수' '참외' '자두' '참외' '거봉포도' '수박' '거봉포도' '수박' '거봉포도']
 [[0.021 0.007 0.018 0.658 0.297]
@@ -283,4 +277,3 @@ print(sofrmax_reg.score(표준화_테스트용_data, 테스트용_target))
 1.0
 
 ```
-

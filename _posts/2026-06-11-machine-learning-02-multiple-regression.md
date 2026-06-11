@@ -1,11 +1,11 @@
 ---
 layout: post
-title: 다중 회귀 분석 (Multiple Regression)
-subtitle: 다중 회귀 분석을 통해 여러 변수의 영향을 알아봅니다.
+title: [2강] 다중 회귀 분석
+subtitle: 여러 개의 독립변수를 사용하는 다중 회귀 분석 실습
 categories: [Machine Learning]
-tags: [머신러닝, 회귀분석, 다중회귀]
-author: min oh
-date: 2026-06-04 10:00:00 +0900
+tags: [머신러닝, Machine Learning]
+author: omm0716
+date: 2026-06-11 10:00:00 +0900
 ---
 
 # Google Colab 데이터 로드
@@ -30,7 +30,6 @@ import pandas as pd
 study = pd.read_csv('./머신러닝실습용자료/공부시간과시험점수2.csv',encoding='cp949')
 study
 ```
-
 ```text
        이름  공부시간  학원수  과외여부  시험점수
 0     이원재  15.0    5     1  89.0
@@ -79,7 +78,6 @@ data, target, test_size= 0.2, random_state=40)
 
 훈련용_data.shape
 ```
-
 ```text
 (20, 3)
 ```
@@ -96,19 +94,16 @@ print(lr.score(테스트용_data , 테스트용_target))
 # 13, 5, 0이라는 값을 넣어 예측
 lr.predict([[13,5,0]])
 ```
-
 ```text
 0.9326180323755402
 0.8967399286768529
 
 ```
-
 ```text
 c:\Users\user\AppData\Local\Programs\Python\Python313\Lib\site-packages\sklearn\utils\validation.py:2691: UserWarning: X does not have valid feature names, but LinearRegression was fitted with feature names
   warnings.warn(
 
 ```
-
 ```text
 array([84.86657458])
 ```
@@ -117,9 +112,7 @@ array([84.86657458])
 # 테스트 데이터로 스코어 확인
 print(lr.score(테스트용_data , 테스트용_target))
 ```
-
 ```text
 0.8967399286768529
 
 ```
-

@@ -1,11 +1,11 @@
 ---
 layout: post
-title: 선형 회귀 분석 기초 (Linear Regression)
-subtitle: 선형 회귀 분석에 대한 기초 내용을 정리합니다.
+title: [1강] 선형 회귀 분석 기초
+subtitle: 선형 회귀 분석의 기본 개념과 파이썬 실습
 categories: [Machine Learning]
-tags: [머신러닝, 회귀분석, 선형회귀]
-author: min oh
-date: 2026-06-04 09:00:00 +0900
+tags: [머신러닝, Machine Learning]
+author: omm0716
+date: 2026-06-11 09:00:00 +0900
 ---
 
 # Google Colab 데이터 로드
@@ -41,7 +41,6 @@ study
 #공부 시간 -> feature (특징)
 #시험 점수 -> target (예측결과)
 ```
-
 ```text
        이름  공부시간  시험점수
 0     이원재  15.0  85.0
@@ -83,6 +82,9 @@ import matplotlib.pyplot as plt
 plt.plot(data,target,'o')
 plt.show()
 ```
+```text
+<Figure size 640x480 with 1 Axes>
+```
 
 ```python
 from sklearn.model_selection import train_test_split
@@ -102,7 +104,6 @@ data, target, test_size= 0.2, random_state=40)
 # shape 확인
 훈련용_data.shape
 ```
-
 ```text
 (20,)
 ```
@@ -111,7 +112,6 @@ data, target, test_size= 0.2, random_state=40)
 # data 전체 확인
 훈련용_data
 ```
-
 ```text
 array([13.5,  8. , 14. , 10. ,  8.5, 13. , 11. ,  9. ,  7.5,  8.2, 15. ,
        10.5, 10.5,  7.5, 10. , 14.5,  8.5, 12. , 11. , 12. ])
@@ -128,7 +128,6 @@ array([13.5,  8. , 14. , 10. ,  8.5, 13. , 11. ,  9. ,  7.5,  8.2, 15. ,
 # shape 확인
 훈련용_data.shape
 ```
-
 ```text
 (20, 1)
 ```
@@ -137,7 +136,6 @@ array([13.5,  8. , 14. , 10. ,  8.5, 13. , 11. ,  9. ,  7.5,  8.2, 15. ,
 # data 전체 확인
 훈련용_data
 ```
-
 ```text
 array([[13.5],
        [ 8. ],
@@ -167,7 +165,6 @@ from sklearn.linear_model import LinearRegression
 lr = LinearRegression()
 lr.fit(훈련용_data,훈련용_target)
 ```
-
 ```text
 LinearRegression()
 ```
@@ -177,7 +174,6 @@ LinearRegression()
 print(lr.score(훈련용_data , 훈련용_target))
 print(lr.score(테스트용_data , 테스트용_target))
 ```
-
 ```text
 0.8869114576908868
 0.83676625848856
@@ -188,7 +184,6 @@ print(lr.score(테스트용_data , 테스트용_target))
 # 16이라는 값을 넣었을 때 예상 결과값 확인
 lr.predict([[16]])
 ```
-
 ```text
 array([90.12423029])
 ```
@@ -197,7 +192,6 @@ array([90.12423029])
 # 회귀계수 확인
 print(lr.coef_ , lr.intercept_)
 ```
-
 ```text
 [1.80042161] 61.31748460585439
 
@@ -210,6 +204,9 @@ plt.plot( [5,18], [5*lr.coef_ +lr.intercept_ ,
                     18*lr.coef_ + lr.intercept_])
 plt.scatter(16 , 90 ,marker="^")
 plt.show()
+```
+```text
+<Figure size 640x480 with 1 Axes>
 ```
 
 ## 다항회귀분석 적용
@@ -233,4 +230,3 @@ lr.predict([[16**2,16]])
 print(lr.score(훈련용_data_poly , 훈련용_target))
 print(lr.score(테스트용_data_poly , 테스트용_target))
 ```
-
