@@ -3,7 +3,8 @@ document.addEventListener("DOMContentLoaded", function() {
   // =========================================================
   // Fixed Navbar Overlap Fix
   // 네비게이션 바 + Google Translate 바 높이를 감지해
-  // scroll-padding-top을 동적으로 맞춰 가림 현상을 방지합니다.
+  // scroll-padding-top 및 헤딩의 scroll-margin-top을 동적으로 맞춰
+  // TOC 앵커 클릭 시 가림 현상을 완전히 방지합니다.
   // =========================================================
   function adjustScrollPadding() {
     const navbar = document.querySelector('.navbar-custom');
@@ -13,38 +14,49 @@ document.addEventListener("DOMContentLoaded", function() {
     const navHeight = navbar.getBoundingClientRect().height;
 
     // Google Translate 배너 바 높이 측정 (없으면 0)
-    const gtBanner = document.querySelector('.goog-te-banner-frame, #goog-gt-tt, .skiptranslate iframe');
     let gtHeight = 0;
+    const gtBanner = document.querySelector('.goog-te-banner-frame');
     if (gtBanner) {
-      gtHeight = gtBanner.getBoundingClientRect().height || 40;
+      const bannerHeight = gtBanner.getBoundingClientRect().height;
+      if (bannerHeight > 0) gtHeight = bannerHeight;
     }
 
     // body의 실제 상단 위치 확인 (구글 번역이 body를 밀어내는 경우)
     const bodyTop = parseInt(document.body.style.top || '0', 10);
     if (bodyTop < 0) {
-      gtHeight = Math.abs(bodyTop);
+      gtHeight = Math.max(gtHeight, Math.abs(bodyTop));
     }
 
-    const totalOffset = Math.ceil(navHeight + gtHeight + 8); // 8px 여유
+    const totalOffset = Math.ceil(navHeight + gtHeight + 16); // 16px 여유
+
+    // html scroll-padding-top 설정
     document.documentElement.style.scrollPaddingTop = totalOffset + 'px';
+
+    // 모든 헤딩에 scroll-margin-top 직접 설정 (CSS보다 우선 적용)
+    document.querySelectorAll('h1, h2, h3, h4, h5, h6').forEach(function(el) {
+      el.style.scrollMarginTop = totalOffset + 'px';
+    });
   }
 
   // 초기 실행
   adjustScrollPadding();
 
   // 네비게이션 바 크기 변화 감지 (모바일 ↔ 데스크탑 전환 등)
-  const navbar = document.querySelector('.navbar-custom');
-  if (navbar && typeof ResizeObserver !== 'undefined') {
+  const navbarEl = document.querySelector('.navbar-custom');
+  if (navbarEl && typeof ResizeObserver !== 'undefined') {
     const navObserver = new ResizeObserver(adjustScrollPadding);
-    navObserver.observe(navbar);
+    navObserver.observe(navbarEl);
   }
 
-  // 스크롤 / 리사이즈 시에도 재적용
+  // 리사이즈 시에도 재적용
   window.addEventListener('resize', adjustScrollPadding);
 
   // Google Translate 로드 후 배너 감지를 위해 약간 지연 후 재실행
-  setTimeout(adjustScrollPadding, 1000);
+  setTimeout(adjustScrollPadding, 500);
+  setTimeout(adjustScrollPadding, 1500);
   setTimeout(adjustScrollPadding, 3000);
+
+
 
 
   const toggleBtn = document.getElementById("dark-mode-toggle");
