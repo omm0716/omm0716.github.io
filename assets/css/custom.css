@@ -1313,4 +1313,41 @@ pre.highlight,
   }
 }
 
+/* ========================================
+   구글 번역기(Google Translate) 배너 및 UI 커스텀
+   ======================================== */
+/* 상단 번역 프레임 숨김 */
+iframe.goog-te-banner-frame {
+  display: none !important;
+  visibility: hidden !important;
+}
+
+/* 상단 여백 복원 */
+body {
+  top: 0 !important;
+  position: static !important;
+}
+
+/* 구글 번역 요소 숨김 */
+#google_translate_element {
+  display: none !important;
+}
+
+/* 마우스 호버 번역 툴팁 및 강조 표시 제거 */
+.goog-text-highlight {
+  background-color: transparent !important;
+  box-shadow: none !important;
+  box-sizing: border-box !important;
+  border: none !important;
+}
+
+.goog-tooltip, .goog-tooltip:hover {
+  display: none !important;
+}
+
+#goog-gt-tt {
+  display: none !important;
+  visibility: hidden !important;
+}
+
 

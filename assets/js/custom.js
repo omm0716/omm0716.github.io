@@ -156,4 +156,83 @@ document.addEventListener("DOMContentLoaded", function() {
       });
     });
   }
+
+  // =========================================================================
+  // Google Translate 다국어 번역 시스템 (KO, EN, JA, ZH)
+  // =========================================================================
+
+  // 1. 구글 번역용 숨김 앵커 생성
+  let gtDiv = document.getElementById("google_translate_element");
+  if (!gtDiv) {
+    gtDiv = document.createElement("div");
+    gtDiv.id = "google_translate_element";
+    gtDiv.style.display = "none";
+    document.body.appendChild(gtDiv);
+  }
+
+  // 2. 구글 번역 엔진 초기화 콜백 정의 (글로벌 바인딩)
+  window.googleTranslateElementInit = function() {
+    new google.translate.TranslateElement({
+      pageLanguage: 'ko',
+      includedLanguages: 'en,ja,zh-CN',
+      layout: google.translate.TranslateElement.InlineLayout.SIMPLE,
+      autoDisplay: false
+    }, 'google_translate_element');
+    
+    // 로드 직후 로컬 스토리지 선호 언어 반영
+    setTimeout(() => {
+      const preferredLang = localStorage.getItem('blog_preferred_lang') || 'ko';
+      if (preferredLang !== 'ko') {
+        applyLanguage(preferredLang);
+      }
+    }, 800);
+  };
+
+  // 3. 구글 번역 스크립트 비동기 삽입
+  const gtScript = document.createElement("script");
+  gtScript.type = "text/javascript";
+  gtScript.src = "//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit";
+  document.head.appendChild(gtScript);
+
+  // 4. 전역 언어 변경 이벤트 핸들러 바인딩
+  window.changeLanguage = function(langCode) {
+    localStorage.setItem('blog_preferred_lang', langCode);
+    applyLanguage(langCode);
+  };
+
+  // 5. 실제 구글 번역 콤보 박스 제어 및 라벨 갱신
+  function applyLanguage(langCode) {
+    const selectEl = document.querySelector('.goog-te-combo');
+    if (selectEl) {
+      selectEl.value = langCode;
+      selectEl.dispatchEvent(new Event('change'));
+      
+      const currentLangLabel = document.getElementById('current-lang-label');
+      if (currentLangLabel) {
+        const labels = {
+          'ko': 'KO',
+          'en': 'EN',
+          'ja': 'JA',
+          'zh-CN': 'ZH'
+        };
+        currentLangLabel.innerText = labels[langCode] || 'KO';
+      }
+    } else {
+      // 아직 콤보박스가 DOM에 파싱되지 않은 경우 200ms 후 재시도 (폴링)
+      setTimeout(() => applyLanguage(langCode), 200);
+    }
+  }
+
+  // 6. DOM 로드 직후 라벨 초기화
+  const preferredLang = localStorage.getItem('blog_preferred_lang') || 'ko';
+  const currentLangLabel = document.getElementById('current-lang-label');
+  if (currentLangLabel) {
+    const labels = {
+      'ko': 'KO',
+      'en': 'EN',
+      'ja': 'JA',
+      'zh-CN': 'ZH'
+    };
+    currentLangLabel.innerText = labels[preferredLang] || 'KO';
+  }
 });
