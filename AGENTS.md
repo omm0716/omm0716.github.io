@@ -112,7 +112,7 @@ date: 2026-06-04 09:00:00 +0900  # 시간으로 순서 구분
 **같은 날짜(2026-06-04) 포스트 시간 배분:**
 - 5강: `09:00:00`, 6강: `10:00:00`, 7강: `11:00:00`
 
-### 3. Machine Learning 학습 (총 10건) — 2026-06-11 대규모 리뉴얼
+### 3. Machine Learning 학습 (총 11건) — 2026-06-18 실전 실습 추가
 
 - `2026-06-11-machine-learning-01-linear-regression.md`: [1강] 선형 회귀 분석 기초 (`09:00:00`)
 - `2026-06-11-machine-learning-02-multiple-regression.md`: [2강] 다중 회귀 분석 (`10:00:00`)
@@ -124,6 +124,12 @@ date: 2026-06-04 09:00:00 +0900  # 시간으로 순서 구분
 - `2026-06-11-machine-learning-08-kmeans.md`: [8강] 군집 분석: K-Means (`16:00:00`)
 - `2026-06-11-machine-learning-09-dbscan.md`: [9강] 군집 분석: DBSCAN (`17:00:00`)
 - `2026-06-11-machine-learning-10-langchain.md`: [10강] LangChain 문서 기반 챗봇 실습 (`18:00:00`)
+- `2026-06-18-machine-learning-11-creditcard-fraud.md`: [11강] 실전 프로젝트: 신용카드 이상 거래 탐지 (Kaggle 데이터, 4모델 비교, GridSearch, 변수 중요도) (`09:00:00`)
+
+**Machine Learning 11강 실습 소스 출처:** `C:\Users\user\Desktop\github\creditcard` (Kaggle 신용카드 사기 탐지 데이터셋)
+- 사용 데이터: `creditcard.csv` (284,807건, PCA 익명화 28개 특성, Class 레이블)
+- 노트북 파일: `실습1_신용카드이상탐지.ipynb`, `test.ipynb`
+- 적용 모델: LogisticRegression, DecisionTree, RandomForest, SVM, GridSearchCV
 
 ### 4. Tools 학습 (총 1건) — 2026-06-05 신규 추가
 
@@ -204,6 +210,7 @@ date: 2026-06-04 09:00:00 +0900  # 시간으로 순서 구분
 | 2026-06-11 | **구글 번역 위젯 초기화 및 캐시 버그 수정** (#google_translate_element를 display: none 대신 화면 밖(offscreen)에 배치하여 구글 번역 스크립트가 정상적으로 요소를 생성하도록 조정하고, 브라우저의 custom.js/custom.css 캐싱 방지를 위해 캐시 버스터(?v=버전) 추가 완료) |
 | 2026-06-11 | **구글 번역 디버깅용 로그 추가** (custom.js 내 구글 번역 엔진 초기화 및 감지 루프의 세부 실행 단계를 브라우저 콘솔로그에 출력하도록 패치 완료) |
 | 2026-06-11 | **구글 번역 툴바 및 레이아웃 밀림 최종 해결** (`assets/css/custom.css`, `assets/js/custom.js`): 구글 번역 시 상단에 발생하는 `.skiptranslate` iframe 툴바와 이에 따른 HTML/Body `top` 스타일 강제 밀림 현상을 방지하기 위해 CSS `!important` 오버라이드 및 JavaScript `MutationObserver` + 100ms 폴링 기반의 동적 강제 레이아웃 복구(top: 0px) 및 번역 툴바 완전 숨김 처리 완료. |
+| 2026-06-18 | **Machine Learning [11강] 신규 추가** (`2026-06-18-machine-learning-11-creditcard-fraud.md`): Kaggle 신용카드 사기 탐지 데이터셋(`creditcard.csv`)을 이용한 실전 분류 프로젝트. 로지스틱 회귀·의사결정나무·랜덤 포레스트·SVM 4모델 비교, GridSearch 하이퍼파라미터 튜닝, 변수 중요도 분석 및 특성 선택(Feature Selection) 실습 포함. 소스: `C:\Users\user\Desktop\github\creditcard` |
 
 ## 요약
 
@@ -285,7 +292,7 @@ Implemented in `_layouts/post.html` (2026-06-05). Navigates within the **same ca
 - `2026-06-04-database-semicon-expanded.md`: [Lesson 6] SemiconDB Expansion: Department, MaintenanceLog & Data Reading Training
 - `2026-06-04-database-processsensor.md`: [Lesson 7] Process Sensor Data Analysis: Anomaly Detection with ProcessSensorDB
 
-### 3. Machine Learning Learning (10 posts total) — Major Renewal on 2026-06-11
+### 3. Machine Learning Learning (11 posts total) — Updated 2026-06-18
 - `2026-06-11-machine-learning-01-linear-regression.md`: [Lesson 1] Linear Regression Basics (`09:00`)
 - `2026-06-11-machine-learning-02-multiple-regression.md`: [Lesson 2] Multiple Regression (`10:00`)
 - `2026-06-11-machine-learning-03-logistic-regression.md`: [Lesson 3] Logistic Regression (`11:00`)
@@ -296,6 +303,7 @@ Implemented in `_layouts/post.html` (2026-06-05). Navigates within the **same ca
 - `2026-06-11-machine-learning-08-kmeans.md`: [Lesson 8] K-Means Clustering (`16:00`)
 - `2026-06-11-machine-learning-09-dbscan.md`: [Lesson 9] DBSCAN Clustering (`17:00`)
 - `2026-06-11-machine-learning-10-langchain.md`: [Lesson 10] LangChain Chatbot Tutorial (`18:00`)
+- `2026-06-18-machine-learning-11-creditcard-fraud.md`: [Lesson 11] Real-World Project: Credit Card Fraud Detection (Kaggle dataset, 4-model comparison, GridSearch, Feature Importance) (`09:00`)
 
 ### 4. Tools Learning (1 post total) — Added 2026-06-05
 - `2026-06-05-tools-test.md`: [Lesson 1] Git & GitHub Basics: Version Control Fundamentals (`09:00`)
@@ -357,6 +365,9 @@ This folder contains the source code for a personal learning Jekyll blog operate
 
 **2026-06-11 Update**:
 - **Major Renewal of Machine Learning Category**: Deleted 4 old placeholder posts and created a full 10-lesson tutorial series covering Regression, KNN, Clustering, and LangChain. Fixed YAML front matter parsing errors and applied detailed, beginner-friendly explanations. All posts dated 2026-06-11 from 09:00 to 18:00.
+
+**2026-06-18 Update**:
+- **Added Machine Learning Lesson 11** (`2026-06-18-machine-learning-11-creditcard-fraud.md`): A comprehensive real-world classification project using the Kaggle Credit Card Fraud Detection dataset (`creditcard.csv`, 284,807 transactions). Covers 4 models side-by-side (Logistic Regression, Decision Tree, Random Forest, SVM), ROC-AUC-based model selection, GridSearchCV hyperparameter tuning (best: criterion=entropy, max_depth=10, n_estimators=100, AUC 0.9615 → 0.9829), and bonus feature importance analysis with selective retraining using top-10 features. Source notebooks: `실습1_신용카드이상탐지.ipynb`, `test.ipynb` from `C:\Users\user\Desktop\github\creditcard`.
 - **Navbar Clean Up**: Removed links to C#, C Language, and Tools from the top-right navigation menu as per request.
 - **Interactive Learning Recommender Widget**: Added a 3-step dynamic survey widget on the homepage that scores user goals, difficulty level, and project choices, offering top 3 personalized post recommendations.
 - **Daily Python Quiz & Streak Tracker**: Created a daily quiz widget on the homepage that displays one Python exercise per day (mapped to calendar days) from a local JSON base. Integrates LocalStorage for consecutive correct streaks, a 7-stamp loyalty calendar card, and a medal modal to register user names on external databases (Supabase or Firebase REST API) upon reaching 7, 14, or 30-day milestones.
