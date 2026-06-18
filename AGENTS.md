@@ -28,7 +28,7 @@
   - `_layouts/post.html`: 포스트 레이아웃. 같은 카테고리 내 이전/다음 포스트 네비게이션 포함.
   - `_layouts/`, `_includes/`: 블로그의 디자인 및 레이아웃을 구성하는 HTML/Liquid 템플릿입니다. (`_includes/recommendation-widget.html` 대화형 추천 위젯, `_includes/quiz-widget.html` 파이썬 퀴즈 위젯, `_includes/nav.html` 다국어 번역 메뉴 포함)
   - `assets/`: 이미지, CSS, JavaScript 등 정적 파일이 포함되어 있습니다. (`assets/data/python-quiz.json` 퀴즈 문항 데이터 탑재)
-  - `assets/img/logo.jpg`: 현재 사용 중인 블로그 네비게이션 바 아바타 이미지.
+  - `assets/img/logo.png`: 현재 사용 중인 블로그 네비게이션 바 아바타 이미지 (2026-06-18 logo.png로 변경).
   - `assets/css/custom.css`: 다크모드, 코드 하이라이팅, TOC, 포스트 네비게이션 등 커스텀 스타일.
   - `README.md`: Beautiful Jekyll 테마의 원본 설명서 및 프로젝트 가이드가 포함되어 있습니다.
   - `python.md`: Python 카테고리 페이지 (날짜 오름차순 정렬 적용)
@@ -54,11 +54,11 @@ navbar-links:
 ## 블로그 아바타 설정 (`_config.yml`)
 
 ```yaml
-avatar: "/assets/img/logo.jpg"
+avatar: "/assets/img/logo.png"
 round-avatar: true
 ```
 
-- 아바타 이미지 파일: `assets/img/logo.jpg` (2026-06-05 변경)
+- 아바타 이미지 파일: `assets/img/logo.png` (2026-06-18 변경, 루트의 logo.png → assets/img/ 복사)
 - 원형 크롭 적용 중 (`round-avatar: true`)
 
 ## 포스트 정렬 규칙 (중요!)
@@ -210,6 +210,7 @@ date: 2026-06-04 09:00:00 +0900  # 시간으로 순서 구분
 | 2026-06-11 | **구글 번역 위젯 초기화 및 캐시 버그 수정** (#google_translate_element를 display: none 대신 화면 밖(offscreen)에 배치하여 구글 번역 스크립트가 정상적으로 요소를 생성하도록 조정하고, 브라우저의 custom.js/custom.css 캐싱 방지를 위해 캐시 버스터(?v=버전) 추가 완료) |
 | 2026-06-11 | **구글 번역 디버깅용 로그 추가** (custom.js 내 구글 번역 엔진 초기화 및 감지 루프의 세부 실행 단계를 브라우저 콘솔로그에 출력하도록 패치 완료) |
 | 2026-06-11 | **구글 번역 툴바 및 레이아웃 밀림 최종 해결** (`assets/css/custom.css`, `assets/js/custom.js`): 구글 번역 시 상단에 발생하는 `.skiptranslate` iframe 툴바와 이에 따른 HTML/Body `top` 스타일 강제 밀림 현상을 방지하기 위해 CSS `!important` 오버라이드 및 JavaScript `MutationObserver` + 100ms 폴링 기반의 동적 강제 레이아웃 복구(top: 0px) 및 번역 툴바 완전 숨김 처리 완료. |
+| 2026-06-18 | **블로그 로고 이미지 변경** (`logo.jpg` → `logo.png`, 루트의 `logo.png`를 `assets/img/`로 복사 후 `_config.yml` avatar 경로 업데이트) |
 | 2026-06-18 | **Machine Learning [11강] 신규 추가** (`2026-06-18-machine-learning-11-creditcard-fraud.md`): Kaggle 신용카드 사기 탐지 데이터셋(`creditcard.csv`)을 이용한 실전 분류 프로젝트. 로지스틱 회귀·의사결정나무·랜덤 포레스트·SVM 4모델 비교, GridSearch 하이퍼파라미터 튜닝, 변수 중요도 분석 및 특성 선택(Feature Selection) 실습 포함. 소스: `C:\Users\user\Desktop\github\creditcard` |
 
 ## 요약
@@ -239,7 +240,7 @@ This project is a **Jekyll static blog** hosted on GitHub Pages. It is built usi
   - `_config.yml`: Core site configuration
   - `_posts/`: Blog posts in Markdown format
   - `_layouts/post.html`: Post layout with same-category prev/next navigation (added 2026-06-05)
-  - `assets/img/logo.jpg`: Current navbar avatar image (changed 2026-06-05)
+  - `assets/img/logo.png`: Current navbar avatar image (changed to logo.png 2026-06-18)
   - `assets/css/custom.css`: Custom styles (dark mode, code highlighting, TOC, post navigation)
   - `python.md`, `database.md`, `machine-learning.md`, `tools.md`, `c-language.md`, `csharp.md`: Category pages with ascending `sort: 'date'`
 
@@ -255,7 +256,7 @@ navbar-links:
 
 ## Avatar (`_config.yml`)
 ```yaml
-avatar: "/assets/img/logo.jpg"
+avatar: "/assets/img/logo.png"
 round-avatar: true
 ```
 
@@ -345,7 +346,7 @@ This folder contains the source code for a personal learning Jekyll blog operate
 **2026-06-05 Update**:
 - Added new **Tools** category (`tools.md`, navbar link added to `_config.yml`)
 - Added first Tools post: [Lesson 1] Git & GitHub Basics (`2026-06-05-tools-test.md`)
-- Changed blog avatar image from `avatar-icon.png` to `logo.jpg` (copied to `assets/img/logo.jpg`)
+- Changed blog avatar image from `avatar-icon.png` to `logo.jpg` (copied to `assets/img/logo.jpg`) — then updated to `logo.png` (2026-06-18)
 - Added **same-category prev/next post navigation** to all posts via `_layouts/post.html` and `assets/css/custom.css`
 - Added **🍉 Watermelon Merge Game** (`watermelon-game.md`, Canvas physics engine, Suika-game style)
 - Added **🍎 Apple Box Game** (`fruit-box-game.md`, Canvas drag-select, フルーツボックス style)
