@@ -3,7 +3,7 @@ layout: post
 title: "[12강] 최적 앙상블 모델 만들기: 상관계수 분석부터 Soft Voting까지 완전 가이드"
 subtitle: "상관계수·Feature Importance 기반 피처 선택 → 파생 피처 생성 → GridSearch 앙상블 최적화로 Macro F1 0.98 달성"
 date: 2026-06-24 09:00:00 +0900
-categories: [machine-learning]
+categories: ["Machine Learning"]
 tags: [앙상블, VotingClassifier, GridSearchCV, FeatureEngineering, RandomForest, 상관계수, 머신러닝]
 comments: true
 ---

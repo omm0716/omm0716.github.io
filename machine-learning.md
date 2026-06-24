@@ -13,6 +13,8 @@ permalink: /machine-learning/
   {% assign ml_posts = site.categories['Machine Learning'] %}
 {% elsif site.categories['machine learning'] %}
   {% assign ml_posts = site.categories['machine learning'] %}
+{% elsif site.categories['machine-learning'] %}
+  {% assign ml_posts = site.categories['machine-learning'] %}
 {% endif %}
 {% assign ml_posts = ml_posts | sort: 'date' %}
 

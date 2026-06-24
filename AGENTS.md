@@ -125,7 +125,7 @@ date: 2026-06-04 09:00:00 +0900  # 시간으로 순서 구분
 - `2026-06-11-machine-learning-09-dbscan.md`: [9강] 군집 분석: DBSCAN (`17:00:00`)
 - `2026-06-11-machine-learning-10-langchain.md`: [10강] LangChain 문서 기반 챗봇 실습 (`18:00:00`)
 - `2026-06-18-machine-learning-11-creditcard-fraud.md`: [11강] 실전 프로젝트: 신용카드 이상 거래 탐지 (Kaggle 데이터, 4모델 비교, GridSearch, 변수 중요도) (`09:00:00`)
-- `2026-06-24-machine-learning-12-ensemble-optimization.md`: [12강] 최적 앙상블 모델 만들기: 상관계수 분석부터 Soft Voting까지 완전 가이드 (상관계수+FI 기반 피처 선택, 파생 피처 생성, RF→Voting 앙상블 파이프라인, GridSearchCV, Accuracy 98%) (`09:00:00`)
+- `2026-06-24-machine-learning-12-ensemble-optimization.md`: [12강] 최적 앙상블 모델 만들기: 상관계수 분석부터 Soft Voting까지 완전 가이드 (상관계수+FI 기반 피처 선택, 파생 피처 생성, RF→Voting 앙상블 파이프라인, GridSearchCV, **Macro F1 0.98**) (`09:00:00`)
 
 **Machine Learning 11강 실습 소스 출처:** `C:\Users\user\Desktop\github\creditcard` (Kaggle 신용카드 사기 탐지 데이터셋)
 - 사용 데이터: `creditcard.csv` (284,807건, PCA 익명화 28개 특성, Class 레이블)
