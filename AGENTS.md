@@ -112,7 +112,7 @@ date: 2026-06-04 09:00:00 +0900  # 시간으로 순서 구분
 **같은 날짜(2026-06-04) 포스트 시간 배분:**
 - 5강: `09:00:00`, 6강: `10:00:00`, 7강: `11:00:00`
 
-### 3. Machine Learning 학습 (총 11건) — 2026-06-18 실전 실습 추가
+### 3. Machine Learning 학습 (총 12건) — 2026-06-24 최적 앙상블 모델 추가
 
 - `2026-06-11-machine-learning-01-linear-regression.md`: [1강] 선형 회귀 분석 기초 (`09:00:00`)
 - `2026-06-11-machine-learning-02-multiple-regression.md`: [2강] 다중 회귀 분석 (`10:00:00`)
@@ -125,11 +125,18 @@ date: 2026-06-04 09:00:00 +0900  # 시간으로 순서 구분
 - `2026-06-11-machine-learning-09-dbscan.md`: [9강] 군집 분석: DBSCAN (`17:00:00`)
 - `2026-06-11-machine-learning-10-langchain.md`: [10강] LangChain 문서 기반 챗봇 실습 (`18:00:00`)
 - `2026-06-18-machine-learning-11-creditcard-fraud.md`: [11강] 실전 프로젝트: 신용카드 이상 거래 탐지 (Kaggle 데이터, 4모델 비교, GridSearch, 변수 중요도) (`09:00:00`)
+- `2026-06-24-machine-learning-12-ensemble-optimization.md`: [12강] 최적 앙상블 모델 만들기: 상관계수 분석부터 Soft Voting까지 완전 가이드 (상관계수+FI 기반 피처 선택, 파생 피처 생성, RF→Voting 앙상블 파이프라인, GridSearchCV, Accuracy 98%) (`09:00:00`)
 
 **Machine Learning 11강 실습 소스 출처:** `C:\Users\user\Desktop\github\creditcard` (Kaggle 신용카드 사기 탐지 데이터셋)
 - 사용 데이터: `creditcard.csv` (284,807건, PCA 익명화 28개 특성, Class 레이블)
 - 노트북 파일: `실습1_신용카드이상탐지.ipynb`, `test.ipynb`
 - 적용 모델: LogisticRegression, DecisionTree, RandomForest, SVM, GridSearchCV
+
+**Machine Learning 12강 실습 소스 출처:** `C:\Users\omm15\Desktop\Test`
+- 사용 데이터: `train.csv` (900건), `test.csv` (100건) — feat_1~feat_10 + target (이진 분류)
+- 노트북 파일: `상관계수.ipynb`, `Train.ipynb`, `Test.ipynb`, `Final.ipynb`
+- 저장 모델: `best_rf_model.pkl`, `best_ensemble_model.pkl`, `main_scaler.pkl`
+- 분석 흐름: 상관계수+Feature Importance → 핵심 5피처 선별 → 파생 피처 5개 생성 → RF GridSearch → Soft Voting 앙상블
 
 ### 4. Tools 학습 (총 1건) — 2026-06-05 신규 추가
 
@@ -212,6 +219,7 @@ date: 2026-06-04 09:00:00 +0900  # 시간으로 순서 구분
 | 2026-06-11 | **구글 번역 툴바 및 레이아웃 밀림 최종 해결** (`assets/css/custom.css`, `assets/js/custom.js`): 구글 번역 시 상단에 발생하는 `.skiptranslate` iframe 툴바와 이에 따른 HTML/Body `top` 스타일 강제 밀림 현상을 방지하기 위해 CSS `!important` 오버라이드 및 JavaScript `MutationObserver` + 100ms 폴링 기반의 동적 강제 레이아웃 복구(top: 0px) 및 번역 툴바 완전 숨김 처리 완료. |
 | 2026-06-18 | **블로그 로고 이미지 변경** (`logo.jpg` → `logo.png`, 루트의 `logo.png`를 `assets/img/`로 복사 후 `_config.yml` avatar 경로 업데이트) |
 | 2026-06-18 | **Machine Learning [11강] 신규 추가** (`2026-06-18-machine-learning-11-creditcard-fraud.md`): Kaggle 신용카드 사기 탐지 데이터셋(`creditcard.csv`)을 이용한 실전 분류 프로젝트. 로지스틱 회귀·의사결정나무·랜덤 포레스트·SVM 4모델 비교, GridSearch 하이퍼파라미터 튜닝, 변수 중요도 분석 및 특성 선택(Feature Selection) 실습 포함. 소스: `C:\Users\user\Desktop\github\creditcard` |
+| 2026-06-24 | **Machine Learning [12강] 신규 추가** (`2026-06-24-machine-learning-12-ensemble-optimization.md`): `C:\Users\omm15\Desktop\Test` 폴더의 실제 프로젝트 파일(상관계수.ipynb, Train.ipynb, Test.ipynb, Final.ipynb)을 완전 분석하여 최적 앙상블 모델 구축 전 과정 정리. 상관계수+Feature Importance 기반 핵심 5피처 선별(feat_8 압도적 1위, feat_4의 비선형 특성 발견), 파생 피처 5개 생성(곱·나눗셈·차이 조합), RandomForest GridSearchCV(best: criterion=entropy, max_depth=10), Soft Voting 앙상블(LR+DT+RF) GridSearchCV, Stratified Split, fit_transform vs transform 주의사항, joblib 저장/로드, f1_macro 채택 근거 등 세세하게 정리. 최종 Accuracy 98~99% 달성. |
 
 ## 요약
 
@@ -293,7 +301,7 @@ Implemented in `_layouts/post.html` (2026-06-05). Navigates within the **same ca
 - `2026-06-04-database-semicon-expanded.md`: [Lesson 6] SemiconDB Expansion: Department, MaintenanceLog & Data Reading Training
 - `2026-06-04-database-processsensor.md`: [Lesson 7] Process Sensor Data Analysis: Anomaly Detection with ProcessSensorDB
 
-### 3. Machine Learning Learning (11 posts total) — Updated 2026-06-18
+### 3. Machine Learning Learning (12 posts total) — Updated 2026-06-24
 - `2026-06-11-machine-learning-01-linear-regression.md`: [Lesson 1] Linear Regression Basics (`09:00`)
 - `2026-06-11-machine-learning-02-multiple-regression.md`: [Lesson 2] Multiple Regression (`10:00`)
 - `2026-06-11-machine-learning-03-logistic-regression.md`: [Lesson 3] Logistic Regression (`11:00`)
@@ -305,6 +313,7 @@ Implemented in `_layouts/post.html` (2026-06-05). Navigates within the **same ca
 - `2026-06-11-machine-learning-09-dbscan.md`: [Lesson 9] DBSCAN Clustering (`17:00`)
 - `2026-06-11-machine-learning-10-langchain.md`: [Lesson 10] LangChain Chatbot Tutorial (`18:00`)
 - `2026-06-18-machine-learning-11-creditcard-fraud.md`: [Lesson 11] Real-World Project: Credit Card Fraud Detection (Kaggle dataset, 4-model comparison, GridSearch, Feature Importance) (`09:00`)
+- `2026-06-24-machine-learning-12-ensemble-optimization.md`: [Lesson 12] Building Optimal Ensemble Models: From Correlation Analysis to Soft Voting (Correlation + FI-based feature selection, 5 engineered features, RF → Voting ensemble pipeline, GridSearchCV, Accuracy 98%) (`09:00`)
 
 ### 4. Tools Learning (1 post total) — Added 2026-06-05
 - `2026-06-05-tools-test.md`: [Lesson 1] Git & GitHub Basics: Version Control Fundamentals (`09:00`)
@@ -369,6 +378,9 @@ This folder contains the source code for a personal learning Jekyll blog operate
 
 **2026-06-18 Update**:
 - **Added Machine Learning Lesson 11** (`2026-06-18-machine-learning-11-creditcard-fraud.md`): A comprehensive real-world classification project using the Kaggle Credit Card Fraud Detection dataset (`creditcard.csv`, 284,807 transactions). Covers 4 models side-by-side (Logistic Regression, Decision Tree, Random Forest, SVM), ROC-AUC-based model selection, GridSearchCV hyperparameter tuning (best: criterion=entropy, max_depth=10, n_estimators=100, AUC 0.9615 → 0.9829), and bonus feature importance analysis with selective retraining using top-10 features. Source notebooks: `실습1_신용카드이상탐지.ipynb`, `test.ipynb` from `C:\Users\user\Desktop\github\creditcard`.
+
+**2026-06-24 Update**:
+- **Added Machine Learning Lesson 12** (`2026-06-24-machine-learning-12-ensemble-optimization.md`): A complete end-to-end guide to building the optimal ensemble model, based on real project files from `C:\Users\omm15\Desktop\Test`. The post covers: (1) dual-metric feature analysis using Pearson correlation + Random Forest Feature Importance to identify top-5 features (feat_8 dominant at 33.2%, feat_4 revealing non-linear behavior with low correlation but high importance); (2) Feature Engineering — 5 derived features using multiplication (interaction), division (ratio), and subtraction (trend); (3) Random Forest + GridSearchCV training (best: criterion=entropy, max_depth=10, n_estimators=100, Accuracy 99%); (4) model serialization/deserialization with joblib and StandardScaler; (5) Soft Voting ensemble combining LR + DT + RF with nested GridSearchCV using `'dt__max_depth'` notation; (6) Stratified 80:20 split rationale; (7) critical fit_transform vs transform distinction. Final ensemble Accuracy: 98%. Source files: `상관계수.ipynb`, `Train.ipynb`, `Test.ipynb`, `Final.ipynb`, `train.csv`, `test.csv`.
 - **Navbar Clean Up**: Removed links to C#, C Language, and Tools from the top-right navigation menu as per request.
 - **Interactive Learning Recommender Widget**: Added a 3-step dynamic survey widget on the homepage that scores user goals, difficulty level, and project choices, offering top 3 personalized post recommendations.
 - **Daily Python Quiz & Streak Tracker**: Created a daily quiz widget on the homepage that displays one Python exercise per day (mapped to calendar days) from a local JSON base. Integrates LocalStorage for consecutive correct streaks, a 7-stamp loyalty calendar card, and a medal modal to register user names on external databases (Supabase or Firebase REST API) upon reaching 7, 14, or 30-day milestones.
